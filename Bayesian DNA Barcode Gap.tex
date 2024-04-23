@@ -68,24 +68,38 @@
 
 \begin{abstract}
 
-Since its inception over 20 years ago, DNA barcoding has emerged as a robust method of specimen identification and species delimitation across myriad taxonomic groups which have been sequenced at short, standardized gene regions like 5'-COI for animals. However, the success of the approach depends crucially on two important factors: (1) the availability of high-quality records found in public reference sequence databases such as BOLD, and (2) the establishment of a DNA barcode gap -- the idea that the maximum genetic distance observed within species is much smaller than  the minimum degree of marker variation found among species. Early work has \\ demonstrated that the presence of a DNA barcode gap hinges strongly on extant levels of species haplotype diversity gauged from comprehensive specimen sampling at wide geographic and ecological scales. Despite this, many taxa lack adequate separation in their intraspecific and interspecific genetic distances, thereby compromising rapid matching of unknown samples to expertly-validated references.
+Since its inception over 20 years ago, DNA barcoding has emerged as a robust method of specimen identification and species delimitation across myriad taxonomic groups which have been sequenced at short, standardized gene regions like 5'-COI for animals. However, the success of the approach depends crucially on two important factors: (1) the availability of high-quality specimen records found in public reference sequence databases such as BOLD, and (2) the establishment of a DNA barcode \\ gap --- the idea that the maximum genetic distance observed within species is much smaller than  the minimum degree of marker variation found among species. Early work has demonstrated that the presence of a DNA barcode gap hinges strongly on extant levels of species haplotype diversity gauged from comprehensive specimen sampling at wide geographic and ecological scales. Despite this, many taxa lack adequate separation in their pairwise intraspecific and interspecific genetic distances, thereby compromising rapid matching of unknown samples to expertly-validated references.
 
-Recent work has argued that DNA barcoding, in its current form, is lacking in statistical rigor, calling into question the existence of a true species' DNA barcode gap. To support this notion, novel nonparametric locus-specific metrics based on the multispecies coalescent were recently outlined and shown to hold strong promise. The metrics quantify the extent of asymmetric directionality of proportional genetic distance distribution overlap/separation for species within well-sampled genera based on a straightforward distance count. Values of the metrics close to zero suggest the existence of DNA barcode gaps, whereas values near one lend credence for the absence of gaps. However, what appears to be missing is an unbiased way to compute the statistical accuracy of the 
+Recent work has argued that DNA barcoding, in its current form, is lacking in statistical rigor, calling into question the existence of a true species' DNA barcode gap. To support this notion, novel nonparametric locus-specific metrics based on the multispecies coalescent were recently outlined and shown to hold strong promise when applied to \textit{Agabus} diving beetles. The metrics quantify the extent of asymmetric directionality of proportional genetic distance distribution overlap/separation for \\ species within well-sampled genera based on a straightforward distance count. Values of the metrics close to zero suggest the existence of DNA barcode gaps, whereas values near one lend credence for the absence of gaps. However, what appears to be missing is an unbiased way to compute the statistical accuracy of the 
 recommended estimators arising through problems inherent in frequentist maximum likelihood estimation for discrete probability distributions having bounded support. Here, a Bayesian model of the DNA barcode gap coalescent, written using the Stan software, is introduced to rectify such issues. The model allows accurate estimation of posterior means, posterior standard deviations, posterior quantiles, and credible intervals for the metrics given datasets of intraspecific and interspecific genetic distances for species of interest.
 
 
 \end{abstract}
 
-\textbf{Keywords}: DNA barcoding, intraspecific genetic distance, interspecific genetic distance,  Stan 
+\textbf{Keywords}: Bayesian inference, DNA barcoding, intraspecific genetic distance, \\ interspecific genetic distance, specimen identification, species discovery, Stan 
 
 \vspace{2mm}
 
 \section{Introduction}
 
-\citet{}
+DNA barcoding \citep{hebert2003biological, hebert2003barcoding} was conceived more than two decades ago as an immediate and automatic solution to the taxonomic impediment during a time of ongoing biodiversity crisis. The technique promised the rapid and accurate identification of unknown specimens to known Linnaean binomens, as well as the unambiguous resolution of species boundaries across the eukaryotic Tree of Life through the leveraging of easily obtained genetic variation found in short, universal segments of DNA.
 
 
 \section{Methods}
+
+\subsection{DNA Barcode Gap Metrics}
+
+\subsection{A Bayesian Implementation}
+
+When $p$ is close to zero, it suggests that the probability of intraspecific distances being larger than interspecific distances is low on averqge, while the probability of interspecific distances being larger than intraspecific distances is high on average; that is, there is evidence for a DNA barcode gap.
+
+When $q$ is close to one, it indicates that the probability of intraspecific distances being larger than interspecific distances is high on average, while the probability of interspecific distances being larger than intraspecific distances is low on average; there is no evidence for a DNA barcode gap.
+
+If the minimum interspecfic distance is relatively large and maximum intraspecfic distance is relatively small, then $p$\_{lwr} represents the extent to which intraspecific distances
+tend to be larger than interspecific distances at and beyond the minimum interspecific distance and at and below the maximum intraspecific distance.
+
+If the maximum intraspecfic distance is relatively large and the minimum interspecfic distance is relatively small, $p$\_{upr} represents the extent to which interspecific distances tend to be larger than intraspecific distances below the maximum intraspecific distance and beyond the minimum interspecific distance.
+
 
 \section{Results}
 
