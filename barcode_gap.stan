@@ -12,6 +12,7 @@
 // if max_intra is relatively large and min_inter is relatively small, p_upr represents the extent to which interspecific distances
 // tend to be larger than intraspecific distances below the maximum intraspecific distance and beyond the minimum interspecific distance.
 
+
 data {
   int<lower = 1> K; // number of species in genus
   int<lower = 0> N[K]; // number of intraspecific (within-species) genetic distances for each species
@@ -70,13 +71,13 @@ parameters {
 }
 
 model {
-  // beta(1, 1) = U(0, 1) is conjugate for binomial(n, p)
+  // beta(1, 1) = U(0, 1) prior is conjugate for binomial(n, p), so posterior is beta(y_lwr + 1, N - y_lwr + 1) and beta(y_upr + 1, N - y_upr + 1) for y_lwr and y_upr, respectively
   for (k in 1:K) {
     y_lwr[k] ~ binomial(N[k], p_lwr[k]); // likelihood for intraspecific distances equalling or exceeding min_inter
     y_upr[k] ~ binomial(N[k], p_upr[k]); // likelihood for interspecific distances equalling or falling below max_intra
     
-    y_lwr[k] ~ binomial(N[k], p_lwr_prime[k]); // likelihood for intraspecific distances equalling or exceeding min_inter
-    y_upr[k] ~ binomial(N[k], p_upr_prime[k]); // likelihood for interspecific distances equalling or falling below max_intra
+    y_lwr_prime[k] ~ binomial(N[k], p_lwr_prime[k]); // likelihood for intraspecific distances equalling or exceeding min_comb
+    y_upr_prime[k] ~ binomial(N[k], p_upr_prime[k]); // likelihood for combined distances equalling or falling below max_intra
   }
 }
 
