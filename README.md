@@ -1,1 +1,1 @@
-# Bayesian-DNA-Barcode-Gap-Coaleacent
+# Bayesian-DNA-Barcode-Gap-Coalescent
