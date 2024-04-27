@@ -18,18 +18,18 @@
 data {
   int<lower = 1> K; // number of species in genus
   int<lower = 1> N[K]; // number of intraspecific (within-species) genetic distances for each species
-  int<lower = 1> M[K]; // number of interspecific (among-species) genetic distances for all species
+  int<lower = 1> M; // number of interspecific (among-species) genetic distances for all species
   int<lower=1> C[K]; // number of combined interspecfic distances for a target species and its nearest neighbour species
-  matrix[K, max(N)] intra; // intraspecific genetic distances for each species
-  matrix[K, max(M)] inter; // interspecific genetic distances for all species
-  matrix[K, max(C)] comb; // interspecific genetic distances for a target species and its nearest neighbour species
+  matrix<lower = 0, upper = 1>[K, max(N)] intra; // intraspecific genetic distances for each species
+  vector<lower = 0, upper = 1>[M] inter; // interspecific genetic distances for all species
+  matrix<lower = 0, upper = 1>[K, max(C)] comb; // interspecific genetic distances for a target species and its nearest neighbour species
 }
 
 transformed data {
   int<lower = 0, upper = max(N)> y_lwr[K]; // count of intraspecific distances for each species equalling or exceeding min_inter for all species
-  int<lower = 0, upper = max(M)> y_upr[K]; // count of interspecific distances for all species less than or equal to max_intra for each species
+  int<lower = 0, upper = M> y_upr[K]; // count of interspecific distances for all species less than or equal to max_intra for each species
 
-  int<lower = 0, upper = max(C)> y_lwr_prime[K]; // count of intraspecific distances for each species equalling or exceeding the minimum combined interspecfic distance for a target species and its nearest neighbour
+  int<lower = 0, upper = max(N)> y_lwr_prime[K]; // count of intraspecific distances for each species equalling or exceeding the minimum combined interspecfic distance for a target species and its nearest neighbour
   int<lower = 0, upper = max(C)> y_upr_prime[K]; // count of interspecific distances for a target species and its nearest neighbour species less than or equal to max_intra for each species
 
   real<lower=0, upper=1> min_inter; // minimum interspecific distance for all species
@@ -55,11 +55,11 @@ transformed data {
       y_lwr_prime[k] += (intra[k, n] >= min_comb); // count intraspecific distances for each species equalling or exceeding min_comb for all species
     }
     
-    for (m in 1:M[k]) {
-      y_upr[k] += (inter[k, m] <= max_intra[k]); // count interspecific distances for all species less than or equal to max_intra for each species
-  }
-     
-     for (c in 1:C[k]) {
+    for (m in 1:M) {
+      y_upr[k] += (inter[k] <= max_intra[k]); // count interspecific distances for all species less than or equal to max_intra for each species
+    }
+    
+    for (c in 1:C[k]) {
       y_upr_prime[k] += (comb[k, c] <= max_intra[k]); // count combined interspecfic distances for a target species and its nearest neighbour species less than or equal to max_intra for each species
      }
      
@@ -78,17 +78,11 @@ parameters {
 
 model {
   // beta(1, 1) = U(0, 1) prior is conjugate for binomial(n, p), so posterior is beta(y_lwr + 1, N - y_lwr + 1) and beta(y_upr + 1, N - y_upr + 1) for y_lwr and y_upr, respectively
-
+  
   for (k in 1:K) {
-    // prior
-    // p_lwr[k] ~ beta(y_lwr[k] + 1, N[k] - y_lwr[k] + 1);
-    // p_upr[k] ~ beta(y_upr[k] + 1, M[k] - y_upr[k] + 1);
-    // p_lwr_prime[k] ~ beta(y_lwr_prime[k] + 1, N[k] - y_lwr_prime[k] + 1);
-    // p_upr_prime[k] ~ beta(y_upr_prime[k] + 1, C[k] - y_upr_prime[k] + 1);
-    // 
     // likelihood
     y_lwr[k] ~ binomial(N[k], p_lwr[k]); // likelihood for intraspecific distances equalling or exceeding min_inter
-    y_upr[k] ~ binomial(M[k], p_upr[k]); // likelihood for interspecific distances equalling or falling below max_intra
+    y_upr[k] ~ binomial(M, p_upr[k]); // likelihood for interspecific distances equalling or falling below max_intra
     
     y_lwr_prime[k] ~ binomial(N[k], p_lwr_prime[k]); // likelihood for intraspecific distances equalling or exceeding min_comb
     y_upr_prime[k] ~ binomial(C[k], p_upr_prime[k]); // likelihood for combined distances equalling or falling below max_intra
@@ -98,9 +92,11 @@ model {
 
  ////// Fix this //////
 
-// generated quantities {
-//   real log10_p_lwr; // log10 of p_lwr
-//   real log10_p_upr; // log10 of p_upr
+generated quantities {
+  real log10_p_lwr[K]; // log10 of p_lwr
+  real log10_p_upr[K]; // log10 of p_upr
+  real log10_p_lwr_prime[K]; // log10 of p_lwr
+  real log10_p_upr_prime[K]; // log10 of p_upr
 //   int<lower = 0, upper = N> y_lwr_rep[N]; // replicates of counts for y_lwr
 //   int<lower = 0, upper = N> y_upr_rep[N]; // replicates of counts for y_upr
 //   int<lower = 0, upper = 1> mean_y_lwr; // indicator variable for mean_y_lwr
@@ -116,10 +112,12 @@ model {
 //   mean_y_lwr = mean(y_lwr_rep) > y_lwr;
 //   mean_y_upr = mean(y_upr_rep) > y_upr;
 //
-//   // Compute log10 of p_lwr and p_upr
-//   log10_p_lwr = log10(p_lwr);
-//   log10_p_upr = log10(p_upr);
-// }
+  // Compute log10 of p_lwr and p_upr
+  log10_p_lwr[K] = log10(p_lwr[K]);
+  log10_p_upr[K] = log10(p_upr[K]);
+  log10_p_lwr_prime[K] = log10(p_lwr_prime[K]);
+  log10_p_upr_prime[K] = log10(p_upr_prime[K]);
+}
 
 
 
