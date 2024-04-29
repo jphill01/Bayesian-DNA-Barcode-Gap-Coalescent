@@ -20,9 +20,9 @@ data {
   int<lower = 1> N[K]; // number of intraspecific (within-species) genetic distances for each species
   int<lower = 1> M; // number of interspecific (among-species) genetic distances for all species
   int<lower=1> C[K]; // number of combined interspecfic distances for a target species and its nearest neighbour species
-  matrix<lower = 0, upper = 1>[K, max(N)] intra; // intraspecific genetic distances for each species
+  array[K] row_vector<lower = 0, upper = 1>[max(N)] intra; // intraspecific genetic distances for each species
   vector<lower = 0, upper = 1>[M] inter; // interspecific genetic distances for all species
-  matrix<lower = 0, upper = 1>[K, max(C)] comb; // interspecific genetic distances for a target species and its nearest neighbour species
+  array[K] row_vector<lower = 0, upper = 1>[max(C)] comb; // interspecific genetic distances for a target species and its nearest neighbour species
 }
 
 transformed data {
@@ -37,13 +37,11 @@ transformed data {
   real<lower=0, upper=1> min_comb; // minimum combined distance for all species
 
   min_inter = min(inter);
-  min_comb = min(comb);
 
   for (k in 1:K) {
     max_intra[k] = max(intra[k, 1:N[k]]);
-  }
-
-  for (k in 1:K) {
+    min_comb = min(comb[k, 1:C[k]]);
+       
     y_lwr[k] = 0;
     y_upr[k] = 0;
 
