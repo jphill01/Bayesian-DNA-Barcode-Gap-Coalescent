@@ -79,9 +79,8 @@ transformed data {
       y_lwr_prime[k] += (intra[k, n] >= min_comb); // count intraspecific distances for each species equalling or exceeding min_comb for a tsarget species and its nearest neighbour species
     }
     
-    for (m in 1:M) {
-      y_upr[k] += (inter[k] <= max_intra[k]); // count interspecific distances for all species less than or equal to max_intra for each species
-    }
+    y_upr[k] += (inter[k] <= max_intra[k]); // count interspecific distances for all species less than or equal to max_intra for each species
+
     
     for (c in 1:C[k]) {
       y_upr_prime[k] += (comb[k, c] <= max_intra[k]); // count combined interspecific distances for a target species and its nearest neighbour species less than or equal to max_intra for each species
@@ -135,18 +134,18 @@ model {
 
 generated quantities {
   
-  // Prior Predictive Checks
+  // Posterior Predictive Checks
     
-  int prior_y_lwr[K]; 
-  int prior_y_upr[K]; 
-  int prior_y_lwr_prime[K]; 
-  int prior_y_upr_prime[K]; 
+  int post_y_lwr[K]; 
+  int post_y_upr[K]; 
+  int post_y_lwr_prime[K]; 
+  int post_y_upr_prime[K]; 
   
   for (k in 1:K) {
-    prior_y_lwr[k] = binomial_rng(N[k], p_lwr[k]);
-    prior_y_upr[k] = binomial_rng(M, p_upr[k]);
-    prior_y_lwr_prime[k] = binomial_rng(N[k], p_lwr_prime[k]);
-    prior_y_upr_prime[k] = binomial_rng(C[k], p_upr_prime[k]);
+    post_y_lwr[k] = binomial_rng(N[k], p_lwr[k]);
+    post_y_upr[k] = binomial_rng(M, p_upr[k]);
+    post_y_lwr_prime[k] = binomial_rng(N[k], p_lwr_prime[k]);
+    post_y_upr_prime[k] = binomial_rng(C[k], p_upr_prime[k]);
   }
   
   real log10_p_lwr[K]; // log10 of p_lwr

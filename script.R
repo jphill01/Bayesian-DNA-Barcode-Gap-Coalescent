@@ -3,6 +3,8 @@
 setwd("/Users/jarrettphillips/desktop/Bayesian DNA Barcode Gap")
 # setwd("/Users/jarrettphillips/desktop/Coalescent Data and R Code/COI-5P")
 
+library(ggplot2)
+library(gridExtra)
 
 ##### Install required packages #####
 
@@ -40,6 +42,11 @@ inter <- inter[, 2]
 (log10_p_prime <- log10(p_prime))
 (log10_q_prime <- log10(q_prime))
 
+N * p
+M * q
+N * p_prime
+C * q_prime
+
 
 ### Posterior Estimates ####
 
@@ -57,10 +64,6 @@ traceplot(fit)
 
 post <- as.data.frame(extract(fit))
 
-
-library(ggplot2)
-library(gridExtra)
-
 plot1 <- ggplot(post, aes(x = p_lwr, y = p_upr)) +
   geom_point() +
   xlab(expression(p[lwr])) +
@@ -69,21 +72,21 @@ plot1 <- ggplot(post, aes(x = p_lwr, y = p_upr)) +
   geom_hline(yintercept = q, color = "blue") +
   ggtitle(expression(p[lwr]*" vs. "*p[upr]))
 
-plot2 <- ggplot(post, aes(x = log10_p_lwr, y = log10_p_upr)) +
-  geom_point() +
-  xlab(expression(log[10](p[lwr]))) +
-  ylab(expression(log[10](p[upr]))) +
-  geom_vline(xintercept = log10(p), color = "red") +
-  geom_hline(yintercept = log10(q), color = "blue") +
-  ggtitle(expression(log[10](p[lwr])*" vs. "*log[10](p[upr])))
-
-plot3 <- ggplot(post, aes(x = p_lwr_prime, y = p_upr_prime)) +
+plot2 <- ggplot(post, aes(x = p_lwr_prime, y = p_upr_prime)) +
   geom_point() +
   xlab(expression(p[lwr]*"'")) +
   ylab(expression(p[upr]*"'")) +
   geom_vline(xintercept = p_prime, color = "red") +
   geom_hline(yintercept = q_prime, color = "blue") +
   ggtitle(expression(p[lwr]*"'"*" vs. "*p[upr]*"'"))
+
+plot3 <- ggplot(post, aes(x = log10_p_lwr, y = log10_p_upr)) +
+  geom_point() +
+  xlab(expression(log[10](p[lwr]))) +
+  ylab(expression(log[10](p[upr]))) +
+  geom_vline(xintercept = log10(p), color = "red") +
+  geom_hline(yintercept = log10(q), color = "blue") +
+  ggtitle(expression(log[10](p[lwr])*" vs. "*log[10](p[upr])))
 
 plot4 <- ggplot(post, aes(x = log10_p_lwr_prime, y = log10_p_upr_prime)) +
   geom_point() +
@@ -112,21 +115,21 @@ plot1 <- ggplot(post, aes(x = p_lwr, y = p_upr)) +
   geom_hline(yintercept = M * q, color = "blue") +
   ggtitle(expression(y[lwr]*" vs. "*y[upr]))
 
-plot2 <- ggplot(post, aes(x = log10_p_lwr, y = log10_p_upr)) +
-  geom_point() +
-  xlab(expression(log[10](y[lwr]))) +
-  ylab(expression(log[10](y[upr]))) +
-  geom_vline(xintercept = N * log10(p), color = "red") +
-  geom_hline(yintercept = M * log10(q), color = "blue") +
-  ggtitle(expression(log[10](y[lwr])*" vs. "*log[10](y[upr])))
-
-plot3 <- ggplot(post, aes(x = p_lwr_prime, y = p_upr_prime)) +
+plot2 <- ggplot(post, aes(x = p_lwr_prime, y = p_upr_prime)) +
   geom_point() +
   xlab(expression(y[lwr]*"'")) +
   ylab(expression(y[upr]*"'")) +
   geom_vline(xintercept = N * p_prime, color = "red") +
   geom_hline(yintercept = C * q_prime, color = "blue") +
   ggtitle(expression(y[lwr]*"'"*" vs. "*y[upr]*"'"))
+
+plot3 <- ggplot(post, aes(x = log10_p_lwr, y = log10_p_upr)) +
+  geom_point() +
+  xlab(expression(log[10](y[lwr]))) +
+  ylab(expression(log[10](y[upr]))) +
+  geom_vline(xintercept = N * log10(p), color = "red") +
+  geom_hline(yintercept = M * log10(q), color = "blue") +
+  ggtitle(expression(log[10](y[lwr])*" vs. "*log[10](y[upr])))
 
 plot4 <- ggplot(post, aes(x = log10_p_lwr_prime, y = log10_p_upr_prime)) +
   geom_point() +
