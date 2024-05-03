@@ -79,8 +79,10 @@ transformed data {
       y_lwr_prime[k] += (intra[k, n] >= min_comb); // count intraspecific distances for each species equalling or exceeding min_comb for a tsarget species and its nearest neighbour species
     }
     
-    y_upr[k] += (inter[k] <= max_intra[k]); // count interspecific distances for all species less than or equal to max_intra for each species
-
+    for (m in 1:M) {
+      y_upr[k] += (inter[m] <= max_intra[k]); // count interspecific distances for all species less than or equal to max_intra for each species
+    }
+    
     
     for (c in 1:C[k]) {
       y_upr_prime[k] += (comb[k, c] <= max_intra[k]); // count combined interspecific distances for a target species and its nearest neighbour species less than or equal to max_intra for each species
