@@ -33,14 +33,27 @@ inter <- inter[, 2]
 
 ### MLEs ###
 
+# probabilities 
+
 (p <- mean(intra >= min(inter)))
 (q <- mean(inter <= max(intra)))
 (p_prime <- mean(intra >= min(comb)))
 (q_prime <- mean(comb <= max(intra)))
+
 (log10_p <- log10(p))
 (log10_q <- log10(q))
 (log10_p_prime <- log10(p_prime))
 (log10_q_prime <- log10(q_prime))
+
+# SEs
+
+(SE_p <- sqrt(p * (1 - p) / length(intra)))
+(SE_q <- sqrt(q * (1 - q) / length(inter)))
+(SE_p_prime <- sqrt(p_prime * (1 - p_prime) / length(intra)))
+(SE_q_prime <- sqrt(q_prime * (1 - q_prime) / length(comb)))
+
+
+# counts
 
 N * p
 M * q
@@ -51,16 +64,25 @@ C * q_prime
 ### Posterior Estimates ####
 
 fit <- stan("DNA_barcode_gap.stan", 
-            data = list(K = K, M = M, N = N, intra = intra, inter = inter, C = C, comb = comb),
-            iter = 2000,
-            control = list(adapt_delta = 0.80))
+            data = list(K = K, M = M, N = N, intra = intra, inter = inter, C = C, comb = comb))
 
 print(fit, digits_summary = 6)
 
-traceplot(fit)
+traceplot(fit, pars = c("p_lwr", 
+                        "p_upr", 
+                        "p_lwr_prime", 
+                        "p_upr_prime",
+                        "ppc_y_lwr",
+                        "ppc_y_upr",
+                        "ppc_y_lwr_prime",
+                        "ppc_y_upr_prime",
+                        "log10_p_lwr",
+                        "log10_p_upr",
+                        "log10_p_lwr_prime",
+                        "log10_p_upr_prime"))
 
 
-# Plot histograms of posterior samples with observed value shown
+# Plots of posterior samples with observed value shown
 
 post <- as.data.frame(extract(fit))
 
@@ -148,8 +170,6 @@ print(plot4)
 grid.arrange(plot1, plot2, plot3, plot4, ncol=1)
 
 
-
-# Create a ggplot object with the histograms
 p1 <- ggplot(post, aes(x = p_lwr)) +
   geom_histogram() +
   geom_vline(xintercept = p, color = "red") +
@@ -187,8 +207,8 @@ p7 <- ggplot(post, aes(x = log10_p_lwr_prime)) +
 
 p8 <- ggplot(post, aes(x = log10_p_upr_prime)) +
   geom_histogram() +
-  geom_vline(xintercept = log10_p, color = "red") +
-  labs(x = expression(log[10](p[lwr]*"'")), title = expression(log[10](p[lwr]*"'")))
+  geom_vline(xintercept = log10_q_prime, color = "blue") +
+  labs(x = expression(log[10](p[upr]*"'")), title = expression(log[10](p[upr]*"'")))
 
 
 # Arrange plots in a 2x2 grid using facet_wrap
@@ -198,8 +218,6 @@ names(combined_plots) <- c("p_lwr", "p_upr", "p_lwr_prime", "p_upr_prime", "log1
 grid.arrange(grobs = combined_plots, ncol = 2)
 
 
-
-# Create a ggplot object with the histograms
 p1 <- ggplot(N * post, aes(x = p_lwr)) +
   geom_histogram() +
   geom_vline(xintercept = N * p, color = "red") +
@@ -222,23 +240,23 @@ p4 <- ggplot(C * post, aes(x = p_upr_prime)) +
 
 p5 <- ggplot(post, aes(x = log10_p_lwr)) +
   geom_histogram() +
-  geom_vline(xintercept = 10^log10_p, color = "red") +
+  geom_vline(xintercept = 10^(N * log10_p), color = "red") +
   labs(x = expression(log[10](y[lwr])), title = expression(log[10](y[lwr])))
 
 p6 <- ggplot(post, aes(x = log10_p_upr)) +
   geom_histogram() +
-  geom_vline(xintercept = 10^log10_q, color = "blue") +
+  geom_vline(xintercept = 10^(M * log10_q), color = "blue") +
   labs(x = expression(log[10](y[upr])), title = expression(log[10](y[upr])))
 
 p7 <- ggplot(post, aes(x = log10_p_lwr_prime)) +
   geom_histogram() +
-  geom_vline(xintercept = 10^log10_p_prime, color = "red") +
+  geom_vline(xintercept = 10^(N * log10_p_prime), color = "red") +
   labs(x = expression(log[10](y[lwr]*"'")), title = expression(log[10](y[lwr]*"'")))
 
 p8 <- ggplot(post, aes(x = log10_p_upr_prime)) +
   geom_histogram() +
-  geom_vline(xintercept = 10^log10_p, color = "red") +
-  labs(x = expression(log[10](y[lwr]*"'")), title = expression(log[10](y[lwr]*"'")))
+  geom_vline(xintercept = 10^(C * log10_p), color = "blue") +
+  labs(x = expression(log[10](y[upr]*"'")), title = expression(log[10](y[upr]*"'")))
 
 
 # Arrange plots in a 2x2 grid using facet_wrap

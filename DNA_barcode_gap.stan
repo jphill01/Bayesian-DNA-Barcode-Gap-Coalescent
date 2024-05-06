@@ -1,6 +1,6 @@
 ////// A Bayesian model of the DNA barcode gap coalescent //////
 
-// check these
+// check these //
 
 // When p_lwr is close to 0, it suggests that the probability of intraspecific distances being larger than interspecific distances is low on averqge,
 // while the probability of interspecific distances being larger than intraspecific distances is high on average; that is, there is evidence for a DNA barcode gap.
@@ -8,37 +8,32 @@
 // When p_lwr is close to 1, it suggests that the probability of intraspecific distances being larger than interspecific distances is high on averqge,
 // while the probability of interspecific distances being larger than intraspecific distances is low on average; that is, there is no evidence for a DNA barcode gap.
 
-// When p_upr is close to 0, it suggests that the probability of intraspecific distances being larger than interspecific distances is low on average,
-// while the probability of interspecific distances being larger than intraspecific distances is high on average; that is, there is evidence for a DNA barcode gap.
+// When p_upr is close to 0, it suggests that the probability of interspecific distances being larger than intraspecific distances is high on average,
+// while the probability of intraspecific distances being larger than interspecific distances is low on average; that is, there is evidence for a DNA barcode gap.
 
-// When p_upr is close to 1, it suggests that the probability of intraspecific distances being larger than interspecific distances is high on average,
-// while the probability of interspecific distances being larger than intraspecific distances is low on average; that is, there is no evidence for a DNA barcode gap.
-
-// When p_lwr_prime is close to 0, it suggests that the probability of intraspecific distances being larger than interspecific distances for a target species and its nearest neighbour species is low on averqge,
-// while the probability of interspecific distances for a target species and its nearest neighbour species being larger than intraspecific distances is high on average; that is, there is evidence for a DNA barcode gap.
-
-// When p_lwr_prime is close to 1, it suggests that the probability of intraspecific distances being larger than interspecific distances for a target species and its nearest neighbour species is high on averqge,
-// while the probability of interspecific distances for a target species and its nearest neighbour species being larger than intraspecific distances is low on average; that is, there is no evidence for a DNA barcode gap.
-
-// When p_upr_prime is close to 0, it suggests that the probability of intraspecific distances being larger than interspecific distances for a target species and its nearest neighbour species is low on averqge,
-// while the probability of interspecific distances for a target species and its nearest neighbour species being larger than intraspecific distances is high on average; that is, there is evidence for a DNA barcode gap.
-
-// When p_upr_prime is close to 1, it indicates that the probability of intraspecific distances being larger than interspecific distances for a target species and its nearest neighbour species is high on average,
-// while the probability of interspecific distances for a target species and its nearest neighbour species being larger than intraspecific distances is low on average; that is, there is no evidence for a DNA barcode gap.
+// When p_upr is close to 1, it suggests that the probability of interspecific distances being larger than intraspecific distances is low on average,
+// while the probability of intraspecific distances being larger than interspecific distances is high on average; that is, there is no evidence for a DNA barcode gap.
 
 
+// When p_lwr_prime is close to 0, it suggests that the probability of intraspecific distances being larger than combined interspecific distances for a target species and its nearest neighbour species is low on averqge,
+// while the probability of combined interspecific distances for a target species and its nearest neighbour species being larger than intraspecific distances is high on average; that is, there is evidence for a DNA barcode gap.
 
-// If min_inter is relatively large and max_intra is relatively small, then p_lwr represents the extent to which intraspecific distances
-// tend to be larger than interspecific distances at and beyond the minimum interspecific distance and at and below the maximum intraspecific distance.
+// When p_lwr_prime is close to 1, it suggests that the probability of intraspecific distances being larger than combined interspecific distances for a target species and its nearest neighbour species is high on averqge,
+// while the probability of combined interspecific distances for a target species and its nearest neighbour species being larger than intraspecific distances is low on average; that is, there is no evidence for a DNA barcode gap.
 
-// If max_intra is relatively large and min_inter is relatively small, p_upr represents the extent to which interspecific distances
-// tend to be larger than intraspecific distances at and below the maximum intraspecific distance and at and beyond the minimum interspecific distance.
+// When p_upr_prime is close to 0, it suggests that the probability of combined interspecific distances for a target species and its nearest neighbour species being larger than intraspecific distances is high on averqge,
+// while the probability of intraspecific distances being larger than combined interspecific distances for a target species and its nearest neighbour species is low on average; that is, there is evidence for a DNA barcode gap.
 
-// If min_comb is relatively large and max_intra is relatively small, then p_lwr_prime represents the extent to which intraspecific distances 
-// tend to be larger than interspecific distances for a target species and its nearest neighbour species at and beyond the minimum cobined distance and at and below the maximum intraspecific distance.
+// When p_upr_prime is close to 1, it indicates that the probability of combined interspecific distances for a target species and its nearest neighbour species being larger than intraspecific distances is low on average,
+// while the probability of intraspecific distances being larger than combined interspecific distances for a target species and its nearest neighbour species is high on average; that is, there is no evidence for a DNA barcode gap.
 
-// if max_intra is relatively large and min_comb is relatively small, p_upr_prime represents the extent to which interspecific distances for a target species and its nearest neighbour species 
-// tend to be larger than intraspecific distances below the maximum intraspecific distance and beyond the minimum combined distance.
+
+
+// p_lwr represents the extent to which intraspecific distances tend to be larger than interspecific distances at and beyond min_inter and at and below max_intra.
+// p_upr represents the extent to which interspecific distances tend to be larger than intraspecific distances at and below max_intra and at and beyond min_inter.
+
+// p_lwr_prime represents the extent to which intraspecific distances tend to be larger than combined interspecific distances for a target species and its nearest neighbour species at and beyond min_comb and at and below max_intra.
+// p_upr_prime represents the extent to which combined interspecific distances for a target species and its nearest neighbour species tend to be larger than intraspecific distances at and below max_intra and at and beyond min_comb.
 
 
 data {
@@ -52,15 +47,15 @@ data {
 }
 
 transformed data {
-  int<lower = 0, upper = max(N)> y_lwr[K]; // count of intraspecific distances for each species equalling or exceeding min_inter for all species
-  int<lower = 0, upper = M> y_upr[K]; // count of interspecific distances for all species less than or equal to max_intra for each species
+  int<lower = 0, upper = max(N)> y_lwr[K]; // count of intraspecific genetic distances for each species equalling or exceeding min_inter for all species
+  int<lower = 0, upper = M> y_upr[K]; // count of interspecific genetic distances for all species less than or equal to max_intra for each species
 
-  int<lower = 0, upper = max(N)> y_lwr_prime[K]; // count of intraspecific distances for each species equalling or exceeding the minimum combined interspecfic distance for a target species and its nearest neighbour
-  int<lower = 0, upper = max(C)> y_upr_prime[K]; // count of combined interspecific distances for a target species and its nearest neighbour species less than or equal to max_intra for each species
+  int<lower = 0, upper = max(N)> y_lwr_prime[K]; // count of intraspecific genetic distances for each species equalling or exceeding the minimum combined interspecific distance for a target species and its nearest neighbour
+  int<lower = 0, upper = max(C)> y_upr_prime[K]; // count of combined interspecific genetic distances for a target species and its nearest neighbour species less than or equal to max_intra for each species
 
-  real<lower=0, upper=1> min_inter; // minimum interspecific distance for all species
-  real<lower=0, upper=1> max_intra[K]; // maximum intraspecific distance for each species
-  real<lower=0, upper=1> min_comb; // minimum interspecific genetic distance for a target species and its nearest neighbour species 
+  real<lower=0, upper=1> min_inter; // minimum interspecific genetic distance for all species
+  real<lower=0, upper=1> max_intra[K]; // maximum intraspecific genetic distance for each species
+  real<lower=0, upper=1> min_comb; // minimum combined interspecific genetic distance for a target species and its nearest neighbour species 
 
   min_inter = min(inter);
 
@@ -75,30 +70,26 @@ transformed data {
     y_upr_prime[k] = 0;
 
     for (n in 1:N[k]) {
-      y_lwr[k] += (intra[k, n] >= min_inter); // count intraspecific distances for each species equalling or exceeding min_inter for all species
-      y_lwr_prime[k] += (intra[k, n] >= min_comb); // count intraspecific distances for each species equalling or exceeding min_comb for a tsarget species and its nearest neighbour species
+      y_lwr[k] += (intra[k, n] >= min_inter); // count intraspecific genetic distances for each species equalling or exceeding min_inter for all species
+      y_lwr_prime[k] += (intra[k, n] >= min_comb); // count intraspecific genetic distances for each species equalling or exceeding min_comb for a tsarget species and its nearest neighbour species
     }
     
     for (m in 1:M) {
-      y_upr[k] += (inter[m] <= max_intra[k]); // count interspecific distances for all species less than or equal to max_intra for each species
+      y_upr[k] += (inter[m] <= max_intra[k]); // count interspecific genetic distances for all species less than or equal to max_intra for each species
     }
     
-    
     for (c in 1:C[k]) {
-      y_upr_prime[k] += (comb[k, c] <= max_intra[k]); // count combined interspecific distances for a target species and its nearest neighbour species less than or equal to max_intra for each species
+      y_upr_prime[k] += (comb[k, c] <= max_intra[k]); // count combined interspecific genetic distances for a target species and its nearest neighbour species less than or equal to max_intra for each species
      }
-     
   }
-
 }
 
 parameters {
-  real<lower = 0, upper = 1> p_lwr[K]; // parameter representing the proportional overlap/separation between intraspecific distances for each species and interspecific distances for all species
-  real<lower = 0, upper = 1> p_upr[K]; // parameter representing the proportional overlap/separation between interspecific distances for all species and intraspecific distances for each species
+  real<lower = 0, upper = 1> p_lwr[K]; // parameter representing the proportional overlap/separation between intraspecific genetic distances for each species and interspecific distances for all species
+  real<lower = 0, upper = 1> p_upr[K]; // parameter representing the proportional overlap/separation between interspecific genetic distances for all species and intraspecific distances for each species
 
-  real<lower = 0, upper = 1> p_lwr_prime[K]; // parameter representing the proportional overlap/separation between intraspecific distances for each species and combined interspecific distances for a target species and its nearest neighbour species
-  real<lower = 0, upper = 1> p_upr_prime[K]; // parameter representing the proportional overlap/separation between intraspecific and intraspecific distances for a target species and is nearest neighbour species
-
+  real<lower = 0, upper = 1> p_lwr_prime[K]; // parameter representing the proportional overlap/separation between intraspecific genetic distances for each species and combined interspecific distances for a target species and its nearest neighbour species
+  real<lower = 0, upper = 1> p_upr_prime[K]; // parameter representing the proportional overlap/separation between intraspecific and intraspecific genetic distances for a target species and is nearest neighbour species
 }
 
 model {
@@ -118,19 +109,19 @@ model {
     // p_upr[k] ~ beta(0.5, 0.5);
     // p_lwr_prime[k] ~ beta(0.5, 0.5);
     // p_upr_prime[k] ~ beta(0.5, 0.5);
-    
+    // 
     // p_lwr[k] ~ beta(2, 2);
     // p_upr[k] ~ beta(2, 2);
     // p_lwr_prime[k] ~ beta(2, 2);
     // p_upr_prime[k] ~ beta(2, 2);
-    
+    // 
     
     // likelihood
-    y_lwr[k] ~ binomial(N[k], p_lwr[k]); // likelihood for intraspecific distances equalling or exceeding min_inter
-    y_upr[k] ~ binomial(M, p_upr[k]); // likelihood for interspecific distances equalling or falling below max_intra
+    y_lwr[k] ~ binomial(N[k], p_lwr[k]); // likelihood for intraspecific genetic distances equalling or exceeding min_inter
+    y_upr[k] ~ binomial(M, p_upr[k]); // likelihood for interspecific genetic distances equalling or falling below max_intra
 
-    y_lwr_prime[k] ~ binomial(N[k], p_lwr_prime[k]); // likelihood for intraspecific distances equalling or exceeding min_comb
-    y_upr_prime[k] ~ binomial(C[k], p_upr_prime[k]); // likelihood for combined distances equalling or falling below max_intra
+    y_lwr_prime[k] ~ binomial(N[k], p_lwr_prime[k]); // likelihood for intraspecific genetic distances equalling or exceeding min_comb
+    y_upr_prime[k] ~ binomial(C[k], p_upr_prime[k]); // likelihood for combined interspecific genetic distances for a target species and its nearest neighbour species equalling or falling below max_intra
   }
 }
 
@@ -138,16 +129,16 @@ generated quantities {
   
   // Posterior Predictive Checks
     
-  int post_y_lwr[K]; 
-  int post_y_upr[K]; 
-  int post_y_lwr_prime[K]; 
-  int post_y_upr_prime[K]; 
+  int ppc_y_lwr[K]; 
+  int ppc_y_upr[K]; 
+  int ppc_y_lwr_prime[K]; 
+  int ppc_y_upr_prime[K]; 
   
   for (k in 1:K) {
-    post_y_lwr[k] = binomial_rng(N[k], p_lwr[k]);
-    post_y_upr[k] = binomial_rng(M, p_upr[k]);
-    post_y_lwr_prime[k] = binomial_rng(N[k], p_lwr_prime[k]);
-    post_y_upr_prime[k] = binomial_rng(C[k], p_upr_prime[k]);
+    ppc_y_lwr[k] = binomial_rng(N[k], p_lwr[k]);
+    ppc_y_upr[k] = binomial_rng(M, p_upr[k]);
+    ppc_y_lwr_prime[k] = binomial_rng(N[k], p_lwr_prime[k]);
+    ppc_y_upr_prime[k] = binomial_rng(C[k], p_upr_prime[k]);
   }
   
   real log10_p_lwr[K]; // log10 of p_lwr
@@ -159,7 +150,6 @@ generated quantities {
   log10_p_upr[K] = log10(p_upr[K]);
   log10_p_lwr_prime[K] = log10(p_lwr_prime[K]);
   log10_p_upr_prime[K] = log10(p_upr_prime[K]);
-
 }
 
 
