@@ -82,23 +82,25 @@ recommended estimators arising through problems inherent in frequentist maximum 
 
 \section{Introduction}
 
-DNA barcoding \citep{hebert2003biological, hebert2003barcoding} was conceived more than two decades ago as an immediate and automatic solution to the taxonomic impediment during a time of ongoing biodiversity crisis. The technique promised the rapid and accurate identification of unknown specimens to known Linnaean binomens, as well as the unambiguous resolution of species boundaries across the eukaryotic Tree of Life through the leveraging of easily obtained genetic variation found in short, universal segments of DNA.
+DNA barcoding \citep{hebert2003biological, hebert2003barcoding} was conceived more than two decades ago as an immediate and automatic solution to the taxonomic impediment during a time of ongoing biodiversity crisis. The technique promised the rapid and accurate identification of unknown specimens to known Linnaean binomens, as well as the unambiguous resolution of species boundaries across the eukaryotic Tree of Life through the leveraging of easily obtained genetic variation found in short, universal segments of DNA. In animals, a \textit{c.} 658 bp fragment from the 5' end of the mitochondrial cytochrome \textit{c} oxidase subunit I gene is employed as a DNA barcode due to its ease of isolation, amplification, and sequencing. As a result, dedicated community-curated genomic sequence databases like the Barcode of Life Data Systems (BOLD) \citep{ratnasingham2007bold} have accumulated appreciable levels intraspecific genetic variation across a wide range of taxa and geographic regions to accelerate specimen identification and species discovery tasks to address research questions in ecology and evolutionary biology. Despite this, 
 
 
 \section{Methods}
 
 \subsection{DNA Barcode Gap Metrics}
 
+Recently, \citet{phillips2024measure} proposed novel nonparametric maximum likelihood \\ estimators of proportional overlap/separation between intraspecific and interspecific pairwise genetic distance distributions for a given species ($x$) to aid assessment of the DNA barcode gap as follows:
+
+\begin{align}
+p_x &= \frac{\#\{d_{ij} \geq \min(d_{XY})\}}{\#\{d_{ij}\}} \\
+q_x &= \frac{\#\{d_{XY} \leq \max(d_{ij})\}}{\#\{d_{XY}\}}
+\end{align}
+
+\noindent where $d_{ij}$ and $d_{XY}$ are distances within and among species, respectively, and the notation \# reflects a count. Similar expressions (denoted $p^{'}_x$ and $q^{'}_x$) for nearest neighbour species were also given (see \cite{phillips2024measure}), in which $d_{XY}$ included only interspecific distances between the species of interest and its closest neighbouring species. Note distances (and hence the metrics) are constrained to [0, 1].  Values of the estimators obtained from equations (1) and (2) close to or equal to zero give evidence for separation between intraspecfic and interspecific genetic distance distributions; that is, values suggest the presence of a DNA barcode gap. Conversely, values near or equal to one give evidence for distribution overlap; that is, values likely indicate the absence of a gap.
+
+
+
 \subsection{A Bayesian Implementation}
-
-When $p$ is close to zero, it suggests that the probability of intraspecific distances being larger than interspecific distances is low on averqge, while the probability of interspecific distances being larger than intraspecific distances is high on average; that is, there is evidence for a DNA barcode gap.
-
-When $q$ is close to one, it indicates that the probability of intraspecific distances being larger than interspecific distances is high on average, while the probability of interspecific distances being larger than intraspecific distances is low on average; there is no evidence for a DNA barcode gap.
-
-If the minimum interspecfic distance is relatively large and maximum intraspecfic distance is relatively small, then $p$\_{lwr} represents the extent to which intraspecific distances
-tend to be larger than interspecific distances at and beyond the minimum interspecific distance and at and below the maximum intraspecific distance.
-
-If the maximum intraspecfic distance is relatively large and the minimum interspecfic distance is relatively small, $p$\_{upr} represents the extent to which interspecific distances tend to be larger than intraspecific distances below the maximum intraspecific distance and beyond the minimum interspecific distance.
 
 
 \section{Results}
@@ -116,7 +118,7 @@ Information accompanying this article can be found in Supplemental Information.p
 
 \section*{Data Availability Statement}
 
-Raw data, R, and Stan code can be found on GitHub at: https://github.com/jphill01/\\Phillips-et-al.-Seafood-Fraud-Paper.
+Raw data, R, and Stan code can be found on GitHub at: \\ https://github.com/jphill01/Bayesian-DNA-Barcode-Gap-Coalescent.
 
 \section*{Acknowledgements}
 

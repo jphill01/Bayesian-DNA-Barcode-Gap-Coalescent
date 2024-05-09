@@ -35,15 +35,21 @@
 // If max_intra is relatively small and min_comb is relatively large, p_lwr_prime represents the extent to which intraspecific distances tend to be larger than combined interspecific distances for a target species and its nearest neighbour species at and beyond min_comb and at and below max_intra
 // If min_comb is relatively small and max_inter is relatively large, p_upr_prime represents the extent to which combined interspecific distances for a target species and its nearest neighbour species tend to be larger than intraspecific distances at and below max_intra and at and beyond min_comb
 
+// functions {
+//   real scalar_min(real x, real y) {
+//     vector[2] v = to_vector([x, y]);
+//     return min(v);
+//   }
+// }
 
 data {
   int<lower = 1> K; // number of species in genus
   int<lower = 1> N[K]; // number of intraspecific (within-species) genetic distances for each species
   int<lower = 1> M; // number of interspecific (among-species) genetic distances for all species
   int<lower=1> C[K]; // number of combined interspecific distances for a target species and its nearest neighbour species
-  array[K] row_vector<lower = 0, upper = 1>[max(N)] intra; // intraspecific genetic distances for each species
+  array[K] vector<lower = 0, upper = 1>[max(N)] intra; // intraspecific genetic distances for each species
   vector<lower = 0, upper = 1>[M] inter; // interspecific genetic distances for all species
-  array[K] row_vector<lower = 0, upper = 1>[max(C)] comb; // interspecific genetic distances for a target species and its nearest neighbour species
+  array[K] vector<lower = 0, upper = 1>[max(C)] comb; // interspecific genetic distances for a target species and its nearest neighbour species
 }
 
 transformed data {
@@ -54,7 +60,7 @@ transformed data {
   int<lower = 0, upper = max(C)> y_upr_prime[K]; // count of combined interspecific genetic distances for a target species and its nearest neighbour species less than or equal to max_intra for each species
 
   real<lower=0, upper=1> min_inter; // minimum interspecific genetic distance for all species
-  real<lower=0, upper=1> max_intra[K]; // maximum intraspecific genetic distance for each species
+  vector<lower=0, upper=1>[K] max_intra; // maximum intraspecific genetic distance for each species
   real<lower=0, upper=1> min_comb; // minimum combined interspecific genetic distance for a target species and its nearest neighbour species 
 
   min_inter = min(inter);
@@ -85,14 +91,16 @@ transformed data {
 }
 
 parameters {
-  real<lower = 0, upper = 1> p_lwr[K]; // parameter representing the proportional overlap/separation between intraspecific genetic distances for each species and interspecific distances for all species
-  real<lower = 0, upper = 1> p_upr[K]; // parameter representing the proportional overlap/separation between interspecific genetic distances for all species and intraspecific distances for each species
+  vector<lower = 0, upper = 1>[K] p_lwr; // parameter representing the proportional overlap/separation between intraspecific genetic distances for each species and interspecific distances for all species
+  vector<lower = 0, upper = 1>[K] p_upr; // parameter representing the proportional overlap/separation between interspecific genetic distances for all species and intraspecific distances for each species
 
-  real<lower = 0, upper = 1> p_lwr_prime[K]; // parameter representing the proportional overlap/separation between intraspecific genetic distances for each species and combined interspecific distances for a target species and its nearest neighbour species
-  real<lower = 0, upper = 1> p_upr_prime[K]; // parameter representing the proportional overlap/separation between intraspecific and intraspecific genetic distances for a target species and is nearest neighbour species
+  vector<lower = 0, upper = 1>[K] p_lwr_prime; // parameter representing the proportional overlap/separation between intraspecific genetic distances for each species and combined interspecific distances for a target species and its nearest neighbour species
+  vector<lower = 0, upper = 1>[K] p_upr_prime; // parameter representing the proportional overlap/separation between intraspecific and intraspecific genetic distances for a target species and is nearest neighbour species
 }
 
 model {
+  
+  // priors
   
   // beta(1, 1) = U(0, 1) prior is conjugate for binomial(n, p), so posterior is beta(y_lwr + 1, N - y_lwr + 1) and beta(y_upr + 1, N - y_upr + 1) for y_lwr and y_upr, respectively
   // Jeffreys' prior = beta(0.5, 0.5) pulls posterior toward extreme values
@@ -102,19 +110,19 @@ model {
     
     p_lwr[k] ~ uniform(0, 1);
     p_upr[k] ~ uniform(0, 1);
-    
-    // priors
+    p_lwr_prime[k] ~ uniform(0, 1);
+    p_upr_prime[k] ~ uniform(0, 1);
     
     // p_lwr[k] ~ beta(0.5, 0.5);
     // p_upr[k] ~ beta(0.5, 0.5);
     // p_lwr_prime[k] ~ beta(0.5, 0.5);
     // p_upr_prime[k] ~ beta(0.5, 0.5);
-    // 
+     
     // p_lwr[k] ~ beta(2, 2);
     // p_upr[k] ~ beta(2, 2);
     // p_lwr_prime[k] ~ beta(2, 2);
     // p_upr_prime[k] ~ beta(2, 2);
-    // 
+    
     
     // likelihood
     y_lwr[k] ~ binomial(N[k], p_lwr[k]); // likelihood for intraspecific genetic distances equalling or exceeding min_inter
@@ -141,15 +149,24 @@ generated quantities {
     ppc_y_upr_prime[k] = binomial_rng(C[k], p_upr_prime[k]);
   }
   
-  real log10_p_lwr[K]; // log10 of p_lwr
-  real log10_p_upr[K]; // log10 of p_upr
-  real log10_p_lwr_prime[K]; // log10 of p_lwr
-  real log10_p_upr_prime[K]; // log10 of p_upr
+  vector[K] log10_p_lwr; // log10 of p_lwr
+  vector[K] log10_p_upr; // log10 of p_upr
+  vector[K] log10_p_lwr_prime; // log10 of p_lwr
+  vector[K] log10_p_upr_prime; // log10 of p_upr
 
   log10_p_lwr[K] = log10(p_lwr[K]);
   log10_p_upr[K] = log10(p_upr[K]);
   log10_p_lwr_prime[K] = log10(p_lwr_prime[K]);
   log10_p_upr_prime[K] = log10(p_upr_prime[K]);
+
+  // vector[K] res1;
+  // vector[K] res2;
+  // 
+  // for(k in 1:K) {
+  //   res1[k] = (p_lwr[k] + p_upr[k]) / (1 + scalar_min(p_lwr[k], p_upr[k]));
+  //   res2[k] = (p_lwr_prime[k] + p_upr_prime[k]) / (1 + scalar_min(p_lwr_prime[k], p_upr_prime[k]));
+  // }
+  
 }
 
 

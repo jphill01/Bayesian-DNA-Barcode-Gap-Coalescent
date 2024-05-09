@@ -90,16 +90,20 @@ plot1 <- ggplot(post, aes(x = p_lwr, y = p_upr)) +
   geom_point() +
   xlab(expression(p[lwr])) +
   ylab(expression(p[upr])) +
-  geom_vline(xintercept = p, color = "red") +
-  geom_hline(yintercept = q, color = "blue") +
+  geom_vline(xintercept = p, color = "red") + # MLE for p
+  geom_hline(yintercept = q, color = "blue") + # MLE for q
+  geom_vline(xintercept = mean(post$p_lwr), color = "red", lty = 2) + # posterior mean for p_lwr
+  geom_hline(yintercept = mean(post$p_upr), color = "blue", lty = 2) + # posterior mean for p_upr
   ggtitle(expression(p[lwr]*" vs. "*p[upr]))
 
 plot2 <- ggplot(post, aes(x = p_lwr_prime, y = p_upr_prime)) +
   geom_point() +
   xlab(expression(p[lwr]*"'")) +
   ylab(expression(p[upr]*"'")) +
-  geom_vline(xintercept = p_prime, color = "red") +
+  geom_vline(xintercept = p_prime, color = "red") + 
   geom_hline(yintercept = q_prime, color = "blue") +
+  geom_vline(xintercept = mean(post$p_lwr_prime), color = "red", lty = 2) + # posterior mean for p_lwr_prime
+  geom_hline(yintercept = mean(post$p_upr_prime), color = "blue", lty = 2) + # posterior mean for p_upr_prime
   ggtitle(expression(p[lwr]*"'"*" vs. "*p[upr]*"'"))
 
 plot3 <- ggplot(post, aes(x = log10_p_lwr, y = log10_p_upr)) +
@@ -108,6 +112,8 @@ plot3 <- ggplot(post, aes(x = log10_p_lwr, y = log10_p_upr)) +
   ylab(expression(log[10](p[upr]))) +
   geom_vline(xintercept = log10(p), color = "red") +
   geom_hline(yintercept = log10(q), color = "blue") +
+  geom_vline(xintercept = mean(post$log10_p_lwr), color = "red", lty = 2) + # posterior mean for log10(p_lwr)
+  geom_hline(yintercept = mean(post$log10_p_upr), color = "blue", lty = 2) + # posterior mean for log10(p_upr)
   ggtitle(expression(log[10](p[lwr])*" vs. "*log[10](p[upr])))
 
 plot4 <- ggplot(post, aes(x = log10_p_lwr_prime, y = log10_p_upr_prime)) +
@@ -116,6 +122,8 @@ plot4 <- ggplot(post, aes(x = log10_p_lwr_prime, y = log10_p_upr_prime)) +
   ylab(expression(log[10](p[upr]))) +
   geom_vline(xintercept = log10(p_prime), color = "red") +
   geom_hline(yintercept = log10(q_prime), color = "blue") +
+  geom_vline(xintercept = mean(post$log10_p_lwr_prime), color = "red", lty = 2) + # posterior mean for log10(p_lwr_prime)
+  geom_hline(yintercept = mean(post$log10_p_upr_prime), color = "blue", lty = 2) + # posterior mean for log10(p_upr_prime)
   ggtitle(expression(log[10](p[lwr]*"'")*" vs. "*log[10](p[upr]*"'")))
 
 
@@ -135,6 +143,8 @@ plot1 <- ggplot(post, aes(x = p_lwr, y = p_upr)) +
   ylab(expression(y[upr])) +
   geom_vline(xintercept = N * p, color = "red") +
   geom_hline(yintercept = M * q, color = "blue") +
+  geom_vline(xintercept = mean(N * post$p_lwr), color = "red", lty = 2) + # posterior mean for y_lwr
+  geom_hline(yintercept = mean(M * post$p_upr), color = "blue", lty = 2) + # posterior mean for y_upr
   ggtitle(expression(y[lwr]*" vs. "*y[upr]))
 
 plot2 <- ggplot(post, aes(x = p_lwr_prime, y = p_upr_prime)) +
@@ -143,6 +153,8 @@ plot2 <- ggplot(post, aes(x = p_lwr_prime, y = p_upr_prime)) +
   ylab(expression(y[upr]*"'")) +
   geom_vline(xintercept = N * p_prime, color = "red") +
   geom_hline(yintercept = C * q_prime, color = "blue") +
+  geom_vline(xintercept = mean(N * post$p_lwr_prime), color = "red", lty = 2) + # posterior mean for y_lwr_prime
+  geom_hline(yintercept = mean(C * post$p_upr_prime), color = "blue", lty = 2) + # posterior mean for y_upr_prime
   ggtitle(expression(y[lwr]*"'"*" vs. "*y[upr]*"'"))
 
 plot3 <- ggplot(post, aes(x = log10_p_lwr, y = log10_p_upr)) +
@@ -151,6 +163,8 @@ plot3 <- ggplot(post, aes(x = log10_p_lwr, y = log10_p_upr)) +
   ylab(expression(log[10](y[upr]))) +
   geom_vline(xintercept = N * log10(p), color = "red") +
   geom_hline(yintercept = M * log10(q), color = "blue") +
+  geom_vline(xintercept = mean(N * post$log10_p_lwr), color = "red", lty = 2) + # posterior mean for log10(y_lwr)
+  geom_hline(yintercept = mean(M * post$log10_p_upr), color = "blue", lty = 2) + # posterior mean for log10(y_lwr)
   ggtitle(expression(log[10](y[lwr])*" vs. "*log[10](y[upr])))
 
 plot4 <- ggplot(post, aes(x = log10_p_lwr_prime, y = log10_p_upr_prime)) +
@@ -159,6 +173,8 @@ plot4 <- ggplot(post, aes(x = log10_p_lwr_prime, y = log10_p_upr_prime)) +
   ylab(expression(log[10](y[upr]))) +
   geom_vline(xintercept = N * log10(p_prime), color = "red") +
   geom_hline(yintercept = C * log10(q_prime), color = "blue") +
+  geom_vline(xintercept = mean(N * post$log10_p_lwr_prime), color = "red", lty = 2) + # posterior mean for y_lwr_prime
+  geom_hline(yintercept = mean(M * post$log10_p_upr_prime), color = "blue", lty = 2) + # posterior mean for y_lwr_prime
   ggtitle(expression(log[10](y[lwr]*"'")*" vs. "*log[10](y[upr]*"'")))
 
 
@@ -173,41 +189,49 @@ grid.arrange(plot1, plot2, plot3, plot4, ncol=1)
 p1 <- ggplot(post, aes(x = p_lwr)) +
   geom_histogram() +
   geom_vline(xintercept = p, color = "red") +
+  geom_vline(xintercept = mean(post$p_lwr), color = "red", lty = 2) +
   labs(x =  expression(p[lwr]), title = expression(p[lwr]))
 
 p2 <- ggplot(post, aes(x = p_upr)) +
   geom_histogram() +
   geom_vline(xintercept = q, color = "blue") +
+  geom_vline(xintercept = mean(post$p_upr), color = "blue", lty = 2) +
   labs(x =  expression(p[upr]), title = expression(p[upr]))
 
 p3 <- ggplot(post, aes(x = p_lwr_prime)) +
   geom_histogram() +
   geom_vline(xintercept = p_prime, color = "red") +
+  geom_vline(xintercept = mean(post$p_lwr_prime), color = "red", lty = 2) +
   labs(x =  expression(p[lwr]*"'"), title = expression(p[lwr]*"'"))
 
 p4 <- ggplot(post, aes(x = p_upr_prime)) +
   geom_histogram() +
   geom_vline(xintercept = q_prime, color = "blue") +
+  geom_vline(xintercept = mean(post$p_upr_prime), color = "blue", lty = 2) +
   labs(x =  expression(p[upr]*"'"), title = expression(p[upr]*"'"))
 
 p5 <- ggplot(post, aes(x = log10_p_lwr)) +
   geom_histogram() +
   geom_vline(xintercept = log10_p, color = "red") +
+  geom_vline(xintercept = mean(post$log10_p_lwr), color = "red", lty = 2) +
   labs(x = expression(log[10](p[lwr])), title = expression(log[10](p[lwr])))
 
 p6 <- ggplot(post, aes(x = log10_p_upr)) +
   geom_histogram() +
   geom_vline(xintercept = log10_q, color = "blue") +
+  geom_vline(xintercept = mean(post$log10_p_upr), color = "blue", lty = 2) +
   labs(x = expression(log[10](p[upr])), title = expression(log[10](p[upr])))
 
 p7 <- ggplot(post, aes(x = log10_p_lwr_prime)) +
   geom_histogram() +
   geom_vline(xintercept = log10_p_prime, color = "red") +
+  geom_vline(xintercept = mean(post$log10_p_lwr_prime), color = "red", lty = 2) +
   labs(x = expression(log[10](p[lwr]*"'")), title = expression(log[10](p[lwr]*"'")))
 
 p8 <- ggplot(post, aes(x = log10_p_upr_prime)) +
   geom_histogram() +
   geom_vline(xintercept = log10_q_prime, color = "blue") +
+  geom_vline(xintercept = mean(post$log10_p_upr_prime), color = "blue", lty = 2) +
   labs(x = expression(log[10](p[upr]*"'")), title = expression(log[10](p[upr]*"'")))
 
 
@@ -221,11 +245,13 @@ grid.arrange(grobs = combined_plots, ncol = 2)
 p1 <- ggplot(N * post, aes(x = p_lwr)) +
   geom_histogram() +
   geom_vline(xintercept = N * p, color = "red") +
+  geom_vline(xintercept = mean(N * post$p_lwr), color = "red", lty = 2) +
   labs(x =  expression(y[lwr]), title = expression(y[lwr]))
 
 p2 <- ggplot(M * post, aes(x = p_upr)) +
   geom_histogram() +
   geom_vline(xintercept = M * q, color = "blue") +
+  geom_vline(xintercept = mean(M * post$p_upr), color = "blue", lty = 2) +
   labs(x =  expression(y[upr]), title = expression(y[upr]))
 
 p3 <- ggplot(N * post, aes(x = p_lwr_prime)) +
