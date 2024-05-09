@@ -82,7 +82,7 @@ recommended estimators arising through problems inherent in frequentist maximum 
 
 \section{Introduction}
 
-DNA barcoding \citep{hebert2003biological, hebert2003barcoding} was conceived more than two decades ago as an immediate and automatic solution to the taxonomic impediment during a time of ongoing biodiversity crisis. The technique promised the rapid and accurate identification of unknown specimens to known Linnaean binomens, as well as the unambiguous resolution of species boundaries across the eukaryotic Tree of Life through the leveraging of easily obtained genetic variation found in short, universal segments of DNA. In animals, a \textit{c.} 658 bp fragment from the 5' end of the mitochondrial cytochrome \textit{c} oxidase subunit I gene is employed as a DNA barcode due to its ease of isolation, amplification, and sequencing. As a result, dedicated community-curated genomic sequence databases like the Barcode of Life Data Systems (BOLD) \citep{ratnasingham2007bold} have accumulated appreciable levels intraspecific genetic variation across a wide range of taxa and geographic regions to accelerate specimen identification and species discovery tasks to address research questions in ecology and evolutionary biology. Despite this, 
+DNA barcoding \citep{hebert2003biological, hebert2003barcoding} was conceived more than two decades ago as an immediate and automatic solution to the taxonomic impediment during a time of ongoing biodiversity crisis. The technique promised the rapid and accurate identification of unknown specimens to known Linnaean binomens, as well as the unambiguous resolution of species boundaries across the eukaryotic Tree of Life through the leveraging of easily obtained genetic variation found in short, universal segments of DNA. In animals, a \textit{c.} 658 bp fragment from the 5' end of the mitochondrial cytochrome \textit{c} oxidase subunit I gene is employed as a DNA barcode due to its ease of isolation, amplification, and sequencing. As a result, dedicated community-curated genomic sequence databases like the Barcode of Life Data Systems (BOLD) \citep{ratnasingham2007bold} have accumulated appreciable levels of intraspecific genetic variation across a wide range of taxa and geographic regions to accelerate specimen identification and species discovery tasks essential to addressing novel research questions in ecology and evolutionary biology. Despite this, 
 
 
 \section{Methods}
@@ -96,12 +96,25 @@ p_x &= \frac{\#\{d_{ij} \geq \min(d_{XY})\}}{\#\{d_{ij}\}} \\
 q_x &= \frac{\#\{d_{XY} \leq \max(d_{ij})\}}{\#\{d_{XY}\}}
 \end{align}
 
-\noindent where $d_{ij}$ and $d_{XY}$ are distances within and among species, respectively, and the notation \# reflects a count. Similar expressions (denoted $p^{'}_x$ and $q^{'}_x$) for nearest neighbour species were also given (see \cite{phillips2024measure}), in which $d_{XY}$ included only interspecific distances between the species of interest and its closest neighbouring species. Note distances (and hence the metrics) are constrained to [0, 1].  Values of the estimators obtained from equations (1) and (2) close to or equal to zero give evidence for separation between intraspecfic and interspecific genetic distance distributions; that is, values suggest the presence of a DNA barcode gap. Conversely, values near or equal to one give evidence for distribution overlap; that is, values likely indicate the absence of a gap.
+\noindent where $d_{ij}$ and $d_{XY}$ are distances within and among species, respectively, and the notation \# reflects a count. Distances are esily computed from a model of DNA sequence evolution, such as $p$ distance. Similar expressions (denoted $p^{'}_x$ and $q^{'}_x$) for nearest neighbour species were also given (see \cite{phillips2024measure}), in which $d_{XY}$ included only interspecific distances between the species of interest and its closest neighbouring species. Note distances (and hence the metrics) are constrained to [0, 1]. Values of the estimators obtained from equations (1) and (2) close to or equal to zero give evidence for separation between intraspecIfic and interspecific genetic distance distributions; that is, values suggest the presence of a DNA barcode gap. Conversely, values near or equal to one give evidence for distribution overlap; that is, values likely indicate the absence of a gap.
 
 
 
 \subsection{A Bayesian Implementation}
 
+A major criticism of large sample (frequentist) theory is that it relies on asymptotic properties of the MLE (which is assumed to be fixed but unknown), such as normality. This problem is especially pronounced in the case of binomial proportions. The estimated Wald SE of the sample proportion, is given by 
+
+\begin{equation}
+\widehat{SE[\hat{p}}] = \sqrt{\frac{\hat{p}(1 - \hat{p})}{n}},
+\end{equation}
+
+\noindent where $\hat{p} = \frac{X}{n}$ is the MLE, $X$ is the number of sucesses, and $n$ is the number of trials. However, the above formula is problematic for several reasons. First, Equation (3) makes use of the Central Limit Theorem (CLT); thus, large sample sizes are required for reliable estimation. When few observations are available, SEs will be large and inaccurate, leading to low statistical power. Further, resulting interval estimates could span values less than zero or greater than one, or have zero width, which is practically meaningless. Second, when proprtions are exactly equal to zero or one, resulting SEs will be exactly zero, rendering Equation (3) completely uselesss. In the context of the proposed DNA barcode gap metrics, values obtained at the \\ boundaries of their support are often encountered. Therefore, reliable calculation of SEs is not feasible. Given the importance of sufficient sampling of species genetic diversity for DNA barcoding initiatives, a different statistical estimation approach is necessary. Bayesian inference offers a natural path forward in this regard.
+
+\subsection{The Model}
+
+Counts, $Y$, of overlapping genetic distances (as expressed in the numerator of Equations (1) and (2) are treated as binomially distributed with expectation $\mathbb{E}[Y] = k\theta$, where \\ $k = \{N, M, C\}$ are total counts of intraspecific, interspecific, and combined genetic distances for a target species, and $\theta = \{p_x, q_x, p^{'}_x, q^{'}_x\}$. Although the metrics encompassing $\theta$ are presumed to follow a beta distribution, for simplicity, the metrics are given standard uniform ($U(0, 1)$) priors, which is mathematically equivalent to a Beta(1, 1) distribution.
+
+Thus, the full Bayesian model is given by
 
 \section{Results}
 
