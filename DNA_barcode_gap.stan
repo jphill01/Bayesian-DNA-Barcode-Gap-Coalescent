@@ -35,12 +35,6 @@
 // If max_intra is relatively small and min_comb is relatively large, p_lwr_prime represents the extent to which intraspecific distances tend to be larger than combined interspecific distances for a target species and its nearest neighbour species at and beyond min_comb and at and below max_intra
 // If min_comb is relatively small and max_inter is relatively large, p_upr_prime represents the extent to which combined interspecific distances for a target species and its nearest neighbour species tend to be larger than intraspecific distances at and below max_intra and at and beyond min_comb
 
-// functions {
-//   real scalar_min(real x, real y) {
-//     vector[2] v = to_vector([x, y]);
-//     return min(v);
-//   }
-// }
 
 data {
   int<lower = 1> K; // number of species in genus
@@ -96,40 +90,32 @@ parameters {
 
   vector<lower = 0, upper = 1>[K] p_lwr_prime; // parameter representing the proportional overlap/separation between intraspecific genetic distances for each species and combined interspecific distances for a target species and its nearest neighbour species
   vector<lower = 0, upper = 1>[K] p_upr_prime; // parameter representing the proportional overlap/separation between intraspecific and intraspecific genetic distances for a target species and is nearest neighbour species
+  
 }
 
 model {
   
-  // priors
-  
+  for (k in 1:K) {
+      
   // beta(1, 1) = U(0, 1) prior is conjugate for binomial(n, p), so posterior is beta(y_lwr + 1, N - y_lwr + 1) and beta(y_upr + 1, N - y_upr + 1) for y_lwr and y_upr, respectively
   // Jeffreys' prior = beta(0.5, 0.5) pulls posterior toward extreme values
-  // beta(2, 2) pulls posterior towards 0.5
-  
-  for (k in 1:K) {
+\
     
-    p_lwr[k] ~ uniform(0, 1);
-    p_upr[k] ~ uniform(0, 1);
-    p_lwr_prime[k] ~ uniform(0, 1);
-    p_upr_prime[k] ~ uniform(0, 1);
+    // priors
     
-    // p_lwr[k] ~ beta(0.5, 0.5);
-    // p_upr[k] ~ beta(0.5, 0.5);
-    // p_lwr_prime[k] ~ beta(0.5, 0.5);
-    // p_upr_prime[k] ~ beta(0.5, 0.5);
-     
-    // p_lwr[k] ~ beta(2, 2);
-    // p_upr[k] ~ beta(2, 2);
-    // p_lwr_prime[k] ~ beta(2, 2);
-    // p_upr_prime[k] ~ beta(2, 2);
-    
+    p_lwr ~ beta(0.5, 0.5);
+    p_upr ~ beta(0.5, 0.5);
+    p_lwr_prime ~ beta(0.5, 0.5);
+    p_lwr_prime ~ beta(0.5, 0.5);
     
     // likelihood
+    
     y_lwr[k] ~ binomial(N[k], p_lwr[k]); // likelihood for intraspecific genetic distances equalling or exceeding min_inter
     y_upr[k] ~ binomial(M, p_upr[k]); // likelihood for interspecific genetic distances equalling or falling below max_intra
 
     y_lwr_prime[k] ~ binomial(N[k], p_lwr_prime[k]); // likelihood for intraspecific genetic distances equalling or exceeding min_comb
     y_upr_prime[k] ~ binomial(C[k], p_upr_prime[k]); // likelihood for combined interspecific genetic distances for a target species and its nearest neighbour species equalling or falling below max_intra
+    
   }
 }
 
@@ -158,14 +144,6 @@ generated quantities {
   log10_p_upr[K] = log10(p_upr[K]);
   log10_p_lwr_prime[K] = log10(p_lwr_prime[K]);
   log10_p_upr_prime[K] = log10(p_upr_prime[K]);
-
-  // vector[K] res1;
-  // vector[K] res2;
-  // 
-  // for(k in 1:K) {
-  //   res1[k] = (p_lwr[k] + p_upr[k]) / (1 + scalar_min(p_lwr[k], p_upr[k]));
-  //   res2[k] = (p_lwr_prime[k] + p_upr_prime[k]) / (1 + scalar_min(p_lwr_prime[k], p_upr_prime[k]));
-  // }
   
 }
 
