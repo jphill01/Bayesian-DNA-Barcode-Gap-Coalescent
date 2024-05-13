@@ -107,20 +107,21 @@ A major criticism of large sample (frequentist) theory is that it relies on asym
 
 \subsection{The Model}
 
-Counts, $y$, of overlapping genetic distances (as expressed in the numerator of Equations (1) and (2)) are treated as binomially distributed with expectation $\mathbb{E}[Y] = k\theta$, where \\ $k = \{N, M, C\}$ are total counts of intraspecific, interspecific, and combined genetic distances for a target species, and $\theta = \{p_x, q_x, p^{'}_x, q^{'}_x\}$. The metrics encompassing $\theta$ are presumed to follow a beta($\alpha$, $\beta$) distribution, which is a natural choice of prior on probabilities. Such a scheme is quite convenient since the beta distribution is conjugate to the binomial distribution. Thus, the posterior distribution is also beta distributed. Since the DNA barcode gap metrics often attain values either very close to zero or very near one, in addition to more intermediate values, parameters were given an uninformative Beta($\frac{1}{2}, \frac{1}{2}$) prior, which places greater density at the extremes of the distribution, while still allowing for variability in parameter estimates. Note that this prior is Jeffreys' prior, which is proportional to the square root of the Fisher information and has several desirable statistical properties, most notably invariance to reparameterization. As a result, the posterior is Beta($Y + \frac{1}{2}$, $n - Y + \frac{1}{2}$), which has expected value $\mathbb{E}[Y] = \frac{Y \hspace{0.5mm} + \hspace{0.5mm} \frac{1}{2}}{n \hspace{0.5mm} + \hspace{0.5mm} 1}$. The use of a Beta(1, 1) prior, which is equivalent to a standard uniform (U(0, 1)) prior could also work in this case, although it places equal probability on all parameter values within its support. The full univariate Bayesian model is thus given by
+Counts, $y$, of overlapping genetic distances (as expressed in the numerator of Equations (1) and (2)) are treated as binomially distributed with expectation $\mathbb{E}[Y] = k\theta$, where \\ $k = \{N, M, C\}$ are total counts of intraspecific, interspecific, and combined genetic distances for a target species, and $\theta = \{p_x, q_x, p^{'}_x, q^{'}_x\}$. The metrics encompassing $\theta$ are presumed to follow a beta($\alpha$, $\beta$) distribution, which is a natural choice of prior on probabilities. Such a scheme is quite convenient since the beta distribution is conjugate to the binomial distribution. Thus, the posterior distribution is also beta distributed. Since the DNA barcode gap metrics often attain values either very close to zero or very near one, in addition to more intermediate values, parameters were given an uninformative Beta($\frac{1}{2}, \frac{1}{2}$) prior, which places greater density at the extremes of the distribution, while still allowing for variability in parameter estimates within intermediate values its domain. Note that this prior is Jeffreys' prior, which is proportional to the square root of the Fisher information and has several desirable statistical properties, most notably invariance to reparameterization. As a result, the posterior is Beta($Y + \frac{1}{2}$, $n - Y + \frac{1}{2}$), which has expected value $\mathbb{E}[Y] = \frac{Y \hspace{0.5mm} + \hspace{0.5mm} \frac{1}{2}}{n \hspace{0.5mm} + \hspace{0.5mm} 1}$. The use of a Beta(1, 1) prior, which is equivalent to a standard uniform (Uniform(0, 1)) prior, could also work in this case, although it places equal probability on all parameter values within its support. In general, it is always advisable to incorporate prior information, even if only weak, rather than simply imposing complete ignorance in the form of a flat prior distribution. The full univariate Bayesian model is thus given by
 
 \begin{align}
-\notag y_\mathrm{lwr} &\sim \mathrm{Bin}(N, p_\mathrm{lwr}) \\ 
-\notag y_\mathrm{upr} &\sim \mathrm{Bin}(M, p_\mathrm{upr}) \\ 
-y^{'}_\mathrm{lwr} &\sim \mathrm{Bin}(N, p^{'}_\mathrm{lwr}) \\ 
- \notag y^{'}_\mathrm{upr} &\sim \mathrm{Bin}(C, p^{'}_\mathrm{upr}) \\ 
+\notag y_\mathrm{lwr} &\sim \mathrm{Binomial}(N, p_\mathrm{lwr}) \\ 
+\notag y_\mathrm{upr} &\sim \mathrm{Binomial}(M, p_\mathrm{upr}) \\ 
+y^{'}_\mathrm{lwr} &\sim \mathrm{Binomial}(N, p^{'}_\mathrm{lwr}) \\ 
+ \notag y^{'}_\mathrm{upr} &\sim \mathrm{Binomial}(C, p^{'}_\mathrm{upr}) \\ 
 \notag p_\mathrm{lwr}, p_\mathrm{upr}, p^{'}_\mathrm{lwr}, p^{'}_\mathrm{upr}
 &\sim \mathrm{Beta}(\frac{1}{2}, \frac{1}{2}) 
 \end{align}
 
 \noindent given sufficient data, the choice of prior distribution becomes less important since the \\ posterior will be directly proportional to the likelihood.
 
-The model was fitted using the Stan probabilistic programming language  \citep{carpenter2017stan} framework for Hamiltonian Monte Carlo (HMC) sampling with a default of four Markov chains and 2000 iterations, as well as default settings for leapfrog integration (\textit{e.g.}, step size) via the No-U-Turn Sampler (NUTS) algorithm \citep{hoffman2014no}.
+The model was fitted using the Stan probabilistic programming language  \citep{carpenter2017stan} framework for Hamiltonian Monte Carlo (HMC) sampling. Four chains were run for 2000 iterations each in parallel across four cores with random paramester initializations. Within each chain, a total of 1000 samples was discarded as warmup (\textit{i.e.}, burnin) to reduce dependence on starting conditions. Further, 1000 post-warmup draws were utilized per chain. Each of these reflect default MCMC settings in Stan. 
+
 
 \section{Results}
 
