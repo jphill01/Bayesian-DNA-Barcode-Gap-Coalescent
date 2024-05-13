@@ -99,7 +99,6 @@ model {
       
   // beta(1, 1) = U(0, 1) prior is conjugate for binomial(n, p), so posterior is beta(y_lwr + 1, N - y_lwr + 1) and beta(y_upr + 1, N - y_upr + 1) for y_lwr and y_upr, respectively
   // Jeffreys' prior = beta(0.5, 0.5) pulls posterior toward extreme values
-\
     
     // priors
     
