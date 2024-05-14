@@ -18,17 +18,28 @@ options(mc.cores = parallel::detectCores()) # parallelize simulations
 rstan_options(auto_write = TRUE) # only have to compile once unless code is changed
 
 
-K <- 1
-intra <- read.csv(file.choose())
-inter <- read.csv(file.choose())
-comb <- read.csv(file.choose())
+K <- 2
+intra1 <- read.csv(file.choose())
+comb1 <- read.csv(file.choose())
 
-N <- array(nrow(intra))
-intra <- array(intra[, 2], dim = c(1, nrow(intra)))
-C <- array(nrow(comb))
-comb <- array(comb[, 2], dim = c(1, nrow(comb)))
+intra2 <- read.csv(file.choose())
+comb2 <- read.csv(file.choose())
+
+inter <- read.csv(file.choose())
+
+N <- as.numeric(array(c(nrow(intra1), nrow(intra2))))
+C <- as.numeric(array(c(nrow(comb1), nrow(comb2))))
+
+intra <- c(intra1$x, intra2$x)
+comb <- c(comb1$x, comb2$x)
+
+sum_N <- sum(N)
+sum_C = sum(C)
+
 M <- nrow(inter)
 inter <- inter[, 2]
+
+
 
 
 ### MLEs ###
@@ -64,7 +75,10 @@ C * q_prime
 ### Posterior Estimates ####
 
 fit <- stan("DNA_barcode_gap.stan", 
-            data = list(K = K, M = M, N = N, intra = intra, inter = inter, C = C, comb = comb))
+            data = list(K = K, M = M, N = N, sum_N = sum_N, intra = intra, inter = inter, C = C, sum_C = sum_C, comb = comb), 
+            chains = 4,
+            iter = 2000,
+            control = list(adapt_delta = 0.80))
 
 print(fit, digits_summary = 6)
 
