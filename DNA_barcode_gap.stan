@@ -52,49 +52,43 @@ transformed data {
   start_n[1] = 1;
   start_c[1] = 1;
   
-  for (k in 1:K) {
-    if (k < K) {
-      start_n[k + 1] = start_n[k] + N[k];
-      start_c[k + 1] = start_c[k] + C[k];
-    }
+  for (k in 2:(K + 1)) {
+    start_n[k] = start_n[k - 1] + N[k - 1];
+    start_c[k] = start_c[k - 1] + C[k - 1];
   }
   
-  real<lower = 0, upper = 1> min_inter; // minimum interspecific genetic distance for all species
+  real<lower = 0, upper = 1> min_inter = min(inter); // minimum interspecific genetic distance for all species
   vector<lower = 0, upper = 1>[K] max_intra; // maximum intraspecific genetic distance for each species
-  real<lower = 0, upper = 1> min_comb[K]; // minimum combined interspecific genetic distance for a target species and its nearest neighbour species
+  vector<lower = 0, upper = 1>[K] min_comb; // minimum combined interspecific genetic distance for a target species and its nearest neighbour species
   
-  min_inter = min(inter);
-
   for (k in 1:K) {
     max_intra[k] = max(segment(intra, start_n[k], N[k]));
     min_comb[k] = min(segment(comb, start_c[k], C[k]));
   }
   
-  int<lower = 0, upper = max(N)> y_lwr[K]; // count of intraspecific genetic distances for each species equalling or exceeding min_inter for all species
-  int<lower = 0, upper = max(N)> y_lwr_prime[K]; // count of intraspecific genetic distances for each species equalling or exceeding the minimum combined interspecific distance for a target species and its nearest neighbour species
-  int<lower = 0, upper = M> y_upr[K]; // count of interspecific genetic distances for all species less than or equal to max_intra for each species
-  int<lower = 0, upper = max(C)> y_upr_prime[K]; // count of combined interspecific genetic distances for a target species and its nearest neighbour species less than or equal to max_intra for each species
+  int<lower = 0, upper = max(N)> y_lwr[K] = rep_array(0, K); // count of intraspecific genetic distances for each species equalling or exceeding min_inter for all species
+  int<lower = 0, upper = max(N)> y_lwr_prime[K] = rep_array(0, K); // count of intraspecific genetic distances for each species equalling or exceeding the minimum combined interspecific distance for a target species and its nearest neighbour species
+  int<lower = 0, upper = M> y_upr[K] = rep_array(0, K); // count of interspecific genetic distances for all species less than or equal to max_intra for each species
+  int<lower = 0, upper = max(C)> y_upr_prime[K] = rep_array(0, K); // count of combined interspecific genetic distances for a target species and its nearest neighbour species less than or equal to max_intra for each species
 
   for (k in 1:K) {
-    y_lwr[k] = 0;
-    y_lwr_prime[k] = 0;
-    y_upr[k] = 0;
-    y_upr_prime[k] = 0;
-
     for (n in 1:N[k]) {
-      y_lwr[k] += (segment(intra, start_n[k], N[k])[n] >= min_inter); // count intraspecific genetic distances for each species equalling or exceeding min_inter for all species
-      y_lwr_prime[k] += (segment(intra, start_n[k], N[k])[n] >= min_comb[k]); // count intraspecific genetic distances for each species equalling or exceeding min_comb for a target species and its nearest neighbour species
+      real val = intra[start_n[k] + n - 1];
+      y_lwr[k] += (val >= min_inter);
+      y_lwr_prime[k] += (val >= min_comb[k]);
     }
     
     for (m in 1:M) {
-      y_upr[k] += (inter[m] <= max_intra[k]); // count interspecific genetic distances for all species less than or equal to max_intra for each species
+      y_upr[k] += (inter[m] <= max_intra[k]);
     }
     
     for (c in 1:C[k]) {
-      y_upr_prime[k] += (segment(comb, start_c[k], C[k])[c] <= max_intra[k]); // count combined interspecific genetic distances for a target species and its nearest neighbour species less than or equal to max_intra for each species
+      y_upr_prime[k] += (comb[start_c[k] + c - 1] <= max_intra[k]);
     }
   }
+  
 }
+
 
 parameters {
   vector<lower = 0, upper = 1>[K] p_lwr; // parameter representing the proportional overlap/separation between intraspecific genetic distances for each species and interspecific distances for all species
@@ -103,7 +97,6 @@ parameters {
   vector<lower = 0, upper = 1>[K] p_lwr_prime; // parameter representing the proportional overlap/separation between intraspecific genetic distances for each species and combined interspecific distances for a target species and its nearest neighbour species
   vector<lower = 0, upper = 1>[K] p_upr_prime; // parameter representing the proportional overlap/separation between intraspecific and intraspecific genetic distances for a target species and its nearest neighbour species
 
-  
 }
 
 model {
@@ -116,10 +109,10 @@ model {
     
     // equivalent to above
     
-    p_lwr ~ beta(1, 1);
-    p_upr ~ beta(1, 1);
-    p_lwr_prime ~ beta(1, 1);
-    p_upr_prime ~ beta(1, 1);
+    // p_lwr ~ beta(1, 1);
+    // p_upr ~ beta(1, 1);
+    // p_lwr_prime ~ beta(1, 1);
+    // p_upr_prime ~ beta(1, 1);
     
     // places greater density at extemes - causes divergent transitions etc.
     
@@ -134,35 +127,37 @@ model {
 
     y_lwr_prime[k] ~ binomial(N[k], p_lwr_prime[k]); // likelihood for intraspecific genetic distances equalling or exceeding min_comb
     y_upr_prime[k] ~ binomial(C[k], p_upr_prime[k]); // likelihood for combined interspecific genetic distances for a target species and its nearest neighbour species equalling or falling below max_intra
-
-    
   }
+  
 }
 
-// generated quantities {
-//
-//   // Posterior Predictive Checks
-//
-//   int ppc_y_lwr[K];
-//   int ppc_y_upr[K];
-//   int ppc_y_lwr_prime[K];
-//   int ppc_y_upr_prime[K];
-//
-//   for (k in 1:K) {
-//     ppc_y_lwr[k] = binomial_rng(N[k], p_lwr[k]);
-//     ppc_y_upr[k] = binomial_rng(M, p_upr[k]);
-//     ppc_y_lwr_prime[k] = binomial_rng(N[k], p_lwr_prime[k]);
-//     ppc_y_upr_prime[k] = binomial_rng(C[k], p_upr_prime[k]);
-//   }
-//
-//   vector[K] log10_p_lwr; // log10 of p_lwr
-//   vector[K] log10_p_upr; // log10 of p_upr
-//   vector[K] log10_p_lwr_prime; // log10 of p_lwr
-//   vector[K] log10_p_upr_prime; // log10 of p_upr
-//
-//   log10_p_lwr[K] = log10(p_lwr[K]);
-//   log10_p_upr[K] = log10(p_upr[K]);
-//   log10_p_lwr_prime[K] = log10(p_lwr_prime[K]);
-//   log10_p_upr_prime[K] = log10(p_upr_prime[K]);
-//
-// }
+generated quantities {
+
+  // Posterior Predictive Checks
+
+  int ppc_y_lwr[K];
+  int ppc_y_upr[K];
+  int ppc_y_lwr_prime[K];
+  int ppc_y_upr_prime[K];
+
+  for (k in 1:K) {
+    ppc_y_lwr[k] = binomial_rng(N[k], p_lwr[k]);
+    ppc_y_upr[k] = binomial_rng(M, p_upr[k]);
+    ppc_y_lwr_prime[k] = binomial_rng(N[k], p_lwr_prime[k]);
+    ppc_y_upr_prime[k] = binomial_rng(C[k], p_upr_prime[k]);
+  }
+
+  vector[K] log10_p_lwr; // log10 of p_lwr
+  vector[K] log10_p_upr; // log10 of p_upr
+  vector[K] log10_p_lwr_prime; // log10 of p_lwr
+  vector[K] log10_p_upr_prime; // log10 of p_upr
+
+
+  for (k in 1:K) {
+    log10_p_lwr[k] = log10(p_lwr[k]);
+    log10_p_upr[k] = log10(p_upr[k]);
+    log10_p_lwr_prime[k] = log10(p_lwr_prime[k]);
+    log10_p_upr_prime[k] = log10(p_upr_prime[k]);
+  }
+  
+}
