@@ -18,7 +18,8 @@ options(mc.cores = parallel::detectCores()) # parallelize simulations
 rstan_options(auto_write = TRUE) # only have to compile once unless code is changed
 
 
-K <- 2
+K <- 2 # number of species in genus 
+
 intra1 <- read.csv(file.choose())
 comb1 <- read.csv(file.choose())
 
