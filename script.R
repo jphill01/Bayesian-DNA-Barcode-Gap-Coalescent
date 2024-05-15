@@ -33,9 +33,6 @@ C <- as.numeric(array(c(nrow(comb1), nrow(comb2))))
 intra <- c(intra1$x, intra2$x)
 comb <- c(comb1$x, comb2$x)
 
-sum_N <- sum(N)
-sum_C = sum(C)
-
 M <- nrow(inter)
 inter <- inter[, 2]
 
@@ -75,10 +72,11 @@ C * q_prime
 ### Posterior Estimates ####
 
 fit <- stan("DNA_barcode_gap.stan", 
-            data = list(K = K, M = M, N = N, sum_N = sum_N, intra = intra, inter = inter, C = C, sum_C = sum_C, comb = comb), 
+            data = list(K = K, M = M, N = N, intra = intra, inter = inter, C = C, comb = comb), 
             chains = 4,
             iter = 2000,
-            control = list(adapt_delta = 0.80))
+            control = list(adapt_delta = 0.80,
+                           max_treedepth = 10))
 
 print(fit, digits_summary = 6)
 
@@ -86,10 +84,6 @@ traceplot(fit, pars = c("p_lwr",
                         "p_upr", 
                         "p_lwr_prime", 
                         "p_upr_prime",
-                        "ppc_y_lwr",
-                        "ppc_y_upr",
-                        "ppc_y_lwr_prime",
-                        "ppc_y_upr_prime",
                         "log10_p_lwr",
                         "log10_p_upr",
                         "log10_p_lwr_prime",
@@ -143,7 +137,7 @@ plot4 <- ggplot(post, aes(x = log10_p_lwr_prime, y = log10_p_upr_prime)) +
 
 print(plot1)
 print(plot2)
-print(plot4)
+print(plot3)
 print(plot4)
 
 grid.arrange(plot1, plot2, plot3, plot4, ncol=1)
@@ -194,7 +188,7 @@ plot4 <- ggplot(post, aes(x = log10_p_lwr_prime, y = log10_p_upr_prime)) +
 
 print(plot1)
 print(plot2)
-print(plot4)
+print(plot3)
 print(plot4)
 
 grid.arrange(plot1, plot2, plot3, plot4, ncol=1)
@@ -251,7 +245,7 @@ p8 <- ggplot(post, aes(x = log10_p_upr_prime)) +
 
 # Arrange plots in a 2x2 grid using facet_wrap
 combined_plots <- list(p1, p2, p3, p4, p5, p6, p7, p8)
-names(combined_plots) <- c("p_lwr", "p_upr", "p_lwr_prime", "p_upr_prime", "log10_p_lwr", "log10_p_upr", "log10_p_lwr_prime", "log10_p_upr_prime")
+names(combined_plots) <- c("p_lwr", "p_upr", "p_lwr_prime", "p_upr_prime")
 
 grid.arrange(grobs = combined_plots, ncol = 2)
 
