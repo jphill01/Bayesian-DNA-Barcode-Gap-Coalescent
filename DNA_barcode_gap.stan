@@ -28,7 +28,6 @@
 // while the probability of intraspecific distances being larger than combined interspecific distances for a target species and its nearest neighbour species is high on average; that is, there is no evidence for a DNA barcode gap
 
 
-
 // If max_intra is relatively large and min_inter is relatively small, p_lwr represents the extent to which intraspecific distances tend to be larger than interspecific distances at and beyond min_inter and at and below max_intra
 // If min_inter is relatively large and max_intra is relatively small, p_upr represents the extent to which interspecific distances tend to be larger than intraspecific distances at and below max_intra and at and beyond min_inter
 
@@ -41,13 +40,9 @@ data {
   int<lower = 1> N[K]; // number of intraspecific (within-species) genetic distances for each species
   int<lower = 1> M; // number of interspecific (among-species) genetic distances for all species
   int<lower = 1> C[K]; // number of combined interspecific distances for a target species and its nearest neighbour species
-  
-  int<lower = 1> sum_N; // sum of all N[k]
-  int<lower = 1> sum_C; // sum of all C[k]
-  
-  vector<lower = 0, upper = 1>[sum_N] intra; // flattened intraspecific genetic distances for each species
+  vector<lower = 0, upper = 1>[sum(N)] intra; // intraspecific genetic distances for each species
   vector<lower = 0, upper = 1>[M] inter; // interspecific genetic distances for all species
-  vector<lower = 0, upper = 1>[sum_C] comb; // flattened interspecific genetic distances for a target species and its nearest neighbour species
+  vector<lower = 0, upper = 1>[sum(C)] comb; // interspecific genetic distances for a target species and its nearest neighbour species
 }
 
 transformed data {
@@ -59,14 +54,14 @@ transformed data {
   
   for (k in 1:K) {
     if (k < K) {
-      start_n[k+1] = start_n[k] + N[k];
-      start_c[k+1] = start_c[k] + C[k];
+      start_n[k + 1] = start_n[k] + N[k];
+      start_c[k + 1] = start_c[k] + C[k];
     }
   }
   
-  real<lower=0, upper=1> min_inter; // minimum interspecific genetic distance for all species
-  vector<lower=0, upper=1>[K] max_intra; // maximum intraspecific genetic distance for each species
-  real<lower=0, upper=1> min_comb[K]; // minimum combined interspecific genetic distance for a target species and its nearest neighbour species
+  real<lower = 0, upper = 1> min_inter; // minimum interspecific genetic distance for all species
+  vector<lower = 0, upper = 1>[K] max_intra; // maximum intraspecific genetic distance for each species
+  real<lower = 0, upper = 1> min_comb[K]; // minimum combined interspecific genetic distance for a target species and its nearest neighbour species
   
   min_inter = min(inter);
 
@@ -76,7 +71,7 @@ transformed data {
   }
   
   int<lower = 0, upper = max(N)> y_lwr[K]; // count of intraspecific genetic distances for each species equalling or exceeding min_inter for all species
-  int<lower = 0, upper = max(N)> y_lwr_prime[K]; // count of intraspecific genetic distances for each species equalling or exceeding the minimum combined interspecific distance for a target species and its nearest neighbour
+  int<lower = 0, upper = max(N)> y_lwr_prime[K]; // count of intraspecific genetic distances for each species equalling or exceeding the minimum combined interspecific distance for a target species and its nearest neighbour species
   int<lower = 0, upper = M> y_upr[K]; // count of interspecific genetic distances for all species less than or equal to max_intra for each species
   int<lower = 0, upper = max(C)> y_upr_prime[K]; // count of combined interspecific genetic distances for a target species and its nearest neighbour species less than or equal to max_intra for each species
 
@@ -107,15 +102,31 @@ parameters {
 
   vector<lower = 0, upper = 1>[K] p_lwr_prime; // parameter representing the proportional overlap/separation between intraspecific genetic distances for each species and combined interspecific distances for a target species and its nearest neighbour species
   vector<lower = 0, upper = 1>[K] p_upr_prime; // parameter representing the proportional overlap/separation between intraspecific and intraspecific genetic distances for a target species and its nearest neighbour species
+
+  
 }
 
 model {
   for (k in 1:K) {
     // Priors
-    p_lwr ~ uniform(0, 1);
-    p_upr ~ uniform(0, 1);
-    p_lwr_prime ~ uniform(0, 1);
-    p_upr_prime ~ uniform(0, 1);
+    // p_lwr ~ uniform(0, 1);
+    // p_upr ~ uniform(0, 1);
+    // p_lwr_prime ~ uniform(0, 1);
+    // p_upr_prime ~ uniform(0, 1);
+    
+    // equivalent to above
+    
+    p_lwr ~ beta(1, 1);
+    p_upr ~ beta(1, 1);
+    p_lwr_prime ~ beta(1, 1);
+    p_upr_prime ~ beta(1, 1);
+    
+    // places greater density at extemes - causes divergent transitions etc.
+    
+    // p_lwr ~ beta(0.5, 0.5);
+    // p_upr ~ beta(0.5, 0.5);
+    // p_lwr_prime ~ beta(0.5, 0.5);
+    // p_upr_prime ~ beta(0.5, 0.5);
 
     // Likelihood
     y_lwr[k] ~ binomial(N[k], p_lwr[k]); // likelihood for intraspecific genetic distances equalling or exceeding min_inter
@@ -123,6 +134,8 @@ model {
 
     y_lwr_prime[k] ~ binomial(N[k], p_lwr_prime[k]); // likelihood for intraspecific genetic distances equalling or exceeding min_comb
     y_upr_prime[k] ~ binomial(C[k], p_upr_prime[k]); // likelihood for combined interspecific genetic distances for a target species and its nearest neighbour species equalling or falling below max_intra
+
+    
   }
 }
 
