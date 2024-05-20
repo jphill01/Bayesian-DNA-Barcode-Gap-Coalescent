@@ -129,6 +129,64 @@ The model, which is inherently vectorized to allow processing of multiple specie
 
 To validate the overall correctness of the proposed statistical model given by \\ Equation (6), in addition to generating MLEs as a means of comparison, posterior predictive checks were also employed to generate binomial random variates in the form of counts from the posterior predictive distribution; that is $\gamma = \{Np_x, Mq_x, Np^{'}_x, Cq^{'}_x\}$ to verify that the model adequately captures relevant features of the observed data.
 
+\subsection{Model Interpretation}
+
+The proposed Bayesian model outlined herein has a straightforward interpretation:
+
+\begin{itemize}
+\item When $p_{lwr}$ is close to 0, it suggests that the probability of intraspecific distances being larger than interspecific distances is low on averqge, while the probability of interspecific distances being larger than intraspecific distances is high on average; that is, there is evidence for a DNA barcode gap;
+
+\vspace{1mm}
+
+\item When $p_{lwr}$ is close to 1, it suggests that the probability of intraspecific distances being larger than interspecific distances is high on averqge, while the probability of interspecific distances being larger than intraspecific distances is low on average; that is, there is no evidence for a DNA barcode gap;
+
+\vspace{1mm}
+
+\item When $p_{upr}$ is close to 0, it suggests that the probability of interspecific distances being larger than intraspecific distances is high on average, while the probability of intraspecific distances being larger than interspecific distances is low on average; that is, there is evidence for a DNA barcode gap;
+
+\vspace{1mm}
+
+\item When $p_{upr}$ is close to 1, it suggests that the probability of interspecific distances being larger than intraspecific distances is low on average, while the probability of intraspecific distances being larger than interspecific distances is high on average; that is, there is no evidence for a DNA barcode gap;
+
+\vspace{1mm}
+
+\item When $p^{'}_\mathrm{lwr}$ is close to 0, it suggests that the probability of intraspecific distances being larger than combined interspecific distances for a target species and its nearest neighbour species is low on averqge, while the probability of combined interspecific distances for a target species and its nearest neighbour species being larger than intraspecific distances is high on average; that is, there is evidence for a DNA barcode gap;
+
+\vspace{1mm}
+
+\item sWhen  $p^{'}_\mathrm{lwr}$ is close to 1, it suggests that the probability of intraspecific distances being larger than combined interspecific distances for a target species and its nearest neighbour species is high on averqge, while the probability of combined interspecific distances for a target species and its nearest neighbour species being larger than intraspecific distances is low on average; that is, there is no evidence for a DNA barcode gap;
+
+\vspace{1mm}
+
+\item When $p^{'}_\mathrm{upsr}$ is close to 0, it suggests that the probability of combined interspecific distances for a target species and its nearest neighbour species being larger than intraspecific distances is high on averqge, while the probability of intraspecific distances being larger than combined interspecific distances for a target species and its nearest neighbour species is low on average; that is, there is evidence for a DNA barcode gap; and,
+
+\vspace{1mm}
+
+\item When $p^{'}_\mathrm{upr}$ is close to 1, it indicates that the probability of combined interspecific distances for a target species and its nearest neighbour species being larger than intraspecific distances is low on average, while the probability of intraspecific distances being larger than combined interspecific distances for a target species and its nearest neighbour species is high on average; that is, there is no evidence for a DNA barcode gap.
+
+Framed more succinctly, 
+
+\begin{itemize}
+
+\item If $b$ is relatively large and $a$ is relatively small, $p_{lwr}$ represents the extent to which intraspecific distances tend to be larger than interspecific distances at and beyond $a$ and at and below $b$;
+
+\vspace{1mm}
+
+\item If $a$ is relatively large and $b$ is relatively small, $p_{upr}$ represents the extent to which interspecific distances tend to be larger than intraspecific distances at and below $b$ and at and beyond $a$;
+
+\vspace{1mm}
+
+\item If $b$ is relatively small and $min_comb$ is relatively large, $p^{'}_\mathrm{lwr}$ represents the extent to which intraspecific distances tend to be larger than combined interspecific distances for a target species and its nearest neighbour species at and beyond $min_comb$ and at and below $b$; and,
+
+\vspace{1mm}
+
+\item If $min_comb$ is relatively small and $b$ is relatively large, $p^{'}_\mathrm{upr}$ represents the extent to which combined interspecific distances for a target species and its nearest neighbour species tend to be larger than intraspecific distances at and below $b$ and at and beyond $min_comb$.
+
+
+\end{itemize}
+
+\end{itemize}
+
 \subsection{Case Study}
 
 \section{Results}
