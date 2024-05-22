@@ -213,23 +213,19 @@ JDP wrote the manuscript, wrote R and Stan code, approved all developed code as 
 \begin{table}[htbp]
     \centering
     \small
-    \caption{Explanation of Model Interpretation}
+    \caption{Interpretation of the Model}
     \label{tab:parameters}
     \begin{tabular}{cp{0.7\linewidth}}
     \hline
     \textbf{Parameter} & \textbf{Explanation} \\
     \hline
-    $p_{\text{lwr}}$ & When $p_{\text{lwr}}$ is close to 0, it suggests that the probability of intraspecific distances being larger than interspecific distances is low on average, while the probability of interspecific distances being larger than intraspecific distances is high on average; that is, there is evidence for a DNA barcode gap.\\
-    & When $p_{\text{lwr}}$ is close to 1, it suggests that the probability of intraspecific distances being larger than interspecific distances is high on average, while the probability of interspecific distances being larger than intraspecific distances is low on average; that is, there is no evidence for a DNA barcode gap.\\
+    $p_{\text{lwr}}$ & When $p_{\text{lwr}}$ is close to 0 (1), it suggests that the probability of intraspecific distances being larger than interspecific distances is low (high) on average, while the probability of interspecific distances being larger than intraspecific distances is high (low) on average; that is, there is (no) evidence for a DNA barcode gap.\\
         & \\[-2mm]
-    $p_{\text{upr}}$ & When $p_{\text{upr}}$ is close to 0, it suggests that the probability of interspecific distances being larger than intraspecific distances is high on average, while the probability of intraspecific distances being larger than interspecific distances is low on average; that is, there is evidence for a DNA barcode gap.\\
-    & When $p_{\text{upr}}$ is close to 1, it suggests that the probability of interspecific distances being larger than intraspecific distances is low on average, while the probability of intraspecific distances being larger than interspecific distances is high on average; that is, there is no evidence for a DNA barcode gap.\\
+    $p_{\text{upr}}$ & When $p_{\text{upr}}$ is close to 0 (1), it suggests that the probability of interspecific distances being larger than intraspecific distances is high (low) on average, while the probability of intraspecific distances being larger than interspecific distances is low (high) on average; that is, there is (no) evidence for a DNA barcode gap. \\
         & \\[-2mm]
-    $p^{'}_{\text{lwr}}$ & When $p^{'}_{\text{lwr}}$ is close to 0, it suggests that the probability of intraspecific distances being larger than combined interspecific distances for a target species and its nearest neighbour species is low on average, while the probability of combined interspecific distances for a target species and its nearest neighbour species being larger than intraspecific distances is high on average; that is, there is evidence for a DNA barcode gap.\\
-    & When $p^{'}_{\text{lwr}}$ is close to 1, it suggests that the probability of intraspecific distances being larger than combined interspecific distances for a target species and its nearest neighbour species is high on average, while the probability of combined interspecific distances for a target species and its nearest neighbour species being larger than intraspecific distances is low on average; that is, there is no evidence for a DNA barcode gap.\\
+    $p^{'}_{\text{lwr}}$ & When $p^{'}_{\text{lwr}}$ is close to 0 (1), it suggests that the probability of intraspecific distances being larger than combined interspecific distances for a target species and its nearest neighbour species is low (high) on average, while the probability of combined interspecific distances for a target species and its nearest neighbour species being larger than intraspecific distances is high (low) on average; that is, there is (no) evidence for a DNA barcode gap.\\
         & \\[-2mm]
-    $p^{'}_{\text{upr}}$ & When $p^{'}_{\text{upr}}$ is close to 0, it suggests that the probability of combined interspecific distances for a target species and its nearest neighbour species being larger than intraspecific distances is high on average, while the probability of intraspecific distances being larger than combined interspecific distances for a target species and its nearest neighbour species is low on average; that is, there is evidence for a DNA barcode gap.\\
-    & When $p^{'}_{\text{upr}}$ is close to 1, it indicates that the probability of combined interspecific distances for a target species and its nearest neighbour species being larger than intraspecific distances is low on average, while the probability of intraspecific distances being larger than combined interspecific distances for a target species and its nearest neighbour species is high on average; that is, there is no evidence for a DNA barcode gap.\\
+    $p^{'}_{\text{upr}}$ & When $p^{'}_{\text{upr}}$ is close to 0 (1), it suggests that the probability of combined interspecific distances for a target species and its nearest neighbour species being larger than intraspecific distances is high (low) on average, while the probability of intraspecific distances being larger than combined interspecific distances for a target species and its nearest neighbour species is low (high) on average; that is, there is (no) evidence for a DNA barcode gap.\\
     \hline
     \end{tabular}
 \end{table}
