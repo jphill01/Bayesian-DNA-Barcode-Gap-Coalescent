@@ -103,8 +103,14 @@ p'_x &= \mathbb{P}(d_{ij} \geq a') \hspace{2.5mm} = 1 - \hat{F}_{d_{ij}}(a') = \
 q'_x &= \mathbb{P}(d'_{XY} \leq b) = \hat{F}_{d'_{XY}}(b)
 \end{align}
 
-\noindent noting that $\hat{F}_{d_{ij}}(b) = 1$, $\hat{F}_{d_{XY}}(a) = 0$, and $\hat{F}_{d'_{XY}}(a') = 0$ (\textbf{Figure 1}). Given $n$ \\ increasing-ordered data points, the ECDF $\hat{F}_n(t) = \frac{1}{n}\sum_{i = 1}^n\mathds{1}_{[x_i \leq t]}$ comprises a step function having jump discontinuities of size $\frac{1}{n}$ at each sample observation ($x_i$), excluding ties (or steps of $\frac{i}{n}$ with tied observations), where $\mathds{1}(x)$ is the indicator function. Equations (5)-(8) clearly demonstrate the asymmetric directionality of the metrics. Furthermore, calculation of the DNA barcode gap estimators given herein is straightforward as they implicitly account for both total distribution area and overlap, which would each require the use of numerical integration techniques or Monte Carlo simulation.
+\noindent noting that $\hat{F}_{d_{ij}}(b) = 1$, $\hat{F}_{d_{XY}}(a) = 0$, and $\hat{F}_{d'_{XY}}(a') = 0$ (\textbf{Figure 1}). Given $n$ \\ increasing-ordered data points, the ECDF $\hat{F}_n(t) = \frac{1}{n}\sum_{i = 1}^n\mathds{1}_{[x_i \leq t]}$ comprises a step function having jump discontinuities of size $\frac{1}{n}$ at each sample observation ($x_i$), excluding ties (or steps of $\frac{i}{n}$ with tied observations), where $\mathds{1}(x)$ is the indicator function. Equations (5)-(8) clearly demonstrate the asymmetric directionality of the metrics. Furthermore, calculation of the DNA barcode gap estimators given herein is straightforward as they implicitly account for both total distribution area and overlap. Nevertheless, the total area bounded by intraspecific and interspecific distributions is given by the joint ECDF. Thus,
 
+\begin{align}
+A &= p_x + q_x = 1 - \hat{F}_{d_{ij}}(a) + \hat{F}_{d_{XY}}(b) = \hat{F}_{d_{ij}}(b) - \hat{F}_{d_{ij}}(a) + \hat{F}_{d_{XY}}(b) \\
+A' &= p'_x + q'_x = 1 - \hat{F}_{d_{ij}}(a') + \hat{F}_{d_{XY}}(b) = \hat{F}_{d_{ij}}(b) - \hat{F}_{d_{ij}}(a') + \hat{F}_{d_{XY}}(b)
+\end{align}
+
+\noindent whose values lie in [0, 2].
 
 \subsection{A Bayesian Implementation}
 
