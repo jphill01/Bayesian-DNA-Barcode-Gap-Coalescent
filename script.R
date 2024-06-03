@@ -42,17 +42,33 @@ inter <- inter[, 2]
 
 ### MLEs ###
 
-# probabilities 
+# probabilities by species
 
-(p <- mean(intra >= min(inter)))
-(q <- mean(inter <= max(intra)))
-(p_prime <- mean(intra >= min(comb)))
-(q_prime <- mean(comb <= max(intra)))
+(p <- mean(intra1$x >= min(inter)))
+(q <- mean(inter <= max(intra1$x)))
+(p_prime <- mean(intra1$x >= min(comb1$x)))
+(q_prime <- mean(comb1$x <= max(intra1$x)))
 
 (log10_p <- log10(p))
 (log10_q <- log10(q))
 (log10_p_prime <- log10(p_prime))
 (log10_q_prime <- log10(q_prime))
+
+# ECDFs
+
+ecdf_intra1 <- ecdf(intra1$x)
+ecdf_intra2 <- ecdf(intra2$x)
+ecdf_comb1 <- ecdf(comb1$x)
+ecdf_comb2 <- ecdf(comb2$x)
+ecdf_inter <- ecdf(inter)
+
+par(mfrow = c(3, 2))
+
+plot(ecdf_intra1)
+plot(ecdf_intra2)
+plot(ecdf_comb1)
+plot(ecdf_comb2)
+plot(ecdf_inter)
 
 # SEs
 
