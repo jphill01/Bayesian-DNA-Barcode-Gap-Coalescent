@@ -70,6 +70,37 @@ plot(ecdf_comb1)
 plot(ecdf_comb2)
 plot(ecdf_inter)
 
+
+df1 <- data.frame(
+  x = intra1$x
+)
+
+df2 <- data.frame(
+  x = intra2$x
+)
+
+df3 <- data.frame(
+  x = inter
+)
+
+df4 <- data.frame(
+  x = comb1$x
+)
+
+df5 <- data.frame(
+  x = comb2$x
+)
+
+p1 <- ggplot(df1, aes(x)) + stat_ecdf() + xlab(expression(d[ij]))
+p2 <- ggplot(df2, aes(x)) + stat_ecdf() + xlab(expression(d[ij]))
+p3 <- ggplot(df3, aes(x)) + stat_ecdf() + xlab(expression(d[XY]))
+p4 <- ggplot(df4, aes(x)) + stat_ecdf() + xlab(expression(d*"'"[XY]))
+p5 <- ggplot(df5, aes(x)) + stat_ecdf() + xlab(expression(d*"'"[XY]))
+
+
+grid.arrange(p1, p2, p3, p4, p5)
+
+
 # SEs
 
 (SE_p <- sqrt(p * (1 - p) / length(intra)))
