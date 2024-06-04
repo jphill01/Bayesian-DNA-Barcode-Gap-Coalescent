@@ -49,27 +49,14 @@ inter <- inter[, 2]
 (p_prime <- mean(intra1$x >= min(comb1$x)))
 (q_prime <- mean(comb1$x <= max(intra1$x)))
 
-(log10_p <- log10(p))
-(log10_q <- log10(q))
-(log10_p_prime <- log10(p_prime))
-(log10_q_prime <- log10(q_prime))
+(p <- mean(intra2$x >= min(inter)))
+(q <- mean(inter <= max(intra2$x)))
+(p_prime <- mean(intra2$x >= min(comb2$x)))
+(q_prime <- mean(comb2$x <= max(intra2$x)))
+
+
 
 # ECDFs
-
-ecdf_intra1 <- ecdf(intra1$x)
-ecdf_intra2 <- ecdf(intra2$x)
-ecdf_comb1 <- ecdf(comb1$x)
-ecdf_comb2 <- ecdf(comb2$x)
-ecdf_inter <- ecdf(inter)
-
-par(mfrow = c(3, 2))
-
-plot(ecdf_intra1)
-plot(ecdf_intra2)
-plot(ecdf_comb1)
-plot(ecdf_comb2)
-plot(ecdf_inter)
-
 
 df1 <- data.frame(
   x = intra1$x
@@ -91,11 +78,11 @@ df5 <- data.frame(
   x = comb2$x
 )
 
-p1 <- ggplot(df1, aes(x)) + stat_ecdf() + xlab(expression(d[ij]))
-p2 <- ggplot(df2, aes(x)) + stat_ecdf() + xlab(expression(d[ij]))
-p3 <- ggplot(df3, aes(x)) + stat_ecdf() + xlab(expression(d[XY]))
-p4 <- ggplot(df4, aes(x)) + stat_ecdf() + xlab(expression(d*"'"[XY]))
-p5 <- ggplot(df5, aes(x)) + stat_ecdf() + xlab(expression(d*"'"[XY]))
+p1 <- ggplot(df1, aes(x)) + stat_ecdf() + xlab(expression(d[ij])) + geom_vline(xintercept = min(df1), color = "red") 
+p2 <- ggplot(df2, aes(x)) + stat_ecdf() + xlab(expression(d[ij])) + geom_vline(xintercept = min(df2), color = "red") 
+p3 <- ggplot(df3, aes(x)) + stat_ecdf() + xlab(expression(d[XY])) 
+p4 <- ggplot(df4, aes(x)) + stat_ecdf() + xlab(expression(d*"'"[XY])) + geom_vline(xintercept = max(df1), color = "red") 
+p5 <- ggplot(df5, aes(x)) + stat_ecdf() + xlab(expression(d*"'"[XY])) + geom_vline(xintercept = max(df2), color = "red") 
 
 
 grid.arrange(p1, p2, p3, p4, p5)
