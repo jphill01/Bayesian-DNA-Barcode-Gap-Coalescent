@@ -49,10 +49,10 @@
 For a given random variable $X$, its cumulative distribution function (CDF) is defined by
 
 \begin{align}
-F_X(t) = \mathbb{P}(X \leq t).
+F_X(t) = \mathbb{P}(X \leq t).= 1 - \mathbb{P}(X > t) 
 \end{align}
 
-\noindent Equations (1)-(4) within the main text can be expressed in terms of empirical cumulative distribution functions (ECDFs) as follows, since the true underlying CDFs, $F(\cdot)$, are \\ unknown \textit{a priori}. 
+\noindent Equations (1)-(4) within the main text can be expressed in terms of empirical cumulative distribution functions (ECDFs) as follows, since the true underlying CDFs, $F(\cdot)$, are \\ unknown \textit{a priori}: 
 
 \begin{align}
 p_x  &= \mathbb{P}(d_{ij} \geq a) \notag \\
@@ -60,9 +60,9 @@ p_x  &= \mathbb{P}(d_{ij} \geq a) \notag \\
      &= \hat{F}_{d_{ij}}(b) - \hat{F}_{d_{ij}}(a) +  \mathbb{P}(d_{ij} = a) \\[1ex]
 q_x  &=  \mathbb{P}(d_{XY} \leq b) \notag \\
      &= \hat{F}_{d_{XY}}(b) \\[1ex]
-p'_x &=  \mathbb{P}(d_{ij} \geq a') +  \mathbb{P}(d_{XY} = a) \notag \\
-     &= 1 - \hat{F}_{d_{ij}}(a') +  \mathbb{P}(d_{XY} = a) \notag \\
-     &= \hat{F}_{d_{ij}}(b) - \hat{F}_{d_{ij}}(a') +  \mathbb{P}(d_{XY} = a)  \\[1ex]
+p'_x &=  \mathbb{P}(d_{ij} \geq a') +  \mathbb{P}(d_{XY} = a') \notag \\
+     &= 1 - \hat{F}_{d_{ij}}(a') +  \mathbb{P}(d_{XY} = a') \notag \\
+     &= \hat{F}_{d_{ij}}(b) - \hat{F}_{d_{ij}}(a') +  \mathbb{P}(d_{XY} = a')  \\[1ex]
 q'_x &=  \mathbb{P}(d'_{XY} \leq b) \notag \\
      &= \hat{F}_{d'_{XY}}(b)
 \end{align}
