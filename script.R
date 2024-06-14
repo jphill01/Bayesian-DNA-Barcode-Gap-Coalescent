@@ -44,56 +44,73 @@ inter <- inter[, 2]
 
 # probabilities by species
 
-(p <- mean(intra1$x >= min(inter)))
-(q <- mean(inter <= max(intra1$x)))
-(p_prime <- mean(intra1$x >= min(comb1$x)))
-(q_prime <- mean(comb1$x <= max(intra1$x)))
+(p_1 <- mean(intra1$x >= min(inter)))
+(q_1 <- mean(inter <= max(intra1$x)))
+(p_prime_1 <- mean(intra1$x >= min(comb1$x)))
+(q_prime_1 <- mean(comb1$x <= max(intra1$x)))
 
-(p <- mean(intra2$x >= min(inter)))
-(q <- mean(inter <= max(intra2$x)))
-(p_prime <- mean(intra2$x >= min(comb2$x)))
-(q_prime <- mean(comb2$x <= max(intra2$x)))
+(p_2 <- mean(intra2$x >= min(inter)))
+(q_2 <- mean(inter <= max(intra2$x)))
+(p_prime_2 <- mean(intra2$x >= min(comb2$x)))
+(q_prime_2 <- mean(comb2$x <= max(intra2$x)))
+
+
+# Total area between p/q and p_prime/q_prime
+
+(A_1 <- p_1 + q_1)
+(A_prime_1 <- p_prime_1 + q_prime_1)
+
+(A_2 <- p_2 + q_2)
+(A_prime_2 <- p_prime_2 + q_prime_2)
+
+# SEs
+
+(SE_p_1 <- sqrt(p_1 * (1 - p_1) / length(intra1)))
+(SE_q_1 <- sqrt(q_1 * (1 - q_1) / length(inter)))
+(SE_p_prime_1 <- sqrt(p_prime_1 * (1 - p_prime_1) / length(intra1)))
+(SE_q_prime_1 <- sqrt(q_prime_1 * (1 - q_prime_1) / length(comb1)))
+
+
+(SE_p_2 <- sqrt(p_2 * (1 - p_2) / length(intra2)))
+(SE_q_2 <- sqrt(q_2 * (1 - q_2) / length(inter)))
+(SE_p_prime_2 <- sqrt(p_prime_2 * (1 - p_prime_2) / length(intra2)))
+(SE_q_prime_2 <- sqrt(q_prime_2 * (1 - q_prime_2) / length(comb2)))
+
+
+# 95% CIs
+
+p_1 + c(-1, 1) * qnorm(0.975) * SE_p_1
+q_1 + c(-1, 1) * qnorm(0.975) * SE_q_1
+p_prime_1 + c(-1, 1) * qnorm(0.975) * SE_p_prime_1
+q_prime_1 + c(-1, 1) * qnorm(0.975) * SE_q_prime_1
+
+
+p_2 + c(-1, 1) * qnorm(0.975) * SE_p_2
+q_2 + c(-1, 1) * qnorm(0.975) * SE_q_2
+p_prime_2 + c(-1, 1) * qnorm(0.975) * SE_p_prime_2
+q_prime_2 + c(-1, 1) * qnorm(0.975) * SE_q_prime_2
+
 
 
 
 # ECDFs
 
-df1 <- data.frame(
-  x = intra1$x
-)
+ecdf_intra1 <- ecdf(intra1$x)
+ecdf_intra2 <- ecdf(intra2$x)
+ecdf_inter <- ecdf(inter)
+ecdf_comb1 <- ecdf(comb1$x)
+ecdf_comb2 <- ecdf(comb2$x)
 
-df2 <- data.frame(
-  x = intra2$x
-)
+a <- min(inter)
+b <- max(intra1$x)
+a_prime <- min(comb1$x)
 
-df3 <- data.frame(
-  x = inter
-)
-
-df4 <- data.frame(
-  x = comb1$x
-)
-
-df5 <- data.frame(
-  x = comb2$x
-)
-
-p1 <- ggplot(df1, aes(x)) + stat_ecdf() + xlab(expression(d[ij])) + geom_vline(xintercept = min(df1), color = "red") 
-p2 <- ggplot(df2, aes(x)) + stat_ecdf() + xlab(expression(d[ij])) + geom_vline(xintercept = min(df2), color = "red") 
-p3 <- ggplot(df3, aes(x)) + stat_ecdf() + xlab(expression(d[XY])) 
-p4 <- ggplot(df4, aes(x)) + stat_ecdf() + xlab(expression(d*"'"[XY])) + geom_vline(xintercept = max(df1), color = "red") 
-p5 <- ggplot(df5, aes(x)) + stat_ecdf() + xlab(expression(d*"'"[XY])) + geom_vline(xintercept = max(df2), color = "red") 
+p_ecdf <- 1 - ecdf_intra1(a) + mean(intra1$x == min(inter))
+q_ecdf <- ecdf_inter(b)
+p_prime_ecdf <- 1 - ecdf_intra1(a_prime) + mean(intra1$x == min(comb1$x))
+q_prime_ecdf <- ecdf_comb1(b)
 
 
-grid.arrange(p1, p2, p3, p4, p5)
-
-
-# SEs
-
-(SE_p <- sqrt(p * (1 - p) / length(intra)))
-(SE_q <- sqrt(q * (1 - q) / length(inter)))
-(SE_p_prime <- sqrt(p_prime * (1 - p_prime) / length(intra)))
-(SE_q_prime <- sqrt(q_prime * (1 - q_prime) / length(comb)))
 
 
 # counts
