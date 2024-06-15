@@ -49,10 +49,16 @@
 For a given random variable $X$, its cumulative distribution function (CDF) is defined by
 
 \begin{align}
-F_X(t) = \mathbb{P}(X \leq t) = 1 - \mathbb{P}(X > t) 
+F_X(t) = \mathbb{P}(X \leq t) = 1 - \mathbb{P}(X > t). 
 \end{align}
 
-\noindent Equations (1)-(4) within the main text can be expressed in terms of empirical cumulative distribution functions (ECDFs) as follows, since the true underlying CDFs, $F(\cdot)$, are \\ unknown \textit{a priori}, and therefore must be estimated using available data:
+\noindent Rearranging Equation (1) gives
+
+\begin{align}
+\mathbb{P}(X > t) = 1 - F_X(t).
+\end{align}
+
+Equations (1)-(4) within the main text can thus be expressed in terms of empirical cumulative distribution functions (ECDFs) as follows, since the true underlying CDFs, $F(\cdot)$, are unknown \textit{a priori}, and therefore must be estimated using available data:
 
 \begin{align}
 p_x  &= \mathbb{P}(d_{ij} \geq a) \notag \\
@@ -67,7 +73,7 @@ q'_x &=  \mathbb{P}(d'_{XY} \leq b) \notag \\
      &= \hat{F}_{d'_{XY}}(b)
 \end{align}
 
-\noindent noting that $\mathbb{P}(d_{ij} \geq b) = \hat{F}_{d_{ij}}(b) +\mathbb{P}(d_{ij} = b) = 0$, $\mathbb{P}(d_{XY} \leq a) = \hat{F}_{d_{XY}}(a) = 0$, and \\ $\mathbb{P}(d'_{XY} \leq a') = \hat{F}_{d'_{XY}}(a') = 0$ (see \textbf{Figure 1} in main text). Given $n$ increasing-ordered data points, the (discrete) ECDF, $\hat{F}_n(t) = \frac{1}{n}\sum_{i = 1}^n\mathds{1}_{[x_i \leq t]}$, comprises a step function having jump \\ discontinuities of size $\frac{1}{n}$ at each sample observation ($x_i$), excluding ties (or steps of weight $\frac{i}{n}$ with tied observations), where $\mathds{1}(x)$ is the indicator function. Equations (2)-(5) herein clearly demonstrate the asymmetric directionality of the proposed metrics. Furthermore, calculation of the DNA barcode gap estimators given in the main text is straightforward as they implicitly account for both total distribution area and overlap. Nevertheless, the total areas bounded by intraspecific and interspecific distributions on [$a$, $b$], and combined distributions on [$a'$, $b$] (see \textbf{Figure 1} in the main text) are given by
+\noindent noting that $\mathbb{P}(d_{ij} \geq b) = \hat{F}_{d_{ij}}(b) +\mathbb{P}(d_{ij} = b) = 0$, $\mathbb{P}(d_{XY} \leq a) = \hat{F}_{d_{XY}}(a) = 0$, and \\ $\mathbb{P}(d'_{XY} \leq a') = \hat{F}_{d'_{XY}}(a') = 0$ (see \textbf{Figure 1} in main text). Given $n$ increasing-ordered data points, the (discrete) ECDF, $\hat{F}_n(t) = \frac{1}{n}\sum_{i = 1}^n\mathds{1}_{[x_i \leq t]}$, comprises a step function having jump \\ discontinuities of size $\frac{1}{n}$ at each sample observation ($x_i$), excluding ties (or steps of weight $\frac{i}{n}$ with tied observations), where $\mathds{1}(x)$ is the indicator function. Equations (3)-(6) herein clearly demonstrate the asymmetric directionality of the proposed metrics. Furthermore, calculation of the DNA barcode gap estimators given in the main text is straightforward as they implicitly account for both total distribution area and overlap. Nevertheless, the total areas bounded by intraspecific and interspecific distributions on [$a$, $b$], and combined distributions on [$a'$, $b$] (see \textbf{Figure 1} in the main text) are given by
 
 \begin{align}
 \notag A &= p_x + q_x \\ 
