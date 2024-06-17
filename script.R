@@ -132,7 +132,7 @@ fit <- stan("DNA_barcode_gap.stan",
             control = list(adapt_delta = 0.80,
                            max_treedepth = 10))
 
-print(fit, digits_summary = 6)
+print(fit, digits_summary = 3)
 
 traceplot(fit, pars = c("p_lwr", 
                         "p_upr", 
