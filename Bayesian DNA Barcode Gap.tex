@@ -146,7 +146,7 @@ The proposed Bayesian model outlined herein has a straightforward interpretation
 
 \section{Case Study}
 
-Herein, the \textit{Agabus} CYTB dataset analyzed by \citet{phillips2024measure} is revisited. \\ Specifically, the proposed Bayesian model is demonstrated on the species \textit{A. bipustulatus} and \textit{A. nevadensis}, since these taxa were represented by the most and the least specimen records, respectively ($n$ = 701 and $n$ = 2) following sequence processing using the R package {\tt MACER} \cite{young2021macer} detailed in \citet{phillips2024measure}. DNA barcode gap estimation is only possible for species having at least two specimen records.
+Herein, the \textit{Agabus} CYTB dataset analyzed by \citet{phillips2024measure} is revisited. \\ Specifically, the proposed Bayesian model is demonstrated on the species \textit{A. bipustulatus} and \textit{A. nevadensis}, since these taxa were represented by the most and the least specimen records, respectively ($n$ = 701 and $n$ = 2) following sequence processing using the R package {\tt MACER} \cite{young2021macer} detailed in \citet{phillips2024measure}. DNA barcode gap estimation is only possible for species having at least two specimen records. This dataset is a prime illustrative example since the two considered species are each other's nearest neighbour.
 
 
 
@@ -226,13 +226,17 @@ JDP wrote the manuscript, wrote R and Stan code, as well as analysed and interpr
 
 \centering
 
-\begin{tabular}{ccc} \hline
+\begin{tabular}{cccc} \hline
 
-\textbf{Parameter} & \textbf{MLE (95\% CI)} & \textbf{Bayes Est. (95\% CrI)} \\  \hline
-$p_x/p_\mathrm{lwr}$ & & \\
-$q_x/p_\mathrm{upr}$ & & \\
-$p^{'}_x/p^{'}_\mathrm{lwr}$ & & \\
-$q^{'}_x/p^{'}_\mathrm{upr}$ & & \\
+\textbf{Species} & \textbf{Parameter} & \textbf{MLE (95\% CI)} & \textbf{Bayes Est. (95\% CrI)} \\  \hline
+\textit{A. bipustulatus} & $p_x/p_\mathrm{lwr}$ & 1 (1, 1) & \\
+\textit{A. bipustulatus} & $q_x/p_\mathrm{upr}$ & 1 (1, 1) & \\
+\textit{A. bipustulatus} & $p^{'}_x/p^{'}_\mathrm{lwr}$ & 1 (1, 1) & \\
+\textit{A. bipustulatus} & $q^{'}_x/p^{'}_\mathrm{upr}$ & 1 (1, 1) & \\
+\textit{A. nevadensis} & $p_x/p_\mathrm{lwr}$ & 1 (1, 1) & \\
+\textit{A. nevadensis} & $q_x/p_\mathrm{upr}$ & 0.010 (0.006, 0.014)  & \\
+\textit{A. nevadensis} &  $p^{'}_x/p^{'}_\mathrm{lwr}$ & 1 (1, 1) & \\
+\textit{A. nevadensis} &  $q^{'}_x/q^{'}_\mathrm{upr}$ & 0.010 (-0.128, 0.148) & \\
 \hline
 
 \end{tabular}

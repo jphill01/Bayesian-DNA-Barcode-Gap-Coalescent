@@ -127,6 +127,7 @@ fit <- stan("DNA_barcode_gap.stan",
             data = list(K = K, M = M, N = N, intra = intra, inter = inter, C = C, comb = comb), 
             chains = 4,
             iter = 2000,
+            seed = 123,
             algorithm = "NUTS",
             control = list(adapt_delta = 0.80,
                            max_treedepth = 10))
