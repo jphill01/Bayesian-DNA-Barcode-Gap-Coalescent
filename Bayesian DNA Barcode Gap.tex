@@ -132,7 +132,7 @@ y^{'}_\mathrm{lwr} &\sim \mathrm{Binomial}(N, p^{'}_\mathrm{lwr}) \\
 
 \noindent Note that $p_x$, $q_x$, $p^{'}_x$, and $q^{'}_x$ are denoted $p_\mathrm{lwr}$, $p_\mathrm{upr}$, $p^{'}_\mathrm{lwr}$, $q^{'}_\mathrm{upr}$ for distinction between MLEs and Bayesian posterior estimates.
 
-The model, which is inherently vectorized to allow processing of multiple species datasets simultaneously, was fitted using the Stan probabilistic programming language  \citep{carpenter2017stan} framework for Hamiltonian Monte Carlo (HMC) via the No-U-Turn Sampler (NUTS) sampling algorithm \citep{hoffman2014no} through the {\tt rstan} R package \citep{stan2023rstan}. Four Markov chains were run for 2000 iterations each in parallel across four cores with random parameter initializations. Within each chain, a total of 1000 samples was discarded as warmup (\textit{i.e.}, burnin) to reduce dependence on starting conditions and to ensure posterior samples are reflective of the equilibrium distribution. Further, 1000 post-warmup draws were utilized per chain. Because HMC/NUTS results in dependent samples that are minimally autocorrelated, chain thinning is not required. Each of these reflect default Markov Chain Monte Carlo (MCMC) settings in Stan to control both bias and variance in the resulting draws. 
+The model, which is inherently vectorized to allow processing of multiple species datasets simultaneously, was fitted using the Stan probabilistic programming language  \citep{carpenter2017stan} framework for Hamiltonian Monte Carlo (HMC) via the No-U-Turn Sampler (NUTS) sampling algorithm \citep{hoffman2014no} through the {\tt rstan} R package \citep{stan2023rstan}. Four Markov chains were run for 2000 iterations each in parallel across four cores with random parameter initializations. Within each chain, a total of 1000 samples was discarded as warmup (\textit{i.e.}, burnin) to reduce dependence on starting conditions and to ensure posterior samples are reflective of the equilibrium distribution. Further, 1000 post-warmup draws were utilized per chain. Because HMC/NUTS results in dependent samples that are minimally autocorrelated, chain thinning is not required. Each of these reflect default Markov Chain Monte Carlo (MCMC) settings in Stan to control both bias and variance in the resulting draws. A random seed was set to ensure reproducibility of model results.
 
 Since the DNA barcode gap metrics often attain values very close to zero (suggesting no overlap and complete separation of pairwise genetic distance distributions) and/or very near one (indicating no separation and complete overlap), in addition to more intermediate values, a noninformative Beta($\frac{1}{2}, \frac{1}{2}$) prior, which is U-shaped symmetric and places greater probability density at the extremes of the distribution due to its heavier tails, while still allowing for variability in parameter estimates within intermediate values along its domain, was also attempted. However, this resulted in several divergent transitions, among other pathologies, imposed by complex geometry (\textit{i.e.}, curvature) in the posterior space, despite remedies to resolve them, such as lowering the step size of the HMC/NUTS sampler. Note that this prior is Jeffreys' prior, which is proportional to the square root of the Fisher information and has several desirable statistical properties, most notably invariance to model reparameterization. 
 
@@ -227,7 +227,7 @@ JDP wrote the manuscript, wrote R and Stan code, as well as analysed and interpr
 
 \includegraphics[width=0.80\textwidth]{Figure 2}
 
-\caption{MCMC parameter traceplots applied to \textit{A. bipustulatus} and \textit{A. nevadensis} for CYTB across 2000 iterations.}
+\caption{MCMC parameter traceplots applied to \textit{A. bipustulatus} ([1]) and \textit{A. nevadensis} ([2]) for CYTB across 2000 iterations.}
 
 \end{figure}
 
@@ -238,25 +238,45 @@ JDP wrote the manuscript, wrote R and Stan code, as well as analysed and interpr
 
 \centering
 
+\caption{Nonparametric frequentist and Bayesian estimates of pairwise genetic distance distribution overlap/separation for the DNA barcode gap coalescent model parameters applied to \textit{A. bipustulatus} and \textit{A. nevadensis} for CYTB, including 95\%  CIs and CrIs. CrIs are based on 4000 posterior draws. All parameter estimates are reported to three decimal places of precision.}
+
 \begin{tabular}{cccc} \hline
 
 \textbf{Species} & \textbf{Parameter} & \textbf{MLE (95\% CI)} & \textbf{Bayes Est. (95\% CrI)} \\  \hline
-\textit{A. bipustulatus} & $p_x/p_\mathrm{lwr}$ & 1.000 (1.000, 1.000) &   \\
-\textit{A. bipustulatus} & $q_x/p_\mathrm{upr}$ & 1.000 (1.000, 1.000) &  \\
-\textit{A. bipustulatus} & $p^{'}_x/p^{'}_\mathrm{lwr}$ & 1.000 (1.000, 1.000) &   \\
-\textit{A. bipustulatus} & $q^{'}_x/p^{'}_\mathrm{upr}$ & 1.000 (1.000, 1.000) &  \\
-\textit{A. nevadensis} & $p_x/p_\mathrm{lwr}$ & 1.000 (1.000, 1.000) &  \\
-\textit{A. nevadensis} & $q_x/p_\mathrm{upr}$ & 0.010 (0.006, 0.014) & \\
-\textit{A. nevadensis} &  $p^{'}_x/p^{'}_\mathrm{lwr}$ & 1.000 (1.000, 1.000) &  \\
-\textit{A. nevadensis} &  $q^{'}_x/q^{'}_\mathrm{upr}$ & 0.010 (-0.128, 0.148) &  \\
+\textit{A. bipustulatus} & $p_x/p_\mathrm{lwr}$ & 1.000 (1.000, 1.000) & 1.000 (1.000, 1.000) \\
+\textit{A. bipustulatus} & $q_x/p_\mathrm{upr}$ & 1.000 (1.000, 1.000) & 1.000 (0.999, 1.000) \\
+\textit{A. bipustulatus} & $p^{'}_x/p^{'}_\mathrm{lwr}$ & 1.000 (1.000, 1.000) & 1.000 (1.000, 1.000)  \\
+\textit{A. bipustulatus} & $q^{'}_x/p^{'}_\mathrm{upr}$ & 1.000 (1.000, 1.000) & 1.000 (0.999, 1.000) \\
+\textit{A. nevadensis} & $p_x/p_\mathrm{lwr}$ & 1.000 (1.000, 1.000) & 0.835 (0.470, 0.996) \\
+\textit{A. nevadensis} & $q_x/p_\mathrm{upr}$ & 0.010 (0.006, 0.014) & 0.010 (0.007, 0.014) \\
+\textit{A. nevadensis} &  $p^{'}_x/p^{'}_\mathrm{lwr}$ & 1.000 (1.000, 1.000) & 0.834 (0.481, 0.994) \\
+\textit{A. nevadensis} &  $q^{'}_x/q^{'}_\mathrm{upr}$ & 0.010 (-0.128, 0.148) & 0.010 (0.007, 0.014) \\
 \hline
 
 \end{tabular}
 
-\caption{Nonparametric frequentist and Bayesian estimates of pairwise genetic distance distribution overlap/separation for the DNA barcode gap coalescent model parameters applied to \textit{A. bipustulatus} and \textit{A. nevadensis} for CYTB, including 95\% confidence and credible intervals. CrIs are based on 4000 posterior draws. All parameter estimates are reported to three decimal places of precision.}
-
 \end{table}
 
 
+\begin{figure}[H]
+
+\centering
+
+\includegraphics[width=0.80\textwidth]{Figure 3}
+
+\caption{Bayesian posterior draws (black solid points) for \textit{A. bipustulatus} across CYTB. MLEs and posterior means are displayed as coloured (red/blue) solid and dashed lines for the metrics, respectively.}
+
+\end{figure}
+
+
+\begin{figure}[H]
+
+\centering
+
+\includegraphics[width=0.80\textwidth]{Figure 4}
+
+\caption{Bayesian posterior draws (black solid points) for \textit{A. nevadensis} across CYTB. MLEs and posterior means are displayed as coloured (red/blue) solid and dashed lines for the metrics, respectively.}
+
+\end{figure}
 
 \end{document}

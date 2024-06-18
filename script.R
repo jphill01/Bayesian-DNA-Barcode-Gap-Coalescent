@@ -152,7 +152,7 @@ plot1 <- ggplot(post, aes(x = p_lwr.1, y = p_upr.1)) +
   geom_hline(yintercept = q_1, color = "blue") + # MLE for q
   geom_vline(xintercept = mean(as.numeric(post$p_lwr.1)), color = "red", lty = 2) + # posterior mean for p_lwr
   geom_hline(yintercept = mean(as.numeric(post$p_upr.1)), color = "blue", lty = 2) + # posterior mean for p_upr
-  ggtitle(expression(p[lwr]*" vs. "*p[upr]))
+  ggtitle(expression(italic("A. bipustulatus") ~ p[lwr]*" vs. "*p[upr]))
 
 plot2 <- ggplot(post, aes(x = p_lwr_prime.1, y = p_upr_prime.1)) +
   geom_point() +
@@ -162,7 +162,34 @@ plot2 <- ggplot(post, aes(x = p_lwr_prime.1, y = p_upr_prime.1)) +
   geom_hline(yintercept = q_prime_1, color = "blue") +
   geom_vline(xintercept = mean(as.numeric(post$p_lwr_prime.1)), color = "red", lty = 2) + # posterior mean for p_lwr_prime
   geom_hline(yintercept = mean(as.numeric(post$p_upr_prime.1)), color = "blue", lty = 2) + # posterior mean for p_upr_prime
-  ggtitle(expression(p[lwr]*"'"*" vs. "*p[upr]*"'"))
+  ggtitle(expression(italic("A. bipustulatus") ~ p[lwr]*"'"*" vs. "*p[upr]*"'"))
+
+
+print(plot1)
+print(plot2)
+
+grid.arrange(plot1, plot2, ncol = 1)
+
+
+plot1 <- ggplot(post, aes(x = p_lwr.2, y = p_upr.2)) +
+  geom_point() +
+  xlab(expression(p[lwr])) +
+  ylab(expression(p[upr])) +
+  geom_vline(xintercept = p_2, color = "red") + # MLE for p
+  geom_hline(yintercept = q_2, color = "blue") + # MLE for q
+  geom_vline(xintercept = mean(as.numeric(post$p_lwr.2)), color = "red", lty = 2) + # posterior mean for p_lwr
+  geom_hline(yintercept = mean(as.numeric(post$p_upr.2)), color = "blue", lty = 2) + # posterior mean for p_upr
+  ggtitle(expression(italic("A. nevadensis") ~ p[lwr]*" vs. "*p[upr]))
+
+plot2 <- ggplot(post, aes(x = p_lwr_prime.2, y = p_upr_prime.2)) +
+  geom_point() +
+  xlab(expression(p[lwr]*"'")) +
+  ylab(expression(p[upr]*"'")) +
+  geom_vline(xintercept = p_prime_2, color = "red") + 
+  geom_hline(yintercept = q_prime_2, color = "blue") +
+  geom_vline(xintercept = mean(as.numeric(post$p_lwr_prime.2)), color = "red", lty = 2) + # posterior mean for p_lwr_prime
+  geom_hline(yintercept = mean(as.numeric(post$p_upr_prime.2)), color = "blue", lty = 2) + # posterior mean for p_upr_prime
+  ggtitle(expression(italic("A. nevadensis") ~ p[lwr]*"'"*" vs. "*p[upr]*"'"))
 
 
 print(plot1)
