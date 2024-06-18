@@ -115,10 +115,15 @@ q_prime_ecdf <- ecdf_comb1(b)
 
 # counts
 
-N * p
-M * q
-N * p_prime
-C * q_prime
+N[1] * p_1
+M * q_1
+N[1] * p_prime_1
+C[1] * q_prime_1
+
+N[2] * p_2
+M * q_2
+N[2] * p_prime_2
+C[2] * q_prime_2
 
 
 ### Posterior Estimates ####
@@ -229,5 +234,24 @@ combined_plots <- list(p1, p2, p3, p4)
 names(combined_plots) <- c("p_lwr", "p_upr", "p_lwr_prime", "p_upr_prime")
 
 grid.arrange(grobs = combined_plots, ncol = 2)
+
+
+
+
+plot1 <- ggplot(post, aes(x = p_lwr.1, y = p_upr.1)) +
+  geom_point() +
+  xlab(expression(p[lwr])) +
+  ylab(expression(p[upr])) +
+  geom_vline(xintercept = A_1, color = "red") + # MLE for p
+  geom_hline(yintercept = A_prime_1, color = "blue") + # MLE for q
+  geom_vline(xintercept = mean(as.numeric(post$A.1)), color = "red", lty = 2) + # posterior mean for p_lwr
+  geom_hline(yintercept = mean(as.numeric(post$A_prime.1)), color = "blue", lty = 2) + # posterior mean for p_upr
+  ggtitle(expression(italic("A. bipustulatus") ~ p[lwr]*" vs. "*p[upr]))
+
+
+
+print(plot1)
+
+grid.arrange(plot1, ncol = 1)
 
 
