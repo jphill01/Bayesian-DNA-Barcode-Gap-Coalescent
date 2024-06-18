@@ -146,9 +146,9 @@ The proposed Bayesian model outlined herein has a straightforward interpretation
 
 \section{Case Study}
 
-Herein, the \textit{Agabus} CYTB dataset analyzed by \citet{phillips2024measure} is revisited. \\ Specifically, the proposed Bayesian model is demonstrated on the species \textit{A. bipustulatus} and \textit{A. nevadensis}, since these taxa were the sole representatives for this locus, with the most and the least specimen records, respectively ($n$ = 701 and $n$ = 2) across all three assessed molecular markers. Note, DNA barcode gap estimation is only possible for species having at least two specimen records. This dataset is a prime illustrative example in several respects. First, from a statistical viewpoint, sample sizes reflect extremes in reliable parameter estimation. Second, from a DNA barcoding perspective, \textit{Agabus} comprises about 200 extant species according to the Global Biodiversity Information Facility (GBIF); yet, due to the level of convenience sampling inherent in taxonomic collection efforts for this genus, adequate representation is far from being fully realized. Bayesian posterior estimates were reported alongside frequentist MLEs.
+Herein, the \textit{Agabus} CYTB dataset analyzed by \citet{phillips2024measure} is revisited. \\ Specifically, the proposed Bayesian model is demonstrated on the species \textit{A. bipustulatus} and \textit{A. nevadensis}, since these taxa were the sole representatives for this locus, with the most and the least specimen records, respectively ($n$ = 701 and $n$ = 2) across all three assessed molecular markers. Note, DNA barcode gap estimation is only possible for species having at least two specimen records. This dataset is a prime illustrative example in several respects. First, from a statistical viewpoint, sample sizes reflect extremes in reliable parameter estimation. Second, from a DNA barcoding perspective, \textit{Agabus} comprises about 200 extant species according to the Global Biodiversity Information Facility (GBIF); yet, due to the level of convenience sampling inherent in taxonomic collection efforts for this genus, adequate representation is far from being fully realized. 
 
-
+MCMC parameter traceplots showed rapid mixing of chains to the stationary distribution (\textbf{Figure 2}).  Bayesian posterior estimates were reported alongside frequentist MLEs, in addition to 95\% CIs and CrIs (\textbf{Table 2}). Findings based on nonparametric MLEs and Bayseian posterior means show evidence of complete overlap in pairwise intraspecific, \\ interspecific, and combined genetic distances for \textit{A. bipustulatus} in both the $p$/$q$ and $p'$/$q'$ directions. As a result, this likely indicates that no DNA barcode gap is present for this species. Such findings are strongly reinforced by the very tight interval estimates owing to the large number of specimens sampled. On the other hand, the situation for \textit{A. nevadensis} is more nuanced.
 
 \section{Discussion}
 
@@ -227,7 +227,7 @@ JDP wrote the manuscript, wrote R and Stan code, as well as analysed and interpr
 
 \includegraphics[width=0.80\textwidth]{Figure 2}
 
-\caption{MCMC parameter traceplots applied to \textit{A. bipustulatus} ([1]) and \textit{A. nevadensis} ([2]) for CYTB across 2000 iterations.}
+\caption{MCMC parameter traceplots applied to \textit{A. bipustulatus} ([1]; $n$ = 701) and \textit{A. nevadensis} ([2]; $n$ = 2)) for CYTB across 2000 iterations.}
 
 \end{figure}
 
@@ -238,7 +238,7 @@ JDP wrote the manuscript, wrote R and Stan code, as well as analysed and interpr
 
 \centering
 
-\caption{Nonparametric frequentist and Bayesian estimates of pairwise genetic distance distribution overlap/separation for the DNA barcode gap coalescent model parameters applied to \textit{A. bipustulatus} and \textit{A. nevadensis} for CYTB, including 95\%  CIs and CrIs. CrIs are based on 4000 posterior draws. All parameter estimates are reported to three decimal places of precision.}
+\caption{Nonparametric frequentist and Bayesian estimates of pairwise genetic distance distribution overlap/separation for the DNA barcode gap coalescent model parameters applied to \textit{A. bipustulatus} $n$ = 701) and \textit{A. nevadensis} $n$ = 2) for CYTB, including 95\%  CIs and CrIs. CrIs are based on 4000 posterior draws. All parameter estimates are reported to three decimal places of precision.}
 
 \begin{tabular}{cccc} \hline
 
@@ -264,7 +264,7 @@ JDP wrote the manuscript, wrote R and Stan code, as well as analysed and interpr
 
 \includegraphics[width=0.80\textwidth]{Figure 3}
 
-\caption{Bayesian posterior draws (black solid points) for \textit{A. bipustulatus} across CYTB. MLEs and posterior means are displayed as coloured (red/blue) solid and dashed lines for the metrics, respectively.}
+\caption{Bayesian posterior draws (black solid points) for \textit{A. bipustulatus} ($n$ = 701) across CYTB. MLEs and posterior means are displayed as coloured (red/blue) solid and dashed lines for the metrics, respectively.}
 
 \end{figure}
 
@@ -275,7 +275,7 @@ JDP wrote the manuscript, wrote R and Stan code, as well as analysed and interpr
 
 \includegraphics[width=0.80\textwidth]{Figure 4}
 
-\caption{Bayesian posterior draws (black solid points) for \textit{A. nevadensis} across CYTB. MLEs and posterior means are displayed as coloured (red/blue) solid and dashed lines for the metrics, respectively.}
+\caption{Bayesian posterior draws (black solid points) for \textit{A. nevadensis} ($n$ = 2) across CYTB. MLEs and posterior means are displayed as coloured (red/blue) solid and dashed lines for the metrics, respectively.}
 
 \end{figure}
 
