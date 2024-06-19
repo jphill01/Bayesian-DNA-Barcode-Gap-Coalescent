@@ -148,7 +148,7 @@ The proposed Bayesian model outlined herein has a straightforward interpretation
 
 Herein, the \textit{Agabus} CYTB dataset analyzed by \citet{phillips2024measure} is revisited. \\ Specifically, the proposed Bayesian model is demonstrated on the species \textit{A. bipustulatus} and \textit{A. nevadensis}, since these taxa were the sole representatives for this locus, with the most and the least specimen records, respectively ($n$ = 701 and $n$ = 2) across all three assessed molecular markers. Note, DNA barcode gap estimation is only possible for species having at least two specimen records. This dataset is a prime illustrative example in several respects. First, from a statistical viewpoint, sample sizes reflect extremes in reliable parameter estimation. Second, from a DNA barcoding perspective, \textit{Agabus} comprises about 200 extant species according to the Global Biodiversity Information Facility (GBIF); yet, due to the level of convenience sampling inherent in taxonomic collection efforts for this genus, adequate representation is far from being fully realized. 
 
-MCMC parameter traceplots showed rapid mixing of chains to the stationary distribution (\textbf{Figure 2}). Further, all $\hat{R}$ and ESS values (not shown) were close to their cutoffs of one and thousands of samples.  Bayesian posterior estimates were reported alongside frequentist MLEs, in addition to 95\% CIs and CrIs (\textbf{Table 2}). Findings based on nonparametric MLEs and Bayesian posterior means show evidence of complete overlap in pairwise intraspecific, interspecific, and combined genetic distances for \textit{A. bipustulatus} in both the $p$/$q$ and $p'$/$q'$ directions. As a result, this likely indicates that no DNA barcode gap is present for this species. Such findings are strongly reinforced by the very tight clustering of posterior draws (\textbf{Figure 3}) interval estimates owing to the large number of specimens sampled for this species. On the other hand, the situation for \textit{A. nevadensis} is more nuanced, as posterior values are more spread out (\textbf{Table 2} and \textbf{Figure 4}), suggesting less overall certainty in true parameter values given the low specimen sampling coverage for this taxon. Simulated counts of overlapping specimen records from the posterior predictive distribution were found to be very close to observed counts for both species, indicating that the proposed model adequately captures underlying variation. 
+MCMC parameter traceplots showed rapid mixing of chains to the stationary distribution (\textbf{Figure 2}). Further, all $\hat{R}$ and ESS values (not shown) were close to their cutoffs of one and thousands of samples.  Bayesian posterior estimates were reported alongside frequentist MLEs, in addition to SEs, SDs 95\% CIs and CrIs (\textbf{Table 2}). Findings based on \\ nonparametric MLEs and Bayesian posterior means show evidence of complete overlap in pairwise intraspecific, interspecific, and combined genetic distances for \textit{A. bipustulatus} in both the $p$/$q$ and $p'$/$q'$ directions. As a result, this likely indicates that no DNA barcode gap is present for this species. Such findings are strongly reinforced by the very tight clustering of posterior draws (\textbf{Figure 3}) interval estimates owing to the large number of specimens sampled for this species. On the other hand, the situation for \textit{A. nevadensis} is more nuanced, as posterior values are more spread out (\textbf{Table 2} and \textbf{Figure 4}), suggesting less overall certainty in true parameter values given the low specimen sampling coverage for this taxon. Of note, the 95\% CI for $q{'}_x$ extends to negative values at the left endpoint, due to the correponding SE of 0.070 being too high as a result of the extremely low sample size of $n$ = 2 individuals sampled. (\textbf{Table 2}). Simulated counts of overlapping specimen records from the posterior predictive distribution (not shown) were found to be very close to observed counts for both species, indicating that the proposed model adequately captures underlying variation. 
 
 \section{Discussion}
 
@@ -242,26 +242,19 @@ JDP wrote the manuscript, wrote R and Stan code, as well as analysed and interpr
 
 \begin{tabular}{cccc} \hline
 
-\textbf{Species} & \textbf{Parameter} & \textbf{MLE (95\% CI)} & \textbf{Bayes Est. (95\% CrI)} \\  \hline
-\textit{A. bipustulatus} & $p_x/p_\mathrm{lwr}$ & 1.000 (1.000, 1.000) & 1.000 (1.000, 1.000) \\
-\textit{A. bipustulatus} & $q_x/p_\mathrm{upr}$ & 1.000 (1.000, 1.000) & 1.000 (0.999, 1.000) \\
-\textit{A. bipustulatus} & $p^{'}_x/p^{'}_\mathrm{lwr}$ & 1.000 (1.000, 1.000) & 1.000 (1.000, 1.000)  \\
-\textit{A. bipustulatus} & $q^{'}_x/p^{'}_\mathrm{upr}$ & 1.000 (1.000, 1.000) & 1.000 (0.999, 1.000) \\
+\textbf{Species} & \textbf{Parameter} & \textbf{MLE (SE; 95\% CI)} & \textbf{Bayes Est. (SD; 95\% CrI)} \\  \hline
+\textit{A. bipustulatus} & $p_x/p_\mathrm{lwr}$ & 1.000 (0.000; 1.000-1.000) & 1.000 (0.000; 1.000-1.000) \\
+\textit{A. bipustulatus} & $q_x/p_\mathrm{upr}$ & 1.000 (0.000; 1.000-1.000) & 1.000 (0.000L 0.999-1.000) \\
+\textit{A. bipustulatus} & $p^{'}_x/p^{'}_\mathrm{lwr}$ & 1.000 (0.000; 1.000-1.000) & 1.000 (0.000; 1.000-1.000)  \\
+\textit{A. bipustulatus} & $q^{'}_x/p^{'}_\mathrm{upr}$ & 1.000 (0.000; 1.000-1.000) & 1.000 (0.000; 0.999-1.000) \\
 
-\textit{A. bipustulatus} & $y_\mathrm{lwr}$ & 491401.000 & 491400.018 (491396.000, 491401.000) \\
-\textit{A. bipustulatus} & $y_\mathrm{upr}$ & 2804.000 & 2803.019 (2799.000, 2804.000) \\
-\textit{A. bipustulatus} & $y^{'}_\mathrm{lwr}$ & 491401.000 & 491400.008 (491396.000, 491401.000) \\
-\textit{A. bipustulatus} & $y^{'}_\mathrm{upr}$ & 2804.000 & 2802.992 (2799.000, 2804.000) \\
 
-\textit{A. nevadensis} & $p_x/p_\mathrm{lwr}$ & 1.000 (1.000, 1.000) & 0.835 (0.470, 0.996) \\
-\textit{A. nevadensis} & $q_x/p_\mathrm{upr}$ & 0.010 (0.006, 0.014) & 0.010 (0.007, 0.014) \\
-\textit{A. nevadensis} &  $p^{'}_x/p^{'}_\mathrm{lwr}$ & 1.000 (1.000, 1.000) & 0.834 (0.481, 0.994) \\
-\textit{A. nevadensis} &  $q^{'}_x/q^{'}_\mathrm{upr}$ & 0.010 (-0.128, 0.148) & 0.010 (0.007, 0.014) \\
+\textit{A. nevadensis} & $p_x/p_\mathrm{lwr}$ & 1.000 (0.000; 1.000-1.000) & 0.835 (0.144; 0.470-0.996) \\
+\textit{A. nevadensis} & $q_x/p_\mathrm{upr}$ & 0.010 (0.002; 0.006-0.014) & 0.010 (0.002; 0.007-0.014) \\
+\textit{A. nevadensis} &  $p^{'}_x/p^{'}_\mathrm{lwr}$ & 1.000 (0.000; 1.000-1.000) & 0.834 (0.138; 0.481-0.994) \\
+\textit{A. nevadensis} &  $q^{'}_x/q^{'}_\mathrm{upr}$ & 0.010 (0.070; -0.128-0.148) & 0.010 (0.002; 0.007-0.014) \\
 
-\textit{A. nevadensis} & $y_\mathrm{lwr}$ & 4.000 & 3.355 (1.000, 4.000) \\
-\textit{A. nevadensis} & $y_\mathrm{upr}$ & 28.000  & 29.151 (16.000, 45.000) \\
-\textit{A. nevadensis} & $y^{'}_\mathrm{lwr}$ & 4.000 & 3.325 (1.000, 4.000) \\
-\textit{A. nevadensis} & $y^{'}_\mathrm{upr}$ & 28.000  & 28.942 (15.000, 45.000)  \\
+
 
 
 \hline
@@ -278,7 +271,7 @@ JDP wrote the manuscript, wrote R and Stan code, as well as analysed and interpr
 
 \includegraphics[width=0.80\textwidth]{Figure 3}
 
-\caption{Bayesian posterior draws (black solid points) for \textit{A. bipustulatus} ($n$ = 701) across CYTB. MLEs and posterior means are displayed as coloured (red/blue) solid and dashed lines for the metrics, respectively.}
+\caption{Bayesian posterior draws ($n$ = 4000; black solid points) for \textit{A. bipustulatus} ($n$ = 701) across CYTB. MLEs and posterior means are displayed as coloured (red/blue) solid and dashed lines for the metrics, respectively.}
 
 \end{figure}
 
@@ -289,7 +282,7 @@ JDP wrote the manuscript, wrote R and Stan code, as well as analysed and interpr
 
 \includegraphics[width=0.80\textwidth]{Figure 4}
 
-\caption{Bayesian posterior draws (black solid points) for \textit{A. nevadensis} ($n$ = 2) across CYTB. MLEs and posterior means are displayed as coloured (red/blue) solid and dashed lines for the metrics, respectively.}
+\caption{Bayesian posterior draws ($n$ = 4000; black solid points) for \textit{A. nevadensis} ($n$ = 2) across CYTB. MLEs and posterior means are displayed as coloured (red/blue) solid and dashed lines for the metrics, respectively.}
 
 \end{figure}
 
