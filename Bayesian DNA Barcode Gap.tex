@@ -128,10 +128,10 @@ p'_x &=  \mathbb{P}(d_{ij} \geq a') \notag \\
      &= 1 - \hat{F}_{d_{ij}}(a') +  \mathbb{P}(d_{XY} = a') \notag \\
      &= \hat{F}_{d_{ij}}(b) - \hat{F}_{d_{ij}}(a') +  \mathbb{P}(d_{XY} = a')  \\[1ex]
 q'_x &=  \mathbb{P}(d'_{XY} \leq b) \notag \\
-     &= \hat{F}_{d'_{XY}}(b)
+     &= \hat{F}_{d'_{XY}}(b).
 \end{align}
 
-\noindent noting that $\mathbb{P}(d_{ij} \geq b) = \hat{F}_{d_{ij}}(b) +\mathbb{P}(d_{ij} = b) = 0$, $\mathbb{P}(d_{XY} \leq a) = \hat{F}_{d_{XY}}(a) = 0$, and \\ $\mathbb{P}(d'_{XY} \leq a') = \hat{F}_{d'_{XY}}(a') = 0$ (see \textbf{Figure 1}). Given $n$ increasing-ordered data points, the (discrete) ECDF, $\hat{F}_n(t) = \frac{1}{n}\sum_{i = 1}^n\mathds{1}_{[x_i \leq t]}$, comprises a step function having jump \\ discontinuities of size $\frac{1}{n}$ at each sample observation ($x_i$), excluding ties (or steps of weight $\frac{i}{n}$ with tied observations), where $\mathds{1}(x)$ is the indicator function. Equations (8)-(11) herein clearly demonstrate the asymmetric directionality of the proposed metrics. Furthermore, calculation of the DNA barcode gap estimators is straightforward as they implicitly account for total distribution area (including overlap). Nevertheless, the total areas bounded by intraspecific and interspecific distributions on [$a$, $b$], and combined distributions on [$a'$, $b$] (see \textbf{Figure 1}) are given by
+Given $n$ increasing-ordered data points, the (discrete) ECDF, $\hat{F}_n(t) = \frac{1}{n}\sum_{i = 1}^n\mathds{1}_{[x_i \leq t]}$, comprises a step function having jump discontinuities of size $\frac{1}{n}$ at each sample observation ($x_i$), excluding ties (or steps of weight $\frac{i}{n}$ with tied observations), where $\mathds{1}(x)$ is the indicator function. Equations (8)-(11) herein clearly demonstrate the asymmetric directionality of the proposed metrics. Furthermore, calculation of the DNA barcode gap estimators is straightforward as they implicitly account for total distribution area (including overlap). Nevertheless, the total areas bounded by intraspecific and interspecific distributions on [$a$, $b$], and combined distributions on [$a'$, $b$] (see \textbf{Figure 1}) are given by
 
 \begin{align}
 \notag A &= p_x + q_x \\ 
