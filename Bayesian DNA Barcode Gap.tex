@@ -85,9 +85,7 @@ Recent work has argued that DNA barcoding, in its current form, is lacking in st
 While introduction of the metrics is a step in the right direction, what appears to be missing is a rigorous statistical treatment of the DNA barcode gap, along an unbiased way to compute the statistical accuracy of the recommended estimators arising through problems inherent in frequentist maximum likelihood estimation for probability distributions having bounded positive support on the closed unit interval [0, 1]. To this end, here, a Bayesian model of the DNA barcode gap coalescent is introduced to rectify such issues. The model allows accurate estimation of posterior means, posterior standard deviations (SDs), posterior quantiles, and credible intervals (CrIs) for the metrics given datasets of intraspecific and interspecific pairwise genetic distances for species of interest.
 
 
-\section{Methods}
-
-\subsection{DNA Barcode Gap Metrics}
+\section{DNA Barcode Gap Metrics}
 
 Recently, \citet{phillips2024measure} proposed novel nonparametric maximum likelihood \\ estimators (MLEs) of proportional overlap/separation between intraspecific and interspecific pairwise genetic distance distributions for a given species ($x$) to aid assessment of the DNA barcode gap as follows:
 
@@ -100,7 +98,7 @@ q'_x &= \frac{\#\{d'_{XY} \leq b\}}{\#\{d'_{XY}\}}
 
 \noindent where $d_{ij}$ are pairwise genetic distances within species, $d_{XY}$ are paireise genetic distances among species for an entire genus of concern, and $d'_{XY}$ are combined interspecific distances for a target species and its closest neighbouring species. The notation \# reflects a count.  Quantities $a$, $a'$, and $b$ correspond to min($d_{XY}$), min($d'_{XY}$), and max($d_{ij}$), the minimum interspecific distance, and the maximum intraspecific distance, respectively (\textbf{Figure 1}). \\ Hence, Equations (1)-(4) are simply empirical partial means of pairwise genetic distances falling at and below, or at and exceeding, given distribution thresholds. Notice further that $a$/$a'$, and $b$ are also the first and $n$th order statistics, $X_{(1)}$ and $X_{(n)}$, respectively. Equations (1)-(4) can also be expressed in terms of empirical cumulative distribution functions (ECDFs) (see next section) for details). Pairwise genetic distances form a continuouss distribution and are easily computed from a model of DNA sequence evolution, such as uncorrected or corrected p-distances \citep{jukes1969evolution, kimura1980simple}. The approach of \citet{phillips2024measure} differs markedly from the traditional definition of the DNA barcoding gap laid out by \citet{meyer2005dna} and \citet{meier2008use} in that the proposed metrics incorporate interspecfic genetic distances which include the target species of interest. Furthermore, if a focal species is found to have multiple nearest neighbours, then the species possessing the smallest average pairwise interspecific distance is used. While these schemes more accurately account for species' coalescence processes inferred from contemporaneous samples of DNA sequences, such as interspecific hybridization/introgression events \citep{phillips2024measure}. Within equations (3) and (4), the degree of pairwise genetic distance distribution overlap between a target taxon and its nearest neighbouring species, gauged from magnitudes of $p'_x$ and $q'_x$, is directly proportional to the amount of time in which the two lineages diverged from the MRCA \citep{phillips2024measure}, and thus can be used as a criterion to assess the failure of DNA barcoding in recently radiated taxonomic groups, among other plausible biological explanations.  Note, pairwise genetic distances are constrained to the unit interval [0, 1], whereas the metrics are defined only on [$a$/$a'$, $b$]. Values of the estimators obtained from equations (1)-(4) close to or equal to zero give evidence for separation between intraspecific and interspecific pairwise genetic distance distributions; that is, values suggest the presence of a DNA barcode gap for a target species. Conversely, values near or equal to one give evidence for distribution overlap; that is, values likely indicate the absence of a gap. 
 
-\section{Mathematical Details}
+\section{The Model}
 
 For a given random variable $X$, its cumulative distribution function (CDF) is defined by
 
@@ -152,8 +150,6 @@ q'_x &=  \mathbb{P}(d'_{XY} \leq b) \notag \\
 
 The above derivations lay a good foundation for the remainder of this paper.
 
-\subsection{A Bayesian Implementation}
-
 A major criticism of large sample (frequentist) theory is that it relies on asymptotic properties of the MLE (whose population parameter is assumed to be a fixed but unknown quantity), such as estimator normality and consistency. This problem is especially \\ pronounced in the case of binomial proportions. The estimated Wald standard error (SE) of the sample proportion, is given by 
 
 \begin{equation}
@@ -170,8 +166,6 @@ p(\theta | Y) \propto p(Y | \theta)p(\theta)
 
 
 \noindent where $\theta$ are unobserved parameters and $Y$ are known data.  As a consequence, because parameters are treated as random variables, Bayesian models are much more flexible and generally more easily interpretable compared to frequentist approaches, since, under the Bayesian paradigm, entire posterior distributions, along with their summaries, are outputted, rather than just long run behaviour reflected in sampling distributions, p-values, and CIs as in the frequentist case, thus allowing direct probability statements to be made. 
-
-\subsection{The Model}
 
 Essentially, from a statistical perspective, the goal herein is to nonparametrically estimate probabilities corresponding to extreme tail quantiles for positive highly skewed distributions on the unit interval  (or any closed subinterval thereof). Here, it is sought to numerically approximate the extent of proportional overlap/separation of intraspecific and interspecific pairwise genetic distance distributions within the subinterval [$a/a'$, $b$]. This is a challenging computational problem within the current study as detailed in subsequent sections. The usual approach employs Kernel Density Estimation (KDE), along with numerical or Monte Carlo integration; however, this requires careful selection of the bandwidth parameter, among other considerations. Here, for simplicity, a different route is taken. Counts, $y$, of overlapping pairwise genetic distances (as expressed in the numerator of Equations (1)-(4)) are treated as binomially distributed with expectation $\mathbb{E}[Y] = k\theta$, where $k = \{N, C\}$ are total count vectors of intraspecific and combined pairwise genetic distances, respectively, for a target species along with its nearest neighbour species, and $k = M$ is a total count vector for all pairwise interspecific species comparisons. This follows from the fact that the ECDF is binomially distributed. The quantity $\theta = \{p_x, q_x, p^{'}_x, q^{'}_x\}$. 
 
