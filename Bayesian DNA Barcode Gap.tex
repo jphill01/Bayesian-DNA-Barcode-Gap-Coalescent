@@ -206,7 +206,7 @@ Bayesian posterior estimates were reported alongside frequentist MLEs, in additi
 \hat{p} \hspace{1mm} \pm z_{1 - \frac{\alpha}{2}}\sqrt{\frac{\hat{p}(1 - \hat{p})}{n}}
 \end{equation}
 
-\noindent where $z_{1 - \frac{\alpha}{2}}$ = 1.960 for 95\% confidence and $\alpha$ is the stated significance level (here, 5\%). Given a ($1 - \alpha$)100\% CI, with repeated sampling, on average ($1 - \alpha$)100\% of constructed intervals will contain the true parameter of interest. This in stark contrast to a CrI, where the true parameter is contained within said interval with ($1 - \alpha$)100\% probability. Note, by default Stan computes equal-tailed CrIs such that there is equal area situated in the left and right tails of the posterior distribution. For a 95\% CrI, this corresponds to the 2.5th and 97.5th percent quantiles. However, constructed intervals are usually only valid for symmetric or nearly symmetric distributions. Given the bounded nature of the DNA barcode gap metrics, whose posterior distributions, as expected, show considerable skewness, a different approach to reporting CrIs, such as Highest Posterior Density (HPD) intervals or shortest probability intervals (SPIn) \citep{liu2015simulation} is warranted. As such intervals generally attain greater statistical efficiency (in the form of smaller Mean Squared Error (MSE) or variance) and higher coverage probabilities than more standard interval estimates, careful in-depth comparison is left for future work. 
+\noindent where $z_{1 - \frac{\alpha}{2}}$ = 1.960 for 95\% confidence and $\alpha$ is the stated significance level (here, 5\%). Given a ($1 - \alpha$)100\% CI, with repeated sampling, on average ($1 - \alpha$)100\% of constructed intervals will contain the true parameter of interest. This in stark contrast to a CrI, where the true parameter is contained within said interval with ($1 - \alpha$)100\% probability. Note, by default Stan computes equal-tailed CrIs such that there is equal area situated in the left and right tails of the posterior distribution. For a 95\% CrI, this corresponds to the 2.5th and 97.5th percent quantiles. However, constructed intervals are usually only valid for symmetric or nearly symmetric distributions. Given the bounded nature of the DNA barcode gap metrics, whose posterior distributions, as expected, show considerable skewness, a different approach to reporting CrIs, such as Highest Posterior Density (HPD) intervals \citep{chen1999monte} or shortest probability intervals (SPIn) \citep{liu2015simulation} is warranted. As such intervals generally attain greater statistical efficiency (in the form of smaller Mean Squared Error (MSE) or variance) and higher coverage probabilities than more standard interval estimates, careful in-depth comparison is left for future work. 
 
 Findings based on nonparametric MLEs and Bayesian posterior means show evidence of complete overlap in pairwise intraspecific, interspecific, and combined genetic distances for \textit{A. bipustulatus} in both the $p$/$q$ and $p'$/$q'$ directions (\textbf{Table 2}). As a result, this likely indicates that no DNA barcode gap is present for this species. Such findings are strongly reinforced by the very tight clustering of posterior draws (\textbf{Figure 3}) and associated interval estimates owing to the large number of specimens sampled for this species. On the other hand, the situation for \textit{A. nevadensis} is more nuanced, as posterior values are more spread out (\textbf{Table 2} and \textbf{Figure 4}), suggesting less overall certainty in true parameter values given the low specimen sampling coverage for this taxon. Of note, the 95\% CI for $q^{'}_x$ extends to negative values at the left endpoint, due to the correponding SE of 0.070 being too high as a result of the extremely low sample size of $n$ = 2 individuals sampled (\textbf{Table 2}). Simulated counts of overlapping specimen records from the posterior predictive distribution (\textbf{Table 3}) were found to be very close to observed counts for both species, indicating that the proposed model adequately captures underlying variation. 
 
@@ -257,6 +257,8 @@ JDP wrote the manuscript, wrote R and Stan code, as well as analysed and interpr
 
 \end{figure}
 
+\newpage
+
 \begin{table}[htbp]
     \centering
     \small
@@ -277,7 +279,7 @@ JDP wrote the manuscript, wrote R and Stan code, as well as analysed and interpr
     \end{tabular}
 \end{table}
 
-
+\newpage
 
 \begin{figure}[H]
 
@@ -289,7 +291,7 @@ JDP wrote the manuscript, wrote R and Stan code, as well as analysed and interpr
 
 \end{figure}
 
-
+\newpage
 
 \begin{landscape}
 \begin{table}[H]
@@ -321,6 +323,7 @@ JDP wrote the manuscript, wrote R and Stan code, as well as analysed and interpr
 \end{table}
 \end{landscape}
 
+\newpage
 
 \begin{landscape}
 \begin{table}[H]
@@ -352,15 +355,19 @@ JDP wrote the manuscript, wrote R and Stan code, as well as analysed and interpr
 \end{table}
 \end{landscape}
 
+\newpage
+
 \begin{figure}[H]
 
 \centering
 
 \includegraphics[width=0.80\textwidth]{Figure 3}
 
-\caption{Bayesian posterior draws ($n$ = 4000; black solid points) for \textit{A. bipustulatus} \\ ($n$ = 701) across CYTB. MLEs and posterior means are displayed as coloured (red/blue) solid and dashed lines for the metrics, respectively.}
+\caption{Scatterplot of Bayesian posterior draws ($n$ = 4000; black solid points) for \textit{A. bipustulatus} ($n$ = 701) across CYTB. MLEs and posterior means are displayed as coloured (red/blue) solid and dashed lines for the metrics, respectively.}
 
 \end{figure}
+
+\newpage
 
 
 \begin{figure}[H]
@@ -369,7 +376,33 @@ JDP wrote the manuscript, wrote R and Stan code, as well as analysed and interpr
 
 \includegraphics[width=0.80\textwidth]{Figure 4}
 
-\caption{Bayesian posterior draws ($n$ = 4000; black solid points) for \textit{A. nevadensis} \\ ($n$ = 2) across CYTB. MLEs and posterior means are displayed as coloured (red/blue) solid and dashed lines for the metrics, respectively.}
+\caption{Scatterplot Bayesian posterior draws ($n$ = 4000; black solid points) for \textit{A. nevadensis} ($n$ = 2) across CYTB. MLEs and posterior means are displayed as coloured (red/blue) solid and dashed lines for the metrics, respectively.}
+
+\end{figure}
+
+\newpage
+
+
+\begin{figure}[H]
+
+\centering
+
+\includegraphics[width=0.80\textwidth]{Figure 5}
+
+\caption{\textit{A. bipustulatus}}
+
+\end{figure}
+
+\newpage
+
+
+\begin{figure}[H]
+
+\centering
+
+\includegraphics[width=0.80\textwidth]{Figure 6}
+
+\caption{ \textit{A. nevadensis}}
 
 \end{figure}
 
