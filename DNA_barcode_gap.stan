@@ -100,7 +100,7 @@ parameters {
 }
 
 model {
-    // Priors
+    // Priors //
     
     // p_lwr ~ uniform(0, 1);
     // p_upr ~ uniform(0, 1);
@@ -114,7 +114,7 @@ model {
     p_lwr_prime ~ beta(1, 1);
     p_upr_prime ~ beta(1, 1);
 
-    // places greater density at extemes - causes divergent transitions etc.
+    // places greater density at extemes - may cause divergent transitions etc.
 
     // p_lwr ~ beta(0.5, 0.5);
     // p_upr ~ beta(0.5, 0.5);
@@ -122,45 +122,27 @@ model {
     // p_upr_prime ~ beta(0.5, 0.5);
     
     // Likelihood
-    for (k in 1:K) {
-      y_lwr[k] ~ binomial(N[k], p_lwr[k]); // likelihood for intraspecific genetic distances equalling or exceeding min_inter
-      y_upr[k] ~ binomial(M, p_upr[k]); // likelihood for interspecific genetic distances equalling or falling below max_intra
+    y_lwr ~ binomial(N, p_lwr); // likelihood for intraspecific genetic distances equalling or exceeding min_inter
+    y_upr ~ binomial(M, p_upr); // likelihood for interspecific genetic distances equalling or falling below max_intra
 
-      y_lwr_prime[k] ~ binomial(N[k], p_lwr_prime[k]); // likelihood for intraspecific genetic distances equalling or exceeding min_comb
-      y_upr_prime[k] ~ binomial(C[k], p_upr_prime[k]); // likelihood for combined interspecific genetic distances for a target species and its nearest neighbour species equalling or falling below max_intra
-    }
-
+    y_lwr_prime ~ binomial(N, p_lwr_prime); // likelihood for intraspecific genetic distances equalling or exceeding min_comb
+    y_upr_prime ~ binomial(C, p_upr_prime); // likelihood for combined interspecific genetic distances for a target species and its nearest neighbour species equalling or falling below max_intra
+    
 }
 
 generated quantities {
-
+  
   // Posterior Predictive Checks
 
-  int ppc_y_lwr[K];
-  int ppc_y_upr[K];
-  int ppc_y_lwr_prime[K];
-  int ppc_y_upr_prime[K];
+  int<lower = 0> ppc_y_lwr[K];
+  int<lower = 0> ppc_y_upr[K];
+  int<lower = 0> ppc_y_lwr_prime[K];
+  int<lower = 0> ppc_y_upr_prime[K];
 
-  for (k in 1:K) {
-    ppc_y_lwr[k] = binomial_rng(N[k], p_lwr[k]);
-    ppc_y_upr[k] = binomial_rng(M, p_upr[k]);
-    ppc_y_lwr_prime[k] = binomial_rng(N[k], p_lwr_prime[k]);
-    ppc_y_upr_prime[k] = binomial_rng(C[k], p_upr_prime[k]);
-  }
+  ppc_y_lwr = binomial_rng(N, p_lwr);
+  ppc_y_upr = binomial_rng(M, p_upr);
+  ppc_y_lwr_prime = binomial_rng(N, p_lwr_prime);
+  ppc_y_upr_prime = binomial_rng(C, p_upr_prime);
   
-  // log-10 transformation
 
-  vector[K] log10_p_lwr; // log10 of p_lwr
-  vector[K] log10_p_upr; // log10 of p_upr
-  vector[K] log10_p_lwr_prime; // log10 of p_lwr
-  vector[K] log10_p_upr_prime; // log10 of p_upr
-
-
-  for (k in 1:K) {
-    log10_p_lwr[k] = log10(p_lwr[k]);
-    log10_p_upr[k] = log10(p_upr[k]);
-    log10_p_lwr_prime[k] = log10(p_lwr_prime[k]);
-    log10_p_upr_prime[k] = log10(p_upr_prime[k]);
-  }
-  
 }

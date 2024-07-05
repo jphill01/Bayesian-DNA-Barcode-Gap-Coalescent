@@ -149,6 +149,8 @@ traceplot(fit, pars = c("p_lwr",
 
 post <- as.data.frame(extract(fit))
 
+summary(post)
+
 plot1 <- ggplot(post, aes(x = p_lwr.1, y = p_upr.1)) +
   geom_point() +
   xlab(expression(p[lwr])) +
@@ -207,25 +209,25 @@ grid.arrange(plot1, plot2, ncol = 1)
 p1 <- ggplot(post, aes(x = p_lwr.1)) +
   geom_histogram() +
   geom_vline(xintercept = p_1, color = "red") +
-  geom_vline(xintercept = mean(post$p_lwr_1), color = "red", lty = 2) +
+  geom_vline(xintercept = mean(as.numeric(post$p_lwr_1)), color = "red", lty = 2) +
   labs(x =  expression(p[lwr]), title = expression(p[lwr]))
 
 p2 <- ggplot(post, aes(x = p_upr.1)) +
   geom_histogram() +
   geom_vline(xintercept = q_1, color = "blue") +
-  geom_vline(xintercept = mean(post$p_upr_1), color = "blue", lty = 2) +
+  geom_vline(xintercept = mean(as.numeric(post$p_upr_1)), color = "blue", lty = 2) +
   labs(x =  expression(p[upr]), title = expression(p[upr]))
 
 p3 <- ggplot(post, aes(x = p_lwr_prime.1)) +
   geom_histogram() +
   geom_vline(xintercept = p_prime_1, color = "red") +
-  geom_vline(xintercept = mean(post$p_lwr_prime.1), color = "red", lty = 2) +
+  geom_vline(xintercept = mean(as.numeric(post$p_lwr_prime.1)), color = "red", lty = 2) +
   labs(x =  expression(p[lwr]*"'"), title = expression(p[lwr]*"'"))
 
 p4 <- ggplot(post, aes(x = p_upr_prime.1)) +
   geom_histogram() +
   geom_vline(xintercept = q_prime_1, color = "blue") +
-  geom_vline(xintercept = mean(post$p_upr_prime.1), color = "blue", lty = 2) +
+  geom_vline(xintercept = mean(as.numeric(post$p_upr_prime.1)), color = "blue", lty = 2) +
   labs(x =  expression(p[upr]*"'"), title = expression(p[upr]*"'"))
 
 
@@ -237,21 +239,104 @@ grid.arrange(grobs = combined_plots, ncol = 2)
 
 
 
+p1 <- ggplot(post, aes(x = p_lwr.2)) +
+  geom_histogram() +
+  geom_vline(xintercept = p_2, color = "red") +
+  geom_vline(xintercept = mean(as.numeric(post$p_lwr_2)), color = "red", lty = 2) +
+  labs(x =  expression(p[lwr]), title = expression(p[lwr]))
 
-plot1 <- ggplot(post, aes(x = p_lwr.1, y = p_upr.1)) +
-  geom_point() +
-  xlab(expression(p[lwr])) +
-  ylab(expression(p[upr])) +
-  geom_vline(xintercept = A_1, color = "red") + # MLE for p
-  geom_hline(yintercept = A_prime_1, color = "blue") + # MLE for q
-  geom_vline(xintercept = mean(as.numeric(post$A.1)), color = "red", lty = 2) + # posterior mean for p_lwr
-  geom_hline(yintercept = mean(as.numeric(post$A_prime.1)), color = "blue", lty = 2) + # posterior mean for p_upr
-  ggtitle(expression(italic("A. bipustulatus") ~ p[lwr]*" vs. "*p[upr]))
+p2 <- ggplot(post, aes(x = p_upr.2)) +
+  geom_histogram() +
+  geom_vline(xintercept = q_2, color = "blue") +
+  geom_vline(xintercept = mean(as.numeric(post$p_upr_2)), color = "blue", lty = 2) +
+  labs(x =  expression(p[upr]), title = expression(p[upr]))
+
+p3 <- ggplot(post, aes(x = p_lwr_prime.2)) +
+  geom_histogram() +
+  geom_vline(xintercept = p_prime_2, color = "red") +
+  geom_vline(xintercept = mean(as.numeric(post$p_lwr_prime.2)), color = "red", lty = 2) +
+  labs(x =  expression(p[lwr]*"'"), title = expression(p[lwr]*"'"))
+
+p4 <- ggplot(post, aes(x = p_upr_prime.2)) +
+  geom_histogram() +
+  geom_vline(xintercept = q_prime_2, color = "blue") +
+  geom_vline(xintercept = mean(as.numeric(post$p_upr_prime.2)), color = "blue", lty = 2) +
+  labs(x =  expression(p[upr]*"'"), title = expression(p[upr]*"'"))
+
+
+# Arrange plots in a 2x2 grid using facet_wrap
+combined_plots <- list(p1, p2, p3, p4)
+names(combined_plots) <- c("p_lwr", "p_upr", "p_lwr_prime", "p_upr_prime")
+
+grid.arrange(grobs = combined_plots, ncol = 2)
 
 
 
-print(plot1)
+# Density plots
 
-grid.arrange(plot1, ncol = 1)
+p1 <- ggplot(post, aes(x = p_lwr.1)) +
+  geom_density() +
+  geom_vline(xintercept = p_1, color = "red") +
+  geom_vline(xintercept = mean(as.numeric(post$p_lwr_1)), color = "red", lty = 2) +
+  labs(x =  expression(p[lwr]), title = expression(p[lwr]))
+
+p2 <- ggplot(post, aes(x = p_upr.1)) +
+  geom_density() +
+  geom_vline(xintercept = q_1, color = "blue") +
+  geom_vline(xintercept = mean(as.numeric(post$p_upr_1)), color = "blue", lty = 2) +
+  labs(x =  expression(p[upr]), title = expression(p[upr]))
+
+p3 <- ggplot(post, aes(x = p_lwr_prime.1)) +
+  geom_density() +
+  geom_vline(xintercept = p_prime_1, color = "red") +
+  geom_vline(xintercept = mean(as.numeric(post$p_lwr_prime.1)), color = "red", lty = 2) +
+  labs(x =  expression(p[lwr]*"'"), title = expression(p[lwr]*"'"))
+
+p4 <- ggplot(post, aes(x = p_upr_prime.1)) +
+  geom_density() +
+  geom_vline(xintercept = q_prime_1, color = "blue") +
+  geom_vline(xintercept = mean(as.numeric(post$p_upr_prime.1)), color = "blue", lty = 2) +
+  labs(x =  expression(p[upr]*"'"), title = expression(p[upr]*"'"))
+
+
+# Arrange plots in a 2x2 grid using facet_wrap
+combined_plots <- list(p1, p2, p3, p4)
+names(combined_plots) <- c("p_lwr", "p_upr", "p_lwr_prime", "p_upr_prime")
+
+grid.arrange(grobs = combined_plots, ncol = 2)
+
+
+
+p1 <- ggplot(post, aes(x = p_lwr.2)) +
+  geom_density() +
+  geom_vline(xintercept = p_2, color = "red") +
+  geom_vline(xintercept = mean(as.numeric(post$p_lwr_2)), color = "red", lty = 2) +
+  labs(x =  expression(p[lwr]), title = expression(p[lwr]))
+
+p2 <- ggplot(post, aes(x = p_upr.2)) +
+  geom_density() +
+  geom_vline(xintercept = q_2, color = "blue") +
+  geom_vline(xintercept = mean(as.numeric(post$p_upr_2)), color = "blue", lty = 2) +
+  labs(x =  expression(p[upr]), title = expression(p[upr]))
+
+p3 <- ggplot(post, aes(x = p_lwr_prime.2)) +
+  geom_density() +
+  geom_vline(xintercept = p_prime_2, color = "red") +
+  geom_vline(xintercept = mean(as.numeric(post$p_lwr_prime.2)), color = "red", lty = 2) +
+  labs(x =  expression(p[lwr]*"'"), title = expression(p[lwr]*"'"))
+
+p4 <- ggplot(post, aes(x = p_upr_prime.2)) +
+  geom_density() +
+  geom_vline(xintercept = q_prime_2, color = "blue") +
+  geom_vline(xintercept = mean(as.numeric(post$p_upr_prime.2)), color = "blue", lty = 2) +
+  labs(x =  expression(p[upr]*"'"), title = expression(p[upr]*"'"))
+
+
+# Arrange plots in a 2x2 grid using facet_wrap
+combined_plots <- list(p1, p2, p3, p4)
+names(combined_plots) <- c("p_lwr", "p_upr", "p_lwr_prime", "p_upr_prime")
+
+grid.arrange(grobs = combined_plots, ncol = 2)
+
 
 
