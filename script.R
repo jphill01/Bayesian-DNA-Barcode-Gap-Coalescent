@@ -18,7 +18,9 @@ options(mc.cores = parallel::detectCores()) # parallelize simulations
 rstan_options(auto_write = TRUE) # only have to compile once unless code is changed
 
 
-K <- 2 # number of species in genus 
+##### Setup #####
+
+K <- 2
 
 intra1 <- read.csv(file.choose())
 comb1 <- read.csv(file.choose())
@@ -38,11 +40,7 @@ M <- nrow(inter)
 inter <- inter[, 2]
 
 
-
-
-### MLEs ###
-
-# probabilities by species
+##### MLEs #####
 
 (p_1 <- mean(intra1$x >= min(inter)))
 (q_1 <- mean(inter <= max(intra1$x)))
@@ -55,7 +53,7 @@ inter <- inter[, 2]
 (q_prime_2 <- mean(comb2$x <= max(intra2$x)))
 
 
-# SEs
+##### SEs #####
 
 (SE_p_1 <- sqrt(p_1 * (1 - p_1) / length(intra1)))
 (SE_q_1 <- sqrt(q_1 * (1 - q_1) / length(inter)))
@@ -69,7 +67,7 @@ inter <- inter[, 2]
 (SE_q_prime_2 <- sqrt(q_prime_2 * (1 - q_prime_2) / length(comb2)))
 
 
-# 95% CIs
+##### 95% CIs #####
 
 p_1 + c(-1, 1) * qnorm(0.975) * SE_p_1
 q_1 + c(-1, 1) * qnorm(0.975) * SE_q_1
@@ -117,7 +115,7 @@ plot(ecdf_inter)
 plot(ecdf_comb1)
 plot(ecdf_comb2)
 
-# counts
+##### Observed counts #####
 
 N[1] * p_1
 M * q_1
@@ -130,7 +128,7 @@ N[2] * p_prime_2
 C[2] * q_prime_2
 
 
-### Posterior Estimates ####
+##### Posterior Estimates #####
 
 fit <- stan("DNA_barcode_gap.stan", 
             data = list(K = K, M = M, N = N, intra = intra, inter = inter, C = C, comb = comb), 
@@ -148,8 +146,7 @@ traceplot(fit, pars = c("p_lwr",
                         "p_lwr_prime", 
                         "p_upr_prime"))
 
-
-# Plots of posterior samples with observed value shown
+##### Plots #####
 
 post <- as.data.frame(extract(fit))
 
@@ -174,7 +171,6 @@ plot2 <- ggplot(post, aes(x = p_lwr_prime.1, y = p_upr_prime.1)) +
   geom_vline(xintercept = mean(as.numeric(post$p_lwr_prime.1)), color = "red", lty = 2) + # posterior mean for p_lwr_prime
   geom_hline(yintercept = mean(as.numeric(post$p_upr_prime.1)), color = "blue", lty = 2) + # posterior mean for p_upr_prime
   ggtitle(expression(italic("A. bipustulatus") ~ p[lwr]*"'"*" vs. "*p[upr]*"'"))
-
 
 print(plot1)
 print(plot2)
@@ -202,14 +198,11 @@ plot2 <- ggplot(post, aes(x = p_lwr_prime.2, y = p_upr_prime.2)) +
   geom_hline(yintercept = mean(as.numeric(post$p_upr_prime.2)), color = "blue", lty = 2) + # posterior mean for p_upr_prime
   ggtitle(expression(italic("A. nevadensis") ~ p[lwr]*"'"*" vs. "*p[upr]*"'"))
 
-
 print(plot1)
 print(plot2)
 
 grid.arrange(plot1, plot2, ncol = 1)
 
-
-# Density plots
 
 p1 <- ggplot(post, aes(x = p_lwr.1)) +
   geom_density() +
@@ -235,8 +228,6 @@ p4 <- ggplot(post, aes(x = p_upr_prime.1)) +
   geom_vline(xintercept = mean(as.numeric(post$p_upr_prime.1)), color = "blue", lty = 2) +
   labs(x =  expression(p[upr]*"'"), title = expression(p[upr]*"'"))
 
-
-# Arrange plots in a 2x2 grid using facet_wrap
 combined_plots <- list(p1, p2, p3, p4)
 names(combined_plots) <- c("p_lwr", "p_upr", "p_lwr_prime", "p_upr_prime")
 
@@ -268,8 +259,6 @@ p4 <- ggplot(post, aes(x = p_upr_prime.2)) +
   geom_vline(xintercept = mean(as.numeric(post$p_upr_prime.2)), color = "blue", lty = 2) +
   labs(x =  expression(p[upr]*"'"), title = expression(p[upr]*"'"))
 
-
-# Arrange plots in a 2x2 grid using facet_wrap
 combined_plots <- list(p1, p2, p3, p4)
 names(combined_plots) <- c("p_lwr", "p_upr", "p_lwr_prime", "p_upr_prime")
 
