@@ -81,40 +81,6 @@ p_prime_2 + c(-1, 1) * qnorm(0.975) * SE_p_prime_2
 q_prime_2 + c(-1, 1) * qnorm(0.975) * SE_q_prime_2
 
 
-
-
-# ECDFs
-
-ecdf_intra1 <- ecdf(intra1$x)
-ecdf_intra2 <- ecdf(intra2$x)
-ecdf_inter <- ecdf(inter)
-ecdf_comb1 <- ecdf(comb1$x)
-ecdf_comb2 <- ecdf(comb2$x)
-
-a1 <- min(inter)
-b1 <- max(intra1$x)
-a_prime1 <- min(comb1$x)
-
-a2 <- min(inter)
-b2 <- max(intra2$x)
-a_prime2 <- min(comb2$x)
-
-p1_ecdf <- 1 - ecdf_intra1(a1) + mean(intra1$x == min(inter))
-q1_ecdf <- ecdf_inter(b1)
-p1_prime_ecdf <- 1 - ecdf_intra1(a_prime1) + mean(intra1$x == min(comb1$x))
-q1_prime_ecdf <- ecdf_comb1(b1)
-
-p2_ecdf <- 1 - ecdf_intra2(a2) + mean(intra2$x == min(inter))
-q2_ecdf <- ecdf_inter(b2)
-p2_prime_ecdf <- 1 - ecdf_intra2(a_prime2) + mean(intra2$x == min(comb2$x))
-q2_prime_ecdf <- ecdf_comb2(b2)
-
-plot(ecdf_intra1)
-plot(ecdf_intra2)
-plot(ecdf_inter)
-plot(ecdf_comb1)
-plot(ecdf_comb2)
-
 ##### Observed counts #####
 
 N[1] * p_1
