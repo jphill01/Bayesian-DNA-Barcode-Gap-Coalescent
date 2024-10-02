@@ -45,6 +45,7 @@ data {
   vector<lower = 0, upper = 1>[sum(C)] comb; // interspecific genetic distances for a target species and its nearest neighbour species
 }
 
+
 transformed data {
   int start_n[K + 1];
   int start_c[K + 1];
@@ -73,9 +74,8 @@ transformed data {
 
   for (k in 1:K) {
     for (n in 1:N[k]) {
-      real val = intra[start_n[k] + n - 1];
-      y_lwr[k] += (val >= min_inter);
-      y_lwr_prime[k] += (val >= min_comb[k]);
+      y_lwr[k] += (intra[start_n[k] + n - 1] >= min_inter);
+      y_lwr_prime[k] += (intra[start_n[k] + n - 1] >= min_comb[k]);
     }
     
     for (m in 1:M) {
@@ -98,6 +98,7 @@ parameters {
   vector<lower = 0, upper = 1>[K] p_upr_prime; // parameter representing the proportional overlap/separation between intraspecific and intraspecific genetic distances for a target species and its nearest neighbour species
 
 }
+
 
 model {
     // Priors //
@@ -129,6 +130,7 @@ model {
     y_upr_prime ~ binomial(C, p_upr_prime); // likelihood for combined interspecific genetic distances for a target species and its nearest neighbour species equalling or falling below max_intra
     
 }
+
 
 generated quantities {
   
