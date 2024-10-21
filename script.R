@@ -5,6 +5,7 @@ setwd("/Users/jarrettphillips/desktop/Bayesian DNA Barcode Gap")
 
 library(ggplot2)
 library(gridExtra)
+library(boot)
 
 ##### Install required packages #####
 
@@ -40,7 +41,7 @@ M <- nrow(inter)
 inter <- inter[, 2]
 
 
-##### MLEs #####
+##### Nonparametric MLEs #####
 
 (p_1 <- mean(intra1$x >= min(inter)))
 (q_1 <- mean(inter <= max(intra1$x)))
@@ -53,7 +54,7 @@ inter <- inter[, 2]
 (q_prime_2 <- mean(comb2$x <= max(intra2$x)))
 
 
-##### SEs #####
+##### SEs based on CLT #####
 
 (SE_p_1 <- sqrt(p_1 * (1 - p_1) / length(intra1)))
 (SE_q_1 <- sqrt(q_1 * (1 - q_1) / length(inter)))
@@ -67,7 +68,7 @@ inter <- inter[, 2]
 (SE_q_prime_2 <- sqrt(q_prime_2 * (1 - q_prime_2) / length(comb2)))
 
 
-##### 95% CIs #####
+##### 95% CIs based on CLT #####
 
 p_1 + c(-1, 1) * qnorm(0.975) * SE_p_1
 q_1 + c(-1, 1) * qnorm(0.975) * SE_q_1
@@ -111,6 +112,7 @@ traceplot(fit, pars = c("p_lwr",
                         "p_upr", 
                         "p_lwr_prime", 
                         "p_upr_prime"))
+
 
 ##### Plots #####
 
@@ -173,13 +175,13 @@ grid.arrange(plot1, plot2, ncol = 1)
 p1 <- ggplot(post, aes(x = p_lwr.1)) +
   geom_density() +
   geom_vline(xintercept = p_1, color = "red") +
-  geom_vline(xintercept = mean(as.numeric(post$p_lwr_1)), color = "red", lty = 2) +
+  geom_vline(xintercept = mean(as.numeric(post$p_lwr.1)), color = "red", lty = 2) +
   labs(x =  expression(p[lwr]), title = expression(p[lwr]))
 
 p2 <- ggplot(post, aes(x = p_upr.1)) +
   geom_density() +
   geom_vline(xintercept = q_1, color = "blue") +
-  geom_vline(xintercept = mean(as.numeric(post$p_upr_1)), color = "blue", lty = 2) +
+  geom_vline(xintercept = mean(as.numeric(post$p_upr.1)), color = "blue", lty = 2) +
   labs(x =  expression(p[upr]), title = expression(p[upr]))
 
 p3 <- ggplot(post, aes(x = p_lwr_prime.1)) +
