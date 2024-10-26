@@ -142,8 +142,59 @@ ggplot(ecdf_comb1, aes(x = x, y = y)) +
   geom_vline(xintercept = max(intra1$x), linetype = "dashed", color = "red") +
   labs(
     title = expression(italic("A. bipustulatus") ~ "combined interspecific distances"),
+    x = expression(italic(d[XY])),
+    y = expression(italic(hat(F)(d[XY])) * "'")
+  ) 
+
+
+# p_2
+
+ecdf_intra2 <- data.frame(x = sort(intra2$x), y = ecdf(intra2$x)(sort(intra2$x)))
+
+ggplot(ecdf_intra2, aes(x = x, y = y)) +
+  geom_step() +
+  geom_vline(xintercept = min(inter), linetype = "dashed", color = "red") +
+  labs(
+    title = expression(italic("A. nevadensis") ~ "intraspecific distances"),
+    x = expression(italic(d[ij])),
+    y = expression(italic(hat(F)(d[ij])))
+  ) 
+
+# q_2
+
+ecdf_inter <- data.frame(x = sort(inter), y = ecdf(inter)(sort(inter)))
+
+ggplot(ecdf_inter, aes(x = x, y = y)) +
+  geom_step() +
+  geom_vline(xintercept = max(intra2$x), linetype = "dashed", color = "red") +
+  labs(
+    title = expression(italic("A. nevadensis") ~ "interspecific distances"),
+    x = expression(italic(d[XY])),
+    y = expression(italic(hat(F)(d[XY])))
+  ) 
+
+# p_prime_2
+
+ggplot(ecdf_intra2, aes(x = x, y = y)) +
+  geom_step() +
+  geom_vline(xintercept = min(comb2), linetype = "dashed", color = "red") +
+  labs(
+    title = expression(italic("A. nevadensis") ~ "intraspecific distances"),
     x = expression(italic(d[ij])),
     y = expression(italic(hat(F)(d[ij])) * "'")
+  ) 
+
+# q_prime_2
+
+ecdf_comb2 <- data.frame(x = sort(comb2$x), y = ecdf(comb2$x)(sort(comb2$x)))
+
+ggplot(ecdf_comb1, aes(x = x, y = y)) +
+  geom_step() +
+  geom_vline(xintercept = max(intra2$x), linetype = "dashed", color = "red") +
+  labs(
+    title = expression(italic("A. nevadensis") ~ "combined interspecific distances"),
+    x = expression(italic(d[XY])),
+    y = expression(italic(hat(F)(d[XY])) * "'")
   ) 
 
 
@@ -172,6 +223,8 @@ post <- as.data.frame(extract(fit))
 
 summary(post)
 
+par(frow = c(2, 2))
+
 plot1 <- ggplot(post, aes(x = p_lwr.1, y = p_upr.1)) +
   geom_point() +
   xlab(expression(p[lwr])) +
@@ -191,32 +244,6 @@ plot2 <- ggplot(post, aes(x = p_lwr_prime.1, y = p_upr_prime.1)) +
   geom_vline(xintercept = mean(as.numeric(post$p_lwr_prime.1)), color = "red", lty = 2) + # posterior mean for p_lwr_prime
   geom_hline(yintercept = mean(as.numeric(post$p_upr_prime.1)), color = "blue", lty = 2) + # posterior mean for p_upr_prime
   ggtitle(expression(italic("A. bipustulatus") ~ p[lwr]*"'"*" vs. "*p[upr]*"'"))
-
-print(plot1)
-print(plot2)
-
-grid.arrange(plot1, plot2, ncol = 1)
-
-
-plot1 <- ggplot(post, aes(x = p_lwr.2, y = p_upr.2)) +
-  geom_point() +
-  xlab(expression(p[lwr])) +
-  ylab(expression(p[upr])) +
-  geom_vline(xintercept = p_2, color = "red") + # MLE for p
-  geom_hline(yintercept = q_2, color = "blue") + # MLE for q
-  geom_vline(xintercept = mean(as.numeric(post$p_lwr.2)), color = "red", lty = 2) + # posterior mean for p_lwr
-  geom_hline(yintercept = mean(as.numeric(post$p_upr.2)), color = "blue", lty = 2) + # posterior mean for p_upr
-  ggtitle(expression(italic("A. nevadensis") ~ p[lwr]*" vs. "*p[upr]))
-
-plot2 <- ggplot(post, aes(x = p_lwr_prime.2, y = p_upr_prime.2)) +
-  geom_point() +
-  xlab(expression(p[lwr]*"'")) +
-  ylab(expression(p[upr]*"'")) +
-  geom_vline(xintercept = p_prime_2, color = "red") + 
-  geom_hline(yintercept = q_prime_2, color = "blue") +
-  geom_vline(xintercept = mean(as.numeric(post$p_lwr_prime.2)), color = "red", lty = 2) + # posterior mean for p_lwr_prime
-  geom_hline(yintercept = mean(as.numeric(post$p_upr_prime.2)), color = "blue", lty = 2) + # posterior mean for p_upr_prime
-  ggtitle(expression(italic("A. nevadensis") ~ p[lwr]*"'"*" vs. "*p[upr]*"'"))
 
 print(plot1)
 print(plot2)
@@ -253,6 +280,31 @@ names(combined_plots) <- c("p_lwr", "p_upr", "p_lwr_prime", "p_upr_prime")
 
 grid.arrange(grobs = combined_plots, ncol = 2)
 
+
+plot1 <- ggplot(post, aes(x = p_lwr.2, y = p_upr.2)) +
+  geom_point() +
+  xlab(expression(p[lwr])) +
+  ylab(expression(p[upr])) +
+  geom_vline(xintercept = p_2, color = "red") + # MLE for p
+  geom_hline(yintercept = q_2, color = "blue") + # MLE for q
+  geom_vline(xintercept = mean(as.numeric(post$p_lwr.2)), color = "red", lty = 2) + # posterior mean for p_lwr
+  geom_hline(yintercept = mean(as.numeric(post$p_upr.2)), color = "blue", lty = 2) + # posterior mean for p_upr
+  ggtitle(expression(italic("A. nevadensis") ~ p[lwr]*" vs. "*p[upr]))
+
+plot2 <- ggplot(post, aes(x = p_lwr_prime.2, y = p_upr_prime.2)) +
+  geom_point() +
+  xlab(expression(p[lwr]*"'")) +
+  ylab(expression(p[upr]*"'")) +
+  geom_vline(xintercept = p_prime_2, color = "red") + 
+  geom_hline(yintercept = q_prime_2, color = "blue") +
+  geom_vline(xintercept = mean(as.numeric(post$p_lwr_prime.2)), color = "red", lty = 2) + # posterior mean for p_lwr_prime
+  geom_hline(yintercept = mean(as.numeric(post$p_upr_prime.2)), color = "blue", lty = 2) + # posterior mean for p_upr_prime
+  ggtitle(expression(italic("A. nevadensis") ~ p[lwr]*"'"*" vs. "*p[upr]*"'"))
+
+print(plot1)
+print(plot2)
+
+grid.arrange(plot1, plot2, ncol = 1)
 
 
 p1 <- ggplot(post, aes(x = p_lwr.2)) +
