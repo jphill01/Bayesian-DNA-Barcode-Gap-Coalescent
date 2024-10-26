@@ -5,7 +5,6 @@ setwd("/Users/jarrettphillips/desktop/Bayesian DNA Barcode Gap")
 
 library(ggplot2)
 library(gridExtra)
-library(boot)
 
 ##### Install required packages #####
 
@@ -93,6 +92,59 @@ N[2] * p_2
 M * q_2
 N[2] * p_prime_2
 C[2] * q_prime_2
+
+
+##### ECDFs #####
+
+# p_1
+
+ecdf_intra1 <- data.frame(x = sort(intra1$x), y = ecdf(intra1$x)(sort(intra1$x)))
+
+ggplot(ecdf_intra1, aes(x = x, y = y)) +
+  geom_step() +
+  geom_vline(xintercept = min(inter), linetype = "dashed", color = "red") +
+  labs(
+    title = expression(italic("A. bipustulatus") ~ "intraspecific distances"),
+    x = expression(italic(d[ij])),
+    y = expression(italic(hat(F)(d[ij])))
+  ) 
+
+# q_1
+
+ecdf_inter <- data.frame(x = sort(inter), y = ecdf(inter)(sort(inter)))
+
+ggplot(ecdf_inter, aes(x = x, y = y)) +
+  geom_step() +
+  geom_vline(xintercept = max(intra1$x), linetype = "dashed", color = "red") +
+  labs(
+    title = expression(italic("A. bipustulatus") ~ "interspecific distances"),
+    x = expression(italic(d[XY])),
+    y = expression(italic(hat(F)(d[XY])))
+  ) 
+
+# p_prime_1
+
+ggplot(ecdf_intra1, aes(x = x, y = y)) +
+  geom_step() +
+  geom_vline(xintercept = min(comb1), linetype = "dashed", color = "red") +
+  labs(
+    title = expression(italic("A. bipustulatus") ~ "intraspecific distances"),
+    x = expression(italic(d[ij])),
+    y = expression(italic(hat(F)(d[ij])) * "'")
+  ) 
+
+# q_prime_1
+
+ecdf_comb1 <- data.frame(x = sort(comb1$x), y = ecdf(comb1$x)(sort(comb1$x)))
+
+ggplot(ecdf_comb1, aes(x = x, y = y)) +
+  geom_step() +
+  geom_vline(xintercept = max(intra1$x), linetype = "dashed", color = "red") +
+  labs(
+    title = expression(italic("A. bipustulatus") ~ "intraspecific distances"),
+    x = expression(italic(d[ij])),
+    y = expression(italic(hat(F)(d[ij])) * "'")
+  ) 
 
 
 ##### Posterior Estimates #####
@@ -206,13 +258,13 @@ grid.arrange(grobs = combined_plots, ncol = 2)
 p1 <- ggplot(post, aes(x = p_lwr.2)) +
   geom_density() +
   geom_vline(xintercept = p_2, color = "red") +
-  geom_vline(xintercept = mean(as.numeric(post$p_lwr_2)), color = "red", lty = 2) +
+  geom_vline(xintercept = mean(as.numeric(post$p_lwr.2)), color = "red", lty = 2) +
   labs(x =  expression(p[lwr]), title = expression(p[lwr]))
 
 p2 <- ggplot(post, aes(x = p_upr.2)) +
   geom_density() +
   geom_vline(xintercept = q_2, color = "blue") +
-  geom_vline(xintercept = mean(as.numeric(post$p_upr_2)), color = "blue", lty = 2) +
+  geom_vline(xintercept = mean(as.numeric(post$p_upr.2)), color = "blue", lty = 2) +
   labs(x =  expression(p[upr]), title = expression(p[upr]))
 
 p3 <- ggplot(post, aes(x = p_lwr_prime.2)) +
