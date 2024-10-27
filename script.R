@@ -181,7 +181,7 @@ ggplot(ecdf_intra2, aes(x = x, y = y)) +
   labs(
     title = expression(italic("A. nevadensis") ~ "intraspecific distances"),
     x = expression(italic(d[ij])),
-    y = expression(italic(hat(F)(d[ij])) * "'")
+    y = expression(italic(hat(F)(d* "'"[ij])))
   ) 
 
 # q_prime_2
@@ -193,8 +193,8 @@ ggplot(ecdf_comb1, aes(x = x, y = y)) +
   geom_vline(xintercept = max(intra2$x), linetype = "dashed", color = "red") +
   labs(
     title = expression(italic("A. nevadensis") ~ "combined interspecific distances"),
-    x = expression(italic(d[XY])),
-    y = expression(italic(hat(F)(d[XY])) * "'")
+    x = expression(italic(d* "'"[XY])),
+    y = expression(italic(hat(F)(d* "'"[XY])))
   ) 
 
 
