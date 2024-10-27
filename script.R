@@ -129,8 +129,8 @@ ggplot(ecdf_intra1, aes(x = x, y = y)) +
   geom_vline(xintercept = min(comb1), linetype = "dashed", color = "red") +
   labs(
     title = expression(italic("A. bipustulatus") ~ "intraspecific distances"),
-    x = expression(italic(d[ij])),
-    y = expression(italic(hat(F)(d[ij])) * "'")
+    x = expression(italic(d* "'"[ij])),
+    y = expression(italic(hat(F)(d* "'"[ij])))
   ) 
 
 # q_prime_1
@@ -142,8 +142,8 @@ ggplot(ecdf_comb1, aes(x = x, y = y)) +
   geom_vline(xintercept = max(intra1$x), linetype = "dashed", color = "red") +
   labs(
     title = expression(italic("A. bipustulatus") ~ "combined interspecific distances"),
-    x = expression(italic(d[XY])),
-    y = expression(italic(hat(F)(d[XY])) * "'")
+    x = expression(italic(d[XY]* "'")),
+    y = expression(italic(hat(F)(d[XY]* "'")))
   ) 
 
 
