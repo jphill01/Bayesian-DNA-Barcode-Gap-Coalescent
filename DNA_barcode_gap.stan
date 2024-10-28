@@ -1,7 +1,5 @@
 ////// A Bayesian model of the DNA barcode gap coalescent //////
 
-// check these //
-
 // When p_lwr is close to 0, it suggests that the probability of intraspecific distances being larger than interspecific distances is low on averqge,
 // while the probability of interspecific distances being larger than intraspecific distances is high on average; that is, there is evidence for a DNA barcode gap
 
@@ -26,13 +24,6 @@
 
 // When p_upr_prime is close to 1, it indicates that the probability of combined interspecific distances for a target species and its nearest neighbour species being larger than intraspecific distances is low on average,
 // while the probability of intraspecific distances being larger than combined interspecific distances for a target species and its nearest neighbour species is high on average; that is, there is no evidence for a DNA barcode gap
-
-
-// If max_intra is relatively large and min_inter is relatively small, p_lwr represents the extent to which intraspecific distances tend to be larger than interspecific distances at and beyond min_inter and at and below max_intra
-// If min_inter is relatively large and max_intra is relatively small, p_upr represents the extent to which interspecific distances tend to be larger than intraspecific distances at and below max_intra and at and beyond min_inter
-
-// If max_intra is relatively small and min_comb is relatively large, p_lwr_prime represents the extent to which intraspecific distances tend to be larger than combined interspecific distances for a target species and its nearest neighbour species at and beyond min_comb and at and below max_intra
-// If min_comb is relatively small and max_inter is relatively large, p_upr_prime represents the extent to which combined interspecific distances for a target species and its nearest neighbour species tend to be larger than intraspecific distances at and below max_intra and at and beyond min_comb
 
 
 data {
