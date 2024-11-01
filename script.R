@@ -94,19 +94,20 @@ N[2] * p_prime_2
 C[2] * q_prime_2
 
 
+
 ##### ECDFs #####
 
 # p_1
 
-ecdf_intra1 <- data.frame(x = sort(intra1$x), y = ecdf(intra1$x)(sort(intra1$x)))
+ecdf_intra1 <- data.frame(x = sort(intra1$x), y = 1 - ecdf(intra1$x)(sort(intra1$x)) + mean(intra1$x == min(inter)))
 
 ggplot(ecdf_intra1, aes(x = x, y = y)) +
   geom_step() +
-  geom_vline(xintercept = min(inter), linetype = "dashed", color = "red") +
+  geom_vline(xintercept = min(inter), linetype = "dashed") +
   labs(
     title = expression(italic("A. bipustulatus") ~ "intraspecific distances"),
     x = expression(italic(d[ij])),
-    y = expression(italic(hat(F)(d[ij])))
+    y = expression(1 - italic(hat(F)(d[ij])) + P(italic(d[ij])))
   ) 
 
 # q_1
@@ -115,7 +116,7 @@ ecdf_inter <- data.frame(x = sort(inter), y = ecdf(inter)(sort(inter)))
 
 ggplot(ecdf_inter, aes(x = x, y = y)) +
   geom_step() +
-  geom_vline(xintercept = max(intra1$x), linetype = "dashed", color = "red") +
+  geom_vline(xintercept = max(intra1$x), linetype = "dashed") +
   labs(
     title = expression(italic("A. bipustulatus") ~ "interspecific distances"),
     x = expression(italic(d[XY])),
@@ -126,11 +127,11 @@ ggplot(ecdf_inter, aes(x = x, y = y)) +
 
 ggplot(ecdf_intra1, aes(x = x, y = y)) +
   geom_step() +
-  geom_vline(xintercept = min(comb1), linetype = "dashed", color = "red") +
+  geom_vline(xintercept = min(comb1), linetype = "dashed") +
   labs(
     title = expression(italic("A. bipustulatus") ~ "intraspecific distances"),
-    x = expression(italic(d* "'"[ij])),
-    y = expression(italic(hat(F)(d* "'"[ij])))
+    x = expression(italic(d[ij])),
+    y = expression(1 - italic(hat(F)(d[ij])) + P(italic(d[ij])))
   ) 
 
 # q_prime_1
@@ -139,25 +140,25 @@ ecdf_comb1 <- data.frame(x = sort(comb1$x), y = ecdf(comb1$x)(sort(comb1$x)))
 
 ggplot(ecdf_comb1, aes(x = x, y = y)) +
   geom_step() +
-  geom_vline(xintercept = max(intra1$x), linetype = "dashed", color = "red") +
+  geom_vline(xintercept = max(intra1$x), linetype = "dashed") +
   labs(
     title = expression(italic("A. bipustulatus") ~ "combined interspecific distances"),
-    x = expression(italic(d[XY]* "'")),
-    y = expression(italic(hat(F)(d[XY]* "'")))
+    x = expression(italic(d* "'"[XY])),
+    y = expression(italic(hat(F)(d* "'"[XY])))
   ) 
 
 
 # p_2
 
-ecdf_intra2 <- data.frame(x = sort(intra2$x), y = ecdf(intra2$x)(sort(intra2$x)))
+ecdf_intra2 <- data.frame(x = sort(intra2$x), y = 1 - ecdf(intra2$x)(sort(intra2$x)) + mean(intra2$x == min(inter)))
 
 ggplot(ecdf_intra2, aes(x = x, y = y)) +
   geom_step() +
-  geom_vline(xintercept = min(inter), linetype = "dashed", color = "red") +
+  geom_vline(xintercept = min(inter), linetype = "dashed") +
   labs(
     title = expression(italic("A. nevadensis") ~ "intraspecific distances"),
     x = expression(italic(d[ij])),
-    y = expression(italic(hat(F)(d[ij])))
+    y = expression(1 - italic(hat(F)(d[ij])) + P(italic(d[ij])))
   ) 
 
 # q_2
@@ -166,7 +167,7 @@ ecdf_inter <- data.frame(x = sort(inter), y = ecdf(inter)(sort(inter)))
 
 ggplot(ecdf_inter, aes(x = x, y = y)) +
   geom_step() +
-  geom_vline(xintercept = max(intra2$x), linetype = "dashed", color = "red") +
+  geom_vline(xintercept = max(intra2$x), linetype = "dashed") +
   labs(
     title = expression(italic("A. nevadensis") ~ "interspecific distances"),
     x = expression(italic(d[XY])),
@@ -177,11 +178,11 @@ ggplot(ecdf_inter, aes(x = x, y = y)) +
 
 ggplot(ecdf_intra2, aes(x = x, y = y)) +
   geom_step() +
-  geom_vline(xintercept = min(comb2), linetype = "dashed", color = "red") +
+  geom_vline(xintercept = min(comb2), linetype = "dashed") +
   labs(
     title = expression(italic("A. nevadensis") ~ "intraspecific distances"),
     x = expression(italic(d[ij])),
-    y = expression(italic(hat(F)(d* "'"[ij])))
+    y = expression(1 - italic(hat(F)(d[ij])) + P(italic(d[ij])))
   ) 
 
 # q_prime_2
@@ -190,7 +191,7 @@ ecdf_comb2 <- data.frame(x = sort(comb2$x), y = ecdf(comb2$x)(sort(comb2$x)))
 
 ggplot(ecdf_comb1, aes(x = x, y = y)) +
   geom_step() +
-  geom_vline(xintercept = max(intra2$x), linetype = "dashed", color = "red") +
+  geom_vline(xintercept = max(intra2$x), linetype = "dashed") +
   labs(
     title = expression(italic("A. nevadensis") ~ "combined interspecific distances"),
     x = expression(italic(d* "'"[XY])),
