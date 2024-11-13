@@ -99,15 +99,15 @@ C[2] * q_prime_2
 
 # p_1
 
-ecdf_intra1 <- data.frame(x = sort(intra1$x), y = 1 - ecdf(intra1$x)(sort(intra1$x)) + mean(intra1$x == min(inter)))
+cecdf_intra1 <- data.frame(x = sort(intra1$x), y = 1 - ecdf(intra1$x)(sort(intra1$x)) + mean(intra1$x == min(inter)))
 
-ggplot(ecdf_intra1, aes(x = x, y = y)) +
+ggplot(cecdf_intra1, aes(x = x, y = y)) +
   geom_step() +
   geom_vline(xintercept = min(inter), linetype = "dashed") +
   labs(
     title = expression(italic("A. bipustulatus") ~ "intraspecific distances"),
     x = expression(italic(d[ij])),
-    y = expression(1 - italic(hat(F)(d[ij])) + P(italic(d[ij])))
+    y = expression(1 - italic(hat(F)(d[ij])) + P(italic(d[ij] == a)))
   ) 
 
 # q_1
@@ -125,13 +125,13 @@ ggplot(ecdf_inter, aes(x = x, y = y)) +
 
 # p_prime_1
 
-ggplot(ecdf_intra1, aes(x = x, y = y)) +
+ggplot(cecdf_intra1, aes(x = x, y = y)) +
   geom_step() +
   geom_vline(xintercept = min(comb1), linetype = "dashed") +
   labs(
     title = expression(italic("A. bipustulatus") ~ "intraspecific distances"),
     x = expression(italic(d[ij])),
-    y = expression(1 - italic(hat(F)(d[ij])) + P(italic(d[ij])))
+    y = expression(1 - italic(hat(F)(d[ij])) + P(italic(d[ij] == a* "'")))
   ) 
 
 # q_prime_1
@@ -150,15 +150,15 @@ ggplot(ecdf_comb1, aes(x = x, y = y)) +
 
 # p_2
 
-ecdf_intra2 <- data.frame(x = sort(intra2$x), y = 1 - ecdf(intra2$x)(sort(intra2$x)) + mean(intra2$x == min(inter)))
+cecdf_intra2 <- data.frame(x = sort(intra2$x), y = 1 - ecdf(intra2$x)(sort(intra2$x)) + mean(intra2$x == min(inter)))
 
-ggplot(ecdf_intra2, aes(x = x, y = y)) +
+ggplot(cecdf_intra2, aes(x = x, y = y)) +
   geom_step() +
   geom_vline(xintercept = min(inter), linetype = "dashed") +
   labs(
     title = expression(italic("A. nevadensis") ~ "intraspecific distances"),
     x = expression(italic(d[ij])),
-    y = expression(1 - italic(hat(F)(d[ij])) + P(italic(d[ij])))
+    y = expression(1 - italic(hat(F)(d[ij])) + P(italic(d[ij] == a)))
   ) 
 
 # q_2
@@ -176,13 +176,13 @@ ggplot(ecdf_inter, aes(x = x, y = y)) +
 
 # p_prime_2
 
-ggplot(ecdf_intra2, aes(x = x, y = y)) +
+ggplot(cecdf_intra2, aes(x = x, y = y)) +
   geom_step() +
   geom_vline(xintercept = min(comb2), linetype = "dashed") +
   labs(
     title = expression(italic("A. nevadensis") ~ "intraspecific distances"),
     x = expression(italic(d[ij])),
-    y = expression(1 - italic(hat(F)(d[ij])) + P(italic(d[ij])))
+    y = expression(1 - italic(hat(F)(d[ij])) + P(italic(d[ij] == a* "'")))
   ) 
 
 # q_prime_2
