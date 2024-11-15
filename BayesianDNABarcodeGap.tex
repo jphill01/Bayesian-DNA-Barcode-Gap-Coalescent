@@ -139,19 +139,19 @@ The approach of \citet{phillips2024measure} differs markedly from the traditiona
 Before delving into the derivation of the proposed DNA barcode gap metrics, review of some fundamental statistical theory is necessary. For a given random variable $X$ from a specified continuous probability distribution function (PDF), $f$, its cumulative distribution function (CDF), $F$, is defined by
 
 \begin{align}
-F_X(t) = \int_{-\infty}^{x} f(t) \,dt = \mathbb{P}(X \leq t) = 1 - \mathbb{P}(X > t). 
+F_X(x) = \int_{-\infty}^{x} f(t) \,dt = \mathbb{P}(X \leq x) = 1 - \mathbb{P}(X > x). 
 \end{align}
 
 \noindent Rearranging Equation (5) gives
 
 \begin{align}
-\mathbb{P}(X > t) = 1 - F_X(t) = 1 - \mathbb{P}(X \leq t) ,
+\mathbb{P}(X > x) = 1 - F_X(x) = 1 - \mathbb{P}(X \leq x) ,
 \end{align}
 
 \noindent from which it follows that
 
 \begin{align}
-\mathbb{P}(X \geq t) = 1 - F_X(t) + \mathbb{P}(X = t).
+\mathbb{P}(X \geq x) = 1 - F_X(x) + \mathbb{P}(X = x).
 \end{align}
 
 \noindent The CDF has many desirable statistical properties, such as boundedness, continuity, and monotonicity. Consult any graduate-level text on mathematical statistics or probability theory for reference.
