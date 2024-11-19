@@ -93,7 +93,7 @@ parameters {
 
 model {
     // Priors //
-    
+
     // p_lwr ~ uniform(0, 1);
     // p_upr ~ uniform(0, 1);
     // p_lwr_prime ~ uniform(0, 1);
@@ -106,36 +106,36 @@ model {
     p_lwr_prime ~ beta(1, 1);
     p_upr_prime ~ beta(1, 1);
 
-    // places greater density at extemes - may cause divergent transitions etc.
+    // Jeffreys' prior - places greater density at extemes - may cause divergent transitions etc.
 
     // p_lwr ~ beta(0.5, 0.5);
     // p_upr ~ beta(0.5, 0.5);
     // p_lwr_prime ~ beta(0.5, 0.5);
     // p_upr_prime ~ beta(0.5, 0.5);
-    
+
     // Likelihood
     y_lwr ~ binomial(N, p_lwr); // likelihood for intraspecific genetic distances equalling or exceeding min_inter
     y_upr ~ binomial(M, p_upr); // likelihood for interspecific genetic distances equalling or falling below max_intra
 
     y_lwr_prime ~ binomial(N, p_lwr_prime); // likelihood for intraspecific genetic distances equalling or exceeding min_comb
     y_upr_prime ~ binomial(C, p_upr_prime); // likelihood for combined interspecific genetic distances for a target species and its nearest neighbour species equalling or falling below max_intra
-    
+
 }
 
 
 generated quantities {
-  
-  // Posterior Predictive Checks
 
-  int<lower = 0> ppc_y_lwr[K];
-  int<lower = 0> ppc_y_upr[K];
-  int<lower = 0> ppc_y_lwr_prime[K];
-  int<lower = 0> ppc_y_upr_prime[K];
+  // Posterior Predictive Checks
+  
+  int<lower = 0, upper = N> ppc_y_lwr[K];
+  int<lower = 0, upper = M> ppc_y_upr[K];
+  int<lower = 0, upper = N> ppc_y_lwr_prime[K];
+  int<lower = 0, upper = C> ppc_y_upr_prime[K];
 
   ppc_y_lwr = binomial_rng(N, p_lwr);
   ppc_y_upr = binomial_rng(M, p_upr);
   ppc_y_lwr_prime = binomial_rng(N, p_lwr_prime);
   ppc_y_upr_prime = binomial_rng(C, p_upr_prime);
-  
+
 
 }
