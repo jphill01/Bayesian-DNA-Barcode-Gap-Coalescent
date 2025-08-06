@@ -30,6 +30,7 @@ run_barcode_gap_analysis_by_marker <- function(data_dir = NULL,
       warning("'inter.csv' not found in: ", marker_dir)
       next
     }
+    
     inter <- read.csv(inter_file)[, 2]
     M <- length(inter)
     
@@ -139,34 +140,34 @@ run_barcode_gap_analysis_by_marker <- function(data_dir = NULL,
       values <- c(p, q, p_prime, q_prime)
       colors <- c("red", "blue", "red", "blue")
       
+      plot1 <- ggplot(post, aes_string(x = p_lwr_col, y = p_upr_col)) +
+        geom_point() +
+        xlab(param_labels[["p_lwr"]]) +
+        ylab(param_labels[["p_upr"]]) +
+        geom_vline(xintercept = p, color = "red") +
+        geom_hline(yintercept = q, color = "blue") +
+        geom_vline(xintercept = p_lwr_mean, color = "red", linetype = 2) +
+        geom_hline(yintercept = p_upr_mean, color = "blue", linetype = 2) +
+        ggtitle(bquote(italic(.(paste("A.", sp)))))
+      
+      
+      plot2 <- ggplot(post, aes_string(x = p_lwr_prime_col, y = p_upr_prime_col)) +
+        geom_point() +
+        xlab(param_labels[["p_lwr_prime"]]) +
+        ylab(param_labels[["p_upr_prime"]]) +
+        geom_vline(xintercept = p_prime, color = "red") +
+        geom_hline(yintercept = q_prime, color = "blue") +
+        geom_vline(xintercept = p_lwr_prime_mean, color = "red", linetype = 2) +
+        geom_hline(yintercept = p_upr_prime_mean, color = "blue", linetype = 2) +
+        ggtitle(bquote(italic(.(paste("A.", sp)))))
+      
+      
+      ggsave(file.path(sp_dir, paste0("posterior.png")),
+             grid.arrange(plot1, plot2, ncol = 1),
+             width = 6, height = 8)
+      
       for (j in seq_along(params)) {
         var <- paste0(params[j], ".", i)
-        
-        plot1 <- ggplot(post, aes_string(x = p_lwr_col, y = p_upr_col)) +
-          geom_point() +
-          xlab(param_labels[["p_lwr"]]) +
-          ylab(param_labels[["p_upr"]]) +
-          geom_vline(xintercept = p, color = "red") +
-          geom_hline(yintercept = q, color = "blue") +
-          geom_vline(xintercept = p_lwr_mean, color = "red", linetype = 2) +
-          geom_hline(yintercept = p_upr_mean, color = "blue", linetype = 2) +
-          ggtitle(bquote(italic(.(paste("A.", sp)))))
-        
-        
-        plot2 <- ggplot(post, aes_string(x = p_lwr_prime_col, y = p_upr_prime_col)) +
-          geom_point() +
-          xlab(param_labels[["p_lwr_prime"]]) +
-          ylab(param_labels[["p_upr_prime"]]) +
-          geom_vline(xintercept = p_prime, color = "red") +
-          geom_hline(yintercept = q_prime, color = "blue") +
-          geom_vline(xintercept = p_lwr_prime_mean, color = "red", linetype = 2) +
-          geom_hline(yintercept = p_upr_prime_mean, color = "blue", linetype = 2) +
-          ggtitle(bquote(italic(.(paste("A.", sp)))))
-        
-        
-        ggsave(file.path(sp_dir, paste0("posterior_", params[j], ".png")),
-               grid.arrange(plot1, plot2, ncol = 1),
-               width = 6, height = 8)
         
         density_plot <- ggplot(post, aes_string(x = var)) +
           geom_density() +
