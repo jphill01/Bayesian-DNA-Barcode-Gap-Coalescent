@@ -9,7 +9,8 @@ setwd("/Users/jarrettphillips/desktop/Bayesian DNA Barcode Gap Analysis")
 
 run_barcode_gap_analysis_by_marker <- function(data_dir = NULL,
                                                stan_file = "DNA_barcode_gap.stan") {
-  options(mc.cores = parallel::detectCores())
+  
+  options(mc.cores = detectCores())
   rstan_options(auto_write = TRUE)
   
   if (is.null(data_dir)) {
@@ -79,7 +80,7 @@ run_barcode_gap_analysis_by_marker <- function(data_dir = NULL,
                 control = list(adapt_delta = 0.85, max_treedepth = 10))
     
     saveRDS(fit, file.path(marker_out, "stan_fit.rds"))
-    post <- as.data.frame(rstan::extract(fit))
+    post <- as.data.frame(extract(fit))
     
     message("Saving results per species...")
     
@@ -133,7 +134,7 @@ run_barcode_gap_analysis_by_marker <- function(data_dir = NULL,
       
       write.csv(est_df, file.path(sp_dir, "estimates.csv"), row.names = FALSE)
       
-      species_post <- post %>% dplyr::select(matches(paste0("\\.", i, "$")))
+      species_post <- post %>% select(matches(paste0("\\.", i, "$")))
       saveRDS(species_post, file.path(sp_dir, "posterior_samples.rds"))
       
       params <- c("p_lwr", "p_upr", "p_lwr_prime", "p_upr_prime")
