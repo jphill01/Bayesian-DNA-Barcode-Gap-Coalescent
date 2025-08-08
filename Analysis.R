@@ -9,7 +9,7 @@ library(rstudioapi)
 setwd("/Users/jarrettphillips/desktop/Bayesian DNA Barcode Gap Analysis")
 
 
-run_barcode_gap_analysis_by_marker <- function(data_dir = NULL,
+run_DNA_barcode_gap_analysis_by_marker <- function(data_dir = NULL,
                                                stan_file = "DNA_barcode_gap.stan") {
   
   options(mc.cores = detectCores())
@@ -203,7 +203,7 @@ run_barcode_gap_analysis_by_marker <- function(data_dir = NULL,
       
       p3 <- ggplot(ecdf_intra, aes(x = x, y = y)) +
         geom_step() + geom_vline(xintercept = min(comb_x), linetype = "dashed") +
-        labs(title = bquote("A. " ~ italic(.(sp)) ~ " intra vs. combined"),
+        labs(title = bquote("A. " ~ italic(.(sp)) ~ " intraspecific vs. combined"),
              x = expression(d[ij]),
              y = expression(1 - hat(F)(d[ij]) + P(d[ij] == a^"'")))
       
@@ -228,4 +228,4 @@ run_barcode_gap_analysis_by_marker <- function(data_dir = NULL,
 
 # Run
 
-run_barcode_gap_analysis_by_marker()
+run_DNA_barcode_gap_analysis_by_marker()
