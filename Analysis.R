@@ -1,16 +1,24 @@
+# install.packages("ggplot2")
+# install.packages("rstan")
+# install.packages("dplyr")
+# install.packages("parallel")
+# install.packages("doParallel")
+# install.packages("reshape2")
+# install.packages("rstudioapi")
+
 library(ggplot2)
-library(gridExtra)
 library(rstan)
 library(dplyr)
 library(parallel)
 library(doParallel)
+library(reshape2)
 library(rstudioapi)
 
 setwd("/Users/jarrettphillips/desktop/Bayesian DNA Barcode Gap Analysis")
 
 
-run_DNA_barcode_gap_analysis_by_marker <- function(data_dir = NULL,
-                                               stan_file = "DNA_barcode_gap.stan") {
+run_DNA_barcode_gap_analysis <- function(data_dir = NULL,
+                                         stan_file = "DNA_barcode_gap.stan") {
   
   options(mc.cores = detectCores())
   rstan_options(auto_write = TRUE)
@@ -136,8 +144,11 @@ run_DNA_barcode_gap_analysis_by_marker <- function(data_dir = NULL,
       
       write.csv(est_df, file.path(sp_dir, "estimates.csv"), row.names = FALSE)
       
-      species_post <- post %>% select(matches(paste0("\\.", i, "$")))
+      species_post <- select(post, matches(paste0("\\.", i, "$")))
       saveRDS(species_post, file.path(sp_dir, "posterior_samples.rds"))
+      
+      # ggsave(file.path(sp_dir, paste0("traceplot", sp, ".png")),
+      #        suppressMessages(traceplot(fit)), width = 6, height = 4)
       
       params <- c("p_lwr", "p_upr", "p_lwr_prime", "p_upr_prime")
       values <- c(p, q, p_prime, q_prime)
@@ -163,10 +174,10 @@ run_DNA_barcode_gap_analysis_by_marker <- function(data_dir = NULL,
         geom_hline(yintercept = p_upr_prime_mean, color = "blue", linetype = 2) +
         ggtitle(bquote(italic(.(paste("A.", sp)))))
       
-      ggsave(file.path(sp_dir, paste0("posterior1_", sp, ".png")),
+      ggsave(file.path(sp_dir, paste0("posterior_lwr_upr_", sp, ".png")),
              plot1, width = 6, height = 4)
       
-      ggsave(file.path(sp_dir, paste0("posterior2_", sp, ".png")),
+      ggsave(file.path(sp_dir, paste0("posterior_lwr_upr_prime_", sp, ".png")),
              plot2, width = 6, height = 4)
       
       for (j in seq_along(params)) {
@@ -191,13 +202,13 @@ run_DNA_barcode_gap_analysis_by_marker <- function(data_dir = NULL,
       
       p1 <- ggplot(ecdf_intra, aes(x = x, y = y)) +
         geom_step() + geom_vline(xintercept = min(inter), linetype = "dashed") +
-        labs(title = bquote("A. " ~ italic(.(sp)) ~ " intraspecific"),
+        labs(title = bquote("A. " ~ italic(.(sp)) ~ " intraspecific vs. interspecific"),
              x = expression(d[ij]),
              y = expression(1 - hat(F)(d[ij]) + P(d[ij] == a)))
       
       p2 <- ggplot(ecdf_inter, aes(x = x, y = y)) +
         geom_step() + geom_vline(xintercept = max(intra_x), linetype = "dashed") +
-        labs(title = bquote("A. " ~ italic(.(sp)) ~ " interspecific"),
+        labs(title = bquote("A. " ~ italic(.(sp)) ~ " interspecific vs intraspecific"),
              x = expression(d[XY]),
              y = expression(hat(F)(d[XY])))
       
@@ -209,14 +220,14 @@ run_DNA_barcode_gap_analysis_by_marker <- function(data_dir = NULL,
       
       p4 <- ggplot(ecdf_comb, aes(x = x, y = y)) +
         geom_step() + geom_vline(xintercept = max(intra_x), linetype = "dashed") +
-        labs(title = bquote("A. " ~ italic(.(sp)) ~ " combined interspecific"),
+        labs(title = bquote("A. " ~ italic(.(sp)) ~ " combined vs. interspecific"),
              x = expression(d[XY]^"'"),
              y = expression(hat(F)(d[XY]^"'")))
       
-      ggsave(file.path(sp_dir, "ecdf_intra.png"), p1, width = 6, height = 4)
-      ggsave(file.path(sp_dir, "ecdf_inter.png"), p2, width = 6, height = 4)
+      ggsave(file.path(sp_dir, "ecdf_intra_inter.png"), p1, width = 6, height = 4)
+      ggsave(file.path(sp_dir, "ecdf_inter_intra.png"), p2, width = 6, height = 4)
       ggsave(file.path(sp_dir, "ecdf_intra_comb.png"), p3, width = 6, height = 4)
-      ggsave(file.path(sp_dir, "ecdf_combined.png"), p4, width = 6, height = 4)
+      ggsave(file.path(sp_dir, "ecdf_comb_intra.png"), p4, width = 6, height = 4)
     }
     
     message("Completed marker: ", marker)
@@ -226,6 +237,7 @@ run_DNA_barcode_gap_analysis_by_marker <- function(data_dir = NULL,
 }
 
 
+
 # Run
 
-run_DNA_barcode_gap_analysis_by_marker()
+run_DNA_barcode_gap_analysis()
