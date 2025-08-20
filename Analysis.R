@@ -1,3 +1,10 @@
+#############################################
+# R script to run analyses in Phillips et al.
+# Created by: Jarrett D. Phillips
+# Last updated: August 20, 2025
+############################################
+
+
 # install.packages("ggplot2")
 # install.packages("rstan")
 # install.packages("dplyr")
@@ -208,7 +215,7 @@ run_DNA_barcode_gap_analysis <- function(data_dir = NULL,
       
       p2 <- ggplot(ecdf_inter, aes(x = x, y = y)) +
         geom_step() + geom_vline(xintercept = max(intra_x), linetype = "dashed") +
-        labs(title = bquote("A. " ~ italic(.(sp)) ~ " interspecific vs intraspecific"),
+        labs(title = bquote("A. " ~ italic(.(sp)) ~ " interspecific vs. intraspecific"),
              x = expression(d[XY]),
              y = expression(hat(F)(d[XY])))
       
