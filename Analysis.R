@@ -154,9 +154,6 @@ run_DNA_barcode_gap_analysis <- function(data_dir = NULL,
       species_post <- select(post, matches(paste0("\\.", i, "$")))
       saveRDS(species_post, file.path(sp_dir, "posterior_samples.rds"))
       
-      # ggsave(file.path(sp_dir, paste0("traceplot", sp, ".png")),
-      #        suppressMessages(traceplot(fit)), width = 6, height = 4)
-      
       params <- c("p_lwr", "p_upr", "p_lwr_prime", "p_upr_prime")
       values <- c(p, q, p_prime, q_prime)
       colors <- c("red", "blue", "red", "blue")
@@ -189,6 +186,9 @@ run_DNA_barcode_gap_analysis <- function(data_dir = NULL,
       
       for (j in seq_along(params)) {
         var <- paste0(params[j], ".", i)
+        
+        ggsave(file.path(sp_dir, paste0("traceplot_", params[j], ".png")),
+                suppressMessages(traceplot(fit)), width = 8, height = 4)
         
         density_plot <- ggplot(post, aes_string(x = var)) +
           geom_density() +
