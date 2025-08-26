@@ -60,6 +60,7 @@ run_DNA_barcode_gap_analysis <- function(data_dir = NULL,
     
     species <- intersect(species_intra, species_comb)
     K <- length(species)
+    
     if (K == 0) {
       warning("No matching intra/comb files found in ", marker_dir)
       next
@@ -187,9 +188,11 @@ run_DNA_barcode_gap_analysis <- function(data_dir = NULL,
       for (j in seq_along(params)) {
         var <- paste0(params[j], ".", i)
         
-        ggsave(file.path(sp_dir, paste0("traceplot_", params[j], ".png")),
-                suppressMessages(traceplot(fit)), width = 8, height = 4)
-        
+        trace <- traceplot(fit, pars = params[j])
+
+        ggsave(file.path(marker_out, paste0("traceplot_", params[j], ".png")),
+               plot = trace, width = 14, height = 10)
+
         density_plot <- ggplot(post, aes_string(x = var)) +
           geom_density() +
           geom_vline(xintercept = values[j], color = colors[j]) +
