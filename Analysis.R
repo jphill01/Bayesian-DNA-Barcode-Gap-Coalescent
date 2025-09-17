@@ -183,7 +183,7 @@ run_DNA_barcode_gap_analysis <- function(data_dir = NULL,
       ggsave(file.path(sp_dir, paste0("posterior_lwr_upr_", sp, ".png")),
              plot1, width = 6, height = 4)
 
-      ggsave(file.path(sp_dir, paste0("posterior_lwr_upr_prime_", sp, ".png")),
+      ggsave(file.path(sp_dir, paste0("posterior_lwr_prime_upr_prime_", sp, ".png")),
              plot2, width = 6, height = 4)
 
       for (j in seq_along(params)) {
@@ -213,25 +213,25 @@ run_DNA_barcode_gap_analysis <- function(data_dir = NULL,
 
       p1 <- ggplot(ecdf_intra, aes(x = x, y = y)) +
         geom_step() + geom_vline(xintercept = min(inter), linetype = "dashed") +
-        labs(title = bquote(italic("A. ") ~ italic(.(sp)) ~ " intraspecific vs. interspecific"),
+        labs(title = bquote(italic("A. ") ~ italic(.(sp))),
              x = expression(d[ij]),
              y = expression(1 - hat(F)(d[ij]) + P(d[ij] == a)))
 
       p2 <- ggplot(ecdf_inter, aes(x = x, y = y)) +
         geom_step() + geom_vline(xintercept = max(intra_x), linetype = "dashed") +
-        labs(title = bquote(italic("A. ") ~ italic(.(sp)) ~ " interspecific vs. intraspecific"),
+        labs(title = bquote(italic("A. ") ~ italic(.(sp))),
              x = expression(d[XY]),
              y = expression(hat(F)(d[XY])))
 
       p3 <- ggplot(ecdf_intra, aes(x = x, y = y)) +
         geom_step() + geom_vline(xintercept = min(comb_x), linetype = "dashed") +
-        labs(title = bquote(italic("A. ") ~ italic(.(sp)) ~ " intraspecific vs. combined"),
+        labs(title = bquote(italic("A. ") ~ italic(.(sp))),
              x = expression(d[ij]),
              y = expression(1 - hat(F)(d[ij]) + P(d[ij] == a^"'")))
 
       p4 <- ggplot(ecdf_comb, aes(x = x, y = y)) +
         geom_step() + geom_vline(xintercept = max(intra_x), linetype = "dashed") +
-        labs(title = bquote(italic("A. ") ~ italic(.(sp)) ~ " combined vs. interspecific"),
+        labs(title = bquote(italic("A. ") ~ italic(.(sp))),
              x = expression(d[XY]^"'"),
              y = expression(hat(F)(d[XY]^"'")))
 
