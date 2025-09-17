@@ -137,5 +137,6 @@ generated quantities {
   ppc_y_lwr_prime = binomial_rng(N, p_lwr_prime);
   ppc_y_upr_prime = binomial_rng(C, p_upr_prime);
 
+   
 
 }
