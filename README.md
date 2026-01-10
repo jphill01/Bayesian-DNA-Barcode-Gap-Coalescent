@@ -12,6 +12,6 @@ Data needed to run ``Analysis.R`` can be found in the ``Markers`` folder.
 
 ``barcode_clean.R`` is used to compute intraspecific, interspecific, and combined genetic distances.
 
-``DNA_Barcode_gap.stan`` is the Stan model used to estimate the DNA barcode gap metrics.
+``DNA_Barcode_gap.stan`` is the Stan program used to estimate the DNA barcode gap metrics.
 
 ``load.R`` sets the hyperparameters used by ``barcode_clean.R``.
