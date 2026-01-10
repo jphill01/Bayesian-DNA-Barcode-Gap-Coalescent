@@ -10,4 +10,4 @@ Data needed to run ``Analysis.R`` can be found in the ``Markers`` folder.
 
 ``Analyzed Species`` is a list of the 59 unique species arranged by molecular marker.
 
-``barcode_clean.R`` is used to compute intraspecific, interspecfic, and combined genetic distances.
+``barcode_clean.R`` is used to compute intraspecific, interspecific, and combined genetic distances.
