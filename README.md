@@ -8,7 +8,7 @@ A Bayesian implementation coded in Stan to a nonparametric Maximum Liklihood app
 
 Data needed to run ``Analysis.R`` can be found in the ``Markers`` folder.
 
-``Analyzed Species`` is a list of the 59 unique species arranged by molecular marker.
+``Analyzed Species`` is a list of the 59 unique species arranged by molecular marker generated using ``Analyzed species.R``.
 
 ``barcode_clean.R`` is used to compute intraspecific, interspecific, and combined genetic distances.
 
