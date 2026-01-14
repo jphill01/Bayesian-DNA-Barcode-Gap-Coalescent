@@ -15,3 +15,5 @@ Data needed to run ``Analysis.R`` can be found in the ``Markers`` folder.
 ``DNA_Barcode_gap.stan`` is the Stan program used to estimate the DNA barcode gap metrics.
 
 ``load.R`` sets the hyperparameters used by ``barcode_clean.R``.
+
+``sim.R`` contains a amall simulation study
